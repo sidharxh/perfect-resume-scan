@@ -14,6 +14,14 @@
       {
         "step": "Step 1: Survive the ATS—Or Don’t Get Seen",
         "description": "Fact: If your resume isn’t ATS-friendly, you may as well spend your job search watering your neighbor’s plants for fun. We check what companies’ Applicant Tracking Systems (ATS) crave: right file, right format, and, yes—keywords that don’t sound like desperate clickbait."
+      },
+      {
+        "step": "Step 2: The AI Reads Your Resume (And Judges)",
+        "description": "We feed your document to our custom-trained AI (which has read more terrible resumes than your recruiter). We score the **Parsability**—if our AI can’t understand your job title, no robot recruiter can. Welcome to the machine-learning filter."
+      },
+      {
+        "step": "Step 3: The Brutal Content Review",
+        "description": "The AI then takes a digital red pen to your **actual writing**. We flag every cliché, typo, buzzword, and vague bullet point. Expect no mercy. This check ensures you haven't written yourself a one-way ticket to the 'No' pile before a human even sees it."
       }
     ],
     "scoring_system": {
@@ -35,22 +43,14 @@
   "checklist": {
     "headline": "The Checklist: We’re Judge, Jury, and (Resume) Executioner",
     "items": [
-      "Content (Does your experience actually say something?)",
-      "ATS Parse Rate (Do robots like you?)",
-      "Repetition (Did you use “innovative” more than once? Oops.)",
-      "Spelling & Grammar (Let’s keep your 8th grade English teacher happy)",
-      "Impact Quantification (Did you “do stuff” or did you “increase revenue by 42%”?)",
-      "File Format & Size (Is your file actually readable, or is it just wishful thinking?)",
-      "Resume Length (Shakespeare wrote shorter stuff)",
-      "Bullet Points (Longer than your job? We'll help you cut them down)",
-      "Skills Suggestions (Yes, “team player” still isn’t a real skill)",
-      "Hard & Soft Skills (Mix appropriately, like cocktails)",
-      "Contact Info (Do you want recruiters to contact you or your spam folder?)",
-      "Essential Sections (If you forgot Education, start over.)",
-      "Personality (Are you… a robot?)",
-      "Style & Design (Comic Sans fans, step aside.)",
-      "Email Address (Still using hotmail? We’re judging.)",
-      "Buzzwords & Clichés (Synergy. Paradigm. Ninja. Stop.)"
+      "ATS & Formatting Score (Do robots like you? File, size, and parse rate checked.)",
+      "Content & Impact (Does your experience actually say something, or just 'do stuff'? Show us the numbers.)",
+      "Typos & Repetition (Spelling, grammar, and using 'innovative' more than once. We're watching.)",
+      "Length & Structure (Shakespeare wrote shorter stuff. We check document length and bullet point effectiveness.)",
+      "Skills Accuracy (Yes, 'team player' still isn’t a real skill. Hard/Soft skill mix assessed.)",
+      "Essential Sections (If you forgot Contact Info or Education, start over.)",
+      "Style & Design (Comic Sans fans, step aside. We check readability and overall personality.)",
+      "Professionalism Check (Still using hotmail? Buzzwords like 'synergy' or 'ninja'? Stop.)"
     ]
   },
   "ai_power": {
