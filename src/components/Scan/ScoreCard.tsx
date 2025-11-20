@@ -2,6 +2,11 @@ import type { ScanResult } from "@/types/resume";
 import ScoreSection from "./ScoreSection";
 
 export function ScoreCard({ result }: { result: ScanResult }) {
+  if (!result) {
+    return (
+      <div className="p-6 bg-white rounded-lg shadow">No results to display.</div>
+    );
+  }
   return (
     <div className="p-6 bg-white rounded-lg shadow">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between">
@@ -12,9 +17,12 @@ export function ScoreCard({ result }: { result: ScanResult }) {
       </div>
 
       <div className="mt-6 space-y-6">
-        {result.sections.map((section, idx) => (
+        {(result.sections ?? []).map((section, idx) => (
           <ScoreSection key={idx} section={section} />
         ))}
+        {(result.sections ?? []).length === 0 && (
+          <div className="text-sm text-gray-500">No sections returned by the analysis.</div>
+        )}
       </div>
     </div>
   );

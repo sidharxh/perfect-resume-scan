@@ -12,7 +12,9 @@
     "next": "16.0.3",
     "react": "19.2.0",
     "react-dom": "19.2.0",
-    "react-dropzone": "^14.3.8"
+    "react-dropzone": "^14.3.8",
+    "pdf-parse": "^1.1.1",
+    "@google/genai": "^1.0.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

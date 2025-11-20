@@ -35,8 +35,64 @@ export default function ScanPage() {
         throw new Error(text || "Server error");
       }
 
-      const data: ScanResult = await res.json();
-      setResult(data);
+      const raw = await res.json();
+
+      // The API may return several shapes depending on the provider/SDK.
+      // Common possibilities handled here:
+      // - { overall_score, sections, ... }  (already a ScanResult)
+      // - { ok: true, output: string } where output is JSON text
+      // - { ok: true, providerResponse: {...} }
+      let parsed: any = raw;
+
+      if (raw && raw.ok && typeof raw.output === "string") {
+        // The provider may wrap JSON inside markdown code fences (```json ... ```)
+        // or return extra text. Try to extract the JSON payload robustly.
+        let out = raw.output;
+
+        // If there's a fenced block, capture its contents.
+        const fenceMatch = out.match(/```(?:json)?\s*([\s\S]*?)\s*```/i);
+        if (fenceMatch && fenceMatch[1]) {
+          out = fenceMatch[1];
+        } else {
+          // Strip any leading/trailing triple backticks or whitespace
+          out = out.replace(/```/g, "").trim();
+        }
+
+        // As a last resort, try to find the first '{' and last '}' and parse that substring
+        const tryParse = (s: string) => {
+          try {
+            return JSON.parse(s);
+          } catch (e) {
+            return null;
+          }
+        };
+
+        let maybe = tryParse(out);
+        if (!maybe) {
+          const first = out.indexOf("{");
+          const last = out.lastIndexOf("}");
+          if (first !== -1 && last !== -1 && last > first) {
+            const sub = out.slice(first, last + 1);
+            maybe = tryParse(sub);
+          }
+        }
+
+        if (!maybe) {
+          throw new Error("Provider returned non-JSON output (preview): " + out.slice(0, 300));
+        }
+
+        parsed = maybe;
+      } else if (raw && raw.ok && raw.providerResponse) {
+        // try to use providerResponse directly
+        parsed = raw.providerResponse;
+      }
+
+      // Validate parsed has the expected structure
+      if (!parsed || !Array.isArray(parsed.sections)) {
+        throw new Error("API did not return a valid ScanResult (missing sections)");
+      }
+
+      setResult(parsed as ScanResult);
     } catch (e: any) {
       setError(e?.message ?? "Unknown error");
     } finally {

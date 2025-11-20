@@ -1,36 +1,19 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Perfect Resume Scan is a lightweight web product that analyzes uploaded resumes and returns a concise, actionable scorecard.
 
-## Getting Started
+Key features:
 
-First, run the development server:
+- Fast, blunt feedback: the system returns an overall score, ATS compatibility score, and categorized checks (Content, ATS Compliance, Skills & Sections, Style & Design).
+- Actionable suggestions: each failing check includes a short, practical suggestion to improve the resume.
+- Privacy-first processing: files are uploaded and processed server-side; only the analysis result is returned.
+- Live demo: try the product at https://perfectresumescan.com
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+How it works (high level):
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Users upload a PDF resume via the Scan page.
+- The server extracts text from the PDF and runs a structured analysis using a generative AI model and a guided prompt.
+- The API returns a structured JSON scorecard that the UI renders as an easy-to-read report.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+If you are a developer exploring this repository, the code that handles uploads and analysis is in `src/app/api/scan/route.ts` and the prompt that instructs the model is in `src/data/prompt.md`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+For any questions or to report issues, open an issue in this repository or contact the maintainer.
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
