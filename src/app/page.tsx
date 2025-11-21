@@ -1,52 +1,28 @@
-import landingContent from "@/data/landing.json";
-import { HeroSection } from "@/components/Landing/HeroSection";
-import { HowItWorks } from "@/components/Landing/HowItWorks";
-import { Checklist } from "@/components/Landing/Checklist";
-import { FAQSection } from "@/components/Landing/FAQSection";
+'use client';
 
-export default function LandingPage() {
-  // Map snake_case JSON fields to component props
-  const hero = {
-    title: landingContent.hero.headline,
-    description: landingContent.hero.subheadline,
-    ctaText: landingContent.hero.cta,
-  };
+import { useRef } from 'react';
+import Navbar from '@/components/Navbar';
+import Hero from '@/components/Hero';
+import HowItWorks from '@/components/HowItWorks';
+import Features from '@/components/Features';
+import Pricing from '@/components/Pricing';
+import Footer from '@/components/Footer';
 
-  const howItWorks = {
-    title: landingContent.how_it_works.headline,
-    steps: landingContent.how_it_works.steps.map((s: any, idx: number) => ({
-      id: idx + 1,
-      title: s.step,
-      description: s.description,
-    })),
-  };
+export default function Home() {
+  const uploadRef = useRef<HTMLDivElement>(null);
 
-  const checklist = {
-    title: landingContent.checklist.headline,
-    items: landingContent.checklist.items.map((text: string, idx: number) => ({
-      id: idx + 1,
-      text,
-      passed: false,
-    })),
-  };
-
-  const faqSection = {
-    title: landingContent.faq.headline,
-    faqs: landingContent.faq.questions.map((q: any, idx: number) => ({
-      id: idx + 1,
-      question: q.q,
-      answer: q.a,
-    })),
+  const scrollToUpload = () => {
+    uploadRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      <HeroSection {...hero} />
-      <div className="px-4 md:px-0">
-        <HowItWorks title={howItWorks.title} steps={howItWorks.steps} />
-        <Checklist title={checklist.title} items={checklist.items} />
-        <FAQSection title={faqSection.title} faqs={faqSection.faqs} />
-      </div>
-    </div>
+    <>
+      <Navbar scrollToUpload={scrollToUpload} />
+      <Hero uploadRef={uploadRef} />
+      <HowItWorks />
+      <Features />
+      <Pricing scrollToUpload={scrollToUpload} />
+      <Footer scrollToUpload={scrollToUpload} />
+    </>
   );
 }

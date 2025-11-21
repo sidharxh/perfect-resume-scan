@@ -1,68 +1,7 @@
-## Node
-node_modules/
-
-## Next.js build / output
-.next/
-out/
-.build/
-dist/
-
-## Logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-*.log
-
-## Runtime data
-pids/
-*.pid
-*.seed
-*.pid.lock
-
-## Env files
-.env
-.env.*.local
-.env.local
-
-## Editor directories and files
-.vscode/
-.idea/
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-
-## OS files
-.DS_Store
-Thumbs.db
-
-## Test coverage
-coverage/
-
-## TypeScript
-*.tsbuildinfo
-
-## Turbopack / cache
-.turbo/
-.cache/
-
-## Vercel / deployment
-.vercel/
-
-## Misc
-*.local
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
 # dependencies
 /node_modules
 /.pnp
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
+.pnp.js
 
 # testing
 /coverage
@@ -82,10 +21,10 @@ coverage/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
+# local env files
+.env*.local
+.env
 
 # vercel
 .vercel
