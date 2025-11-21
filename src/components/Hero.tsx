@@ -21,7 +21,7 @@ export default function Hero({ uploadRef }: HeroProps) {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
             </span>
-            Over 10,000 resumes scanned this week
+            Over 500 resumes scanned this week
           </div>
           <h1 className="text-4xl md:text-6xl font-extrabold text-slate-900 tracking-tight mb-6 leading-tight">
             Is your resume <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">ATS-Proof?</span>
@@ -38,7 +38,7 @@ export default function Hero({ uploadRef }: HeroProps) {
         {/* Social Proof */}
         <div className="mt-16 pt-8 border-t border-slate-200">
           <p className="text-center text-sm font-semibold text-slate-500 uppercase tracking-wider mb-6">Trusted by job seekers from</p>
-          <div className="flex flex-wrap justify-center gap-8 md:gap-16 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+          <div className="flex flex-wrap justify-center gap-8 md:gap-16">
             <span className="flex items-center font-bold text-xl text-slate-700"><span className="text-blue-500">G</span>oogle</span>
             <span className="flex items-center font-bold text-xl text-slate-700"><span className="text-orange-500">a</span>mazon</span>
             <span className="flex items-center font-bold text-xl text-slate-700"><span className="text-cyan-500">M</span>icrosoft</span>
