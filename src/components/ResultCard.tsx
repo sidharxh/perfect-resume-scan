@@ -1,7 +1,7 @@
 'use client';
 
-import React from 'react';
-import { Key, Wand2, Copy, AlertTriangle } from 'lucide-react';
+import React, { useState } from 'react';
+import { Key, Wand2, Copy, AlertTriangle, ChevronDown, ChevronUp } from 'lucide-react';
 import { ScanResult } from '@/types';
 
 interface ResultCardProps {
@@ -10,8 +10,22 @@ interface ResultCardProps {
 }
 
 export default function ResultCard({ result, resetScan }: ResultCardProps) {
+  // Track which improvement groups are expanded
+  const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
+
+  const toggleGroup = (groupName: string) => {
+    setExpandedGroups(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(groupName)) {
+        newSet.delete(groupName);
+      } else {
+        newSet.add(groupName);
+      }
+      return newSet;
+    });
+  };
+
   const copyToClipboard = (text: string, btnId: string) => {
-    // Using execCommand for iFrame compatibility
     const tempInput = document.createElement('textarea');
     tempInput.value = text.replace(/"/g, "");
     document.body.appendChild(tempInput);
@@ -19,7 +33,6 @@ export default function ResultCard({ result, resetScan }: ResultCardProps) {
     document.execCommand('copy');
     document.body.removeChild(tempInput);
 
-    // Visual feedback
     const btn = document.getElementById(btnId);
     if (btn) {
       const originalContent = btn.innerHTML;
@@ -32,7 +45,6 @@ export default function ResultCard({ result, resetScan }: ResultCardProps) {
     }
   };
 
-  // Determine score color and alert level
   const getScoreColor = (score: number) => {
     if (score >= 80) return 'border-green-400 bg-green-50';
     if (score >= 60) return 'border-yellow-400 bg-yellow-50';
@@ -51,6 +63,16 @@ export default function ResultCard({ result, resetScan }: ResultCardProps) {
     if (lowerType.includes('vague') || lowerType.includes('moderate')) return 'text-orange-600 bg-orange-50';
     return 'text-blue-600 bg-blue-50';
   };
+
+  // Group improvements by section (e.g., "Experience", "Education", "Skills")
+  const groupedImprovements = result.improvements?.reduce((acc, improvement) => {
+    const section = improvement.section || 'General';
+    if (!acc[section]) {
+      acc[section] = [];
+    }
+    acc[section].push(improvement);
+    return acc;
+  }, {} as Record<string, typeof result.improvements>) || {};
 
   return (
     <div className="w-full bg-slate-50 rounded-xl overflow-hidden animate-fade-in relative z-30">
@@ -92,39 +114,78 @@ export default function ResultCard({ result, resetScan }: ResultCardProps) {
           </div>
         )}
 
-        {/* Section 2: Copyable Improvements */}
-        {result.improvements && result.improvements.length > 0 && (
+        {/* Section 2: Grouped Collapsible Improvements */}
+        {Object.keys(groupedImprovements).length > 0 && (
           <div>
             <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-4 flex items-center gap-2">
               <Wand2 className="text-blue-500" size={16} /> Recommended Improvements
             </h4>
             
-            {result.improvements.map((improvement, idx) => (
-              <div key={idx} className="bg-white border border-slate-200 rounded-lg p-5 shadow-sm mb-4 transition hover:border-blue-300">
-                <div className="flex justify-between items-start mb-3">
-                  <span className={`text-xs font-bold px-2 py-1 rounded uppercase tracking-wide ${getImprovementTypeColor(improvement.type)}`}>
-                    {improvement.type}
-                  </span>
-                </div>
-                <div className="mb-3">
-                  <p className="text-xs text-slate-400 uppercase mb-1">Original</p>
-                  <div className="text-slate-500 text-sm line-through bg-slate-50 p-2 rounded">{improvement.original}</div>
-                </div>
-                <div>
-                  <p className="text-xs text-blue-600 uppercase mb-1 font-bold">Better (Optimized)</p>
-                  <div className="flex items-center justify-between gap-3 bg-green-50 p-3 rounded border border-green-100">
-                    <p className="text-green-900 text-sm font-medium flex-1">{improvement.optimized}</p>
-                    <button 
-                      id={`btn-copy-${idx}`}
-                      onClick={() => copyToClipboard(improvement.optimized, `btn-copy-${idx}`)}
-                      className="text-green-600 hover:text-green-700 bg-white hover:bg-green-100 border border-green-200 px-3 py-2 rounded-md transition flex items-center gap-2 text-xs font-bold whitespace-nowrap"
+            <div className="space-y-3">
+              {Object.entries(groupedImprovements).map(([section, improvements]) => {
+                const isExpanded = expandedGroups.has(section);
+                
+                return (
+                  <div key={section} className="bg-white border border-slate-200 rounded-lg shadow-sm overflow-hidden">
+                    {/* Group Header - Clickable */}
+                    <button
+                      onClick={() => toggleGroup(section)}
+                      className="w-full flex items-center justify-between p-4 hover:bg-slate-50 transition-colors text-left"
                     >
-                      <Copy size={14} /> Copy
+                      <div className="flex items-center gap-3">
+                        <span className="text-sm font-bold text-slate-900 uppercase tracking-wide">
+                          {section}
+                        </span>
+                        <span className="text-sm text-slate-600">
+                          {improvements.length} {improvements.length === 1 ? 'improvement' : 'improvements'}
+                        </span>
+                      </div>
+                      {isExpanded ? (
+                        <ChevronUp className="text-slate-400" size={20} />
+                      ) : (
+                        <ChevronDown className="text-slate-400" size={20} />
+                      )}
                     </button>
+
+                    {/* Group Content - Collapsible */}
+                    {isExpanded && (
+                      <div className="border-t border-slate-200 p-4 space-y-4 bg-slate-50">
+                        {improvements.map((improvement, idx) => (
+                          <div key={idx} className="bg-white border border-slate-200 rounded-lg p-4">
+                            <div className="flex justify-between items-start mb-3">
+                              <span className={`text-xs font-bold px-2 py-1 rounded uppercase tracking-wide ${getImprovementTypeColor(improvement.type)}`}>
+                                {improvement.type}
+                              </span>
+                            </div>
+                            <div className="mb-3">
+                              <p className="text-xs text-slate-400 uppercase mb-1">Original</p>
+                              <div className="text-slate-500 text-sm line-through bg-slate-50 p-2 rounded">
+                                {improvement.original}
+                              </div>
+                            </div>
+                            <div>
+                              <p className="text-xs text-blue-600 uppercase mb-1 font-bold">Better (Optimized)</p>
+                              <div className="flex items-center justify-between gap-3 bg-green-50 p-3 rounded border border-green-100">
+                                <p className="text-green-900 text-sm font-medium flex-1">
+                                  {improvement.optimized}
+                                </p>
+                                <button 
+                                  id={`btn-copy-${section}-${idx}`}
+                                  onClick={() => copyToClipboard(improvement.optimized, `btn-copy-${section}-${idx}`)}
+                                  className="text-green-600 hover:text-green-700 bg-white hover:bg-green-100 border border-green-200 px-3 py-2 rounded-md transition flex items-center gap-2 text-xs font-bold whitespace-nowrap"
+                                >
+                                  <Copy size={14} /> Copy
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                </div>
-              </div>
-            ))}
+                );
+              })}
+            </div>
           </div>
         )}
       </div>
