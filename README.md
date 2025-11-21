@@ -80,9 +80,9 @@ perfect-resume-scan/
 │   │   ├── Hero.tsx                # Hero section with CTA
 │   │   ├── UploadArea.tsx          # File upload component
 │   │   ├── ResultCard.tsx          # Scan results display
-│   │   ├── HowItWorks.tsx          # How it works section
+│   │   ├── FAQ.tsx                  # FAQ section
 │   │   ├── Features.tsx            # Features showcase
-│   │   ├── Pricing.tsx             # Pricing tiers
+│   │   ├── SampleATSResume.tsx     # Sample ATS resume
 │   │   └── Footer.tsx              # Footer with links
 │   └── types/
 │       └── index.ts                # TypeScript type definitions
@@ -94,45 +94,9 @@ perfect-resume-scan/
 └── package.json                     # Dependencies and scripts
 ```
 
-## How It Works
+## FAQ
 
-### Frontend Flow
-
-1. User uploads PDF/DOCX resume via `UploadArea` component
-2. File is sent to `/api/scan` endpoint
-3. Progress indicator shows while processing
-4. Results are displayed in `ResultCard` with:
-   - ATS Score (0-100)
-   - Score label (Excellent/Good/Needs Improvement)
-   - Missing keywords
-   - Improvement suggestions with copy-to-clipboard functionality
-
-### Backend Flow (API Route)
-
-1. Receives uploaded file via FormData
-2. Extracts text using `pdf-parse` (PDF) or `mammoth` (DOCX)
-3. Sends extracted text to Google Gemini AI with structured schema
-4. AI analyzes resume against industry standards
-5. Returns JSON with score, keywords, and improvements
-6. Frontend displays formatted results
-
-### AI Schema Enforcement
-
-The backend uses Anthropic's Claude SDK with tool-based schema validation to ensure structured JSON output:
-
-```typescript
-const resumeSchema = {
-  type: "object",
-  properties: {
-    score: { type: "number" },
-    scoreLabel: { type: "string" },
-    summary: { type: "string" },
-    missingKeywords: { type: "array", items: { type: "string" } },
-    improvements: { type: "array", items: { ... } }
-  },
-  required: ["score", "scoreLabel", "summary", "missingKeywords", "improvements"]
-}
-```
+The `FAQ` component contains answers to common questions about using PerfectResumeScan, deployment, and troubleshooting. Visit the landing page to view the frequently asked questions section rendered from `src/components/FAQ.tsx`.
 
 ## API Endpoint
 

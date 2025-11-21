@@ -28,9 +28,9 @@ export default function Footer({ scrollToUpload }: FooterProps) {
           <div>
             <h4 className="font-bold text-slate-900 mb-4">Navigation</h4>
             <ul className="space-y-2 text-sm text-slate-600">
-              <li><a href="#how-it-works" className="hover:text-blue-600 scroll-smooth">How it Works</a></li>
+              <li><a href="#faq" className="hover:text-blue-600 scroll-smooth">FAQ</a></li>
               <li><a href="#features" className="hover:text-blue-600 scroll-smooth">Features</a></li>
-              <li><a href="#pricing" className="hover:text-blue-600 scroll-smooth">Pricing</a></li>
+              <li><a href="#sample-resume" className="hover:text-blue-600 scroll-smooth">Sample Resume</a></li>
             </ul>
           </div>
           

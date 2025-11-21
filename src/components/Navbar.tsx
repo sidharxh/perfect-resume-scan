@@ -35,9 +35,9 @@ export default function Navbar({ scrollToUpload }: NavbarProps) {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
-            <a href="#how-it-works" className="text-slate-600 hover:text-blue-600 font-medium transition scroll-smooth">How it Works</a>
+            <a href="#faq" className="text-slate-600 hover:text-blue-600 font-medium transition scroll-smooth">FAQ</a>
             <a href="#features" className="text-slate-600 hover:text-blue-600 font-medium transition scroll-smooth">Features</a>
-            <a href="#pricing" className="text-slate-600 hover:text-blue-600 font-medium transition scroll-smooth">Pricing</a>
+            <a href="#sample-resume" className="text-slate-600 hover:text-blue-600 font-medium transition scroll-smooth">Sample Resume</a>
             <button 
               onClick={scrollToUpload}
               className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full font-medium transition shadow-lg shadow-blue-500/30"
@@ -59,9 +59,9 @@ export default function Navbar({ scrollToUpload }: NavbarProps) {
       {isMobileMenuOpen && (
         <div className="md:hidden bg-white border-t border-slate-100 absolute w-full shadow-xl">
           <div className="px-4 pt-2 pb-4 space-y-1 flex flex-col">
-            <a href="#how-it-works" onClick={() => setIsMobileMenuOpen(false)} className="block px-3 py-2 text-slate-600 hover:bg-slate-50 rounded-md scroll-smooth">How it Works</a>
+            <a href="#faq" onClick={() => setIsMobileMenuOpen(false)} className="block px-3 py-2 text-slate-600 hover:bg-slate-50 rounded-md scroll-smooth">FAQ</a>
             <a href="#features" onClick={() => setIsMobileMenuOpen(false)} className="block px-3 py-2 text-slate-600 hover:bg-slate-50 rounded-md scroll-smooth">Features</a>
-            <a href="#pricing" onClick={() => setIsMobileMenuOpen(false)} className="block px-3 py-2 text-slate-600 hover:bg-slate-50 rounded-md scroll-smooth">Pricing</a>
+            <a href="#sample-resume" onClick={() => setIsMobileMenuOpen(false)} className="block px-3 py-2 text-slate-600 hover:bg-slate-50 rounded-md scroll-smooth">Sample Resume</a>
             <div className="border-t border-slate-100 my-2"></div>
             <button 
               onClick={() => { scrollToUpload(); setIsMobileMenuOpen(false); }}
