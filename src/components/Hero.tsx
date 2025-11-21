@@ -1,13 +1,6 @@
-'use client';
-
-import React, { RefObject } from 'react';
 import UploadArea from './UploadArea';
 
-interface HeroProps {
-  uploadRef: RefObject<HTMLDivElement>;
-}
-
-export default function Hero({ uploadRef }: HeroProps) {
+export default function Hero() {
   return (
     <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-gradient-to-b from-slate-50 via-slate-50 to-slate-100">
       {/* Soft radial gradient blobs */}
@@ -21,7 +14,7 @@ export default function Hero({ uploadRef }: HeroProps) {
         <div className="h-full w-full bg-[linear-gradient(to_right,_rgba(148,163,184,0.5)_1px,_transparent_1px),linear-gradient(to_bottom,_rgba(148,163,184,0.35)_1px,_transparent_1px)] bg-[size:38px_38px]" />
       </div>
 
-      {/* Light vignette to keep focus in center */}
+      {/* Light vignette */}
       <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-white via-white/70 to-transparent" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-slate-100 via-slate-100/70 to-transparent" />
 
@@ -46,34 +39,13 @@ export default function Hero({ uploadRef }: HeroProps) {
           </p>
         </div>
 
-        <div ref={uploadRef}>
-          <UploadArea id="upload-area" />
+        {/* Give UploadArea an id so links can scroll here */}
+        <div id="upload">
+          <UploadArea id="upload-area"/>
         </div>
 
-        {/* Social Proof */}
-        {/* <div className="mt-16 pt-8 border-t border-slate-200/80">
-          <p className="text-center text-sm font-semibold text-slate-500 uppercase tracking-wider mb-6">
-            Trusted by job seekers from
-          </p>
-          <div className="flex flex-wrap justify-center gap-8 md:gap-16">
-            <span className="flex items-center font-bold text-xl text-slate-700">
-              <span className="text-blue-500">G</span>oogle
-            </span>
-            <span className="flex items-center font-bold text-xl text-slate-700">
-              <span className="text-orange-500">A</span>mazon
-            </span>
-            <span className="flex items-center font-bold text-xl text-slate-700">
-              <span className="text-cyan-500">M</span>icrosoft
-            </span>
-            <span className="flex items-center font-bold text-xl text-slate-700">
-              <span className="text-green-500">S</span>potify
-            </span>
-          </div>
-        </div> */}
-
-        {/* Social Proof */}
+        {/* Social proof (unchanged) */}
         <div className="mt-16 pt-8 border-t border-slate-200/80">
-          {/* Numbers row */}
           <p className="text-center text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4">
             Results other job seekers are seeing
           </p>
@@ -110,7 +82,6 @@ export default function Hero({ uploadRef }: HeroProps) {
             </div>
           </div>
 
-          {/* Company names row */}
           <p className="text-center text-[11px] md:text-xs font-semibold text-slate-500 uppercase tracking-[0.2em] mb-4">
             Used by candidates interviewing at
           </p>
@@ -129,7 +100,6 @@ export default function Hero({ uploadRef }: HeroProps) {
             </span>
           </div>
         </div>
-
       </div>
     </section>
   );

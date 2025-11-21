@@ -1,4 +1,3 @@
-import React from 'react';
 import { Check, AlertCircle, ArrowDown } from 'lucide-react';
 
 export default function Features() {
