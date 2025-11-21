@@ -40,7 +40,7 @@ export default function Hero({ uploadRef }: HeroProps) {
           <p className="text-center text-sm font-semibold text-slate-500 uppercase tracking-wider mb-6">Trusted by job seekers from</p>
           <div className="flex flex-wrap justify-center gap-8 md:gap-16">
             <span className="flex items-center font-bold text-xl text-slate-700"><span className="text-blue-500">G</span>oogle</span>
-            <span className="flex items-center font-bold text-xl text-slate-700"><span className="text-orange-500">a</span>mazon</span>
+            <span className="flex items-center font-bold text-xl text-slate-700"><span className="text-orange-500">A</span>mazon</span>
             <span className="flex items-center font-bold text-xl text-slate-700"><span className="text-cyan-500">M</span>icrosoft</span>
             <span className="flex items-center font-bold text-xl text-slate-700"><span className="text-green-500">S</span>potify</span>
           </div>
