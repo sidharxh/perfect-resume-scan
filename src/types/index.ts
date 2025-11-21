@@ -8,6 +8,7 @@ export interface ScanResult {
 
 export interface Improvement {
   type: string;
+  section: string;  // e.g., "Experience", "Education", "Skills", "Summary"
   original: string;
   optimized: string;
 }

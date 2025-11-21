@@ -50,8 +50,7 @@ export async function POST(request: Request) {
       apiKey: apiKey,
     });
 
-    // 3. Define Schema (Standard JSON Schema format for Claude)
-    // Note: Claude uses lowercase types ("string", "number") unlike Gemini's "STRING"
+    // 3. Define Schema with section field
     const resumeSchema = {
       type: "object",
       properties: {
@@ -81,6 +80,10 @@ export async function POST(request: Request) {
                 type: "string", 
                 description: "e.g. 'Weak Action Verb', 'Formatting', 'Vague Achievement'" 
               },
+              section: {
+                type: "string",
+                description: "The resume section where this issue was found, e.g. 'Experience', 'Education', 'Skills', 'Summary', 'Contact Info'"
+              },
               original: { 
                 type: "string", 
                 description: "The original text from the resume" 
@@ -90,7 +93,7 @@ export async function POST(request: Request) {
                 description: "The optimized version" 
               }
             },
-            required: ["type", "original", "optimized"]
+            required: ["type", "section", "original", "optimized"]
           }
         }
       },
@@ -98,7 +101,6 @@ export async function POST(request: Request) {
     } as const;
 
     // 4. Generate content with Tool Use (Structured Output)
-    // We force Claude to use the tool to ensure the JSON matches the schema
     const msg = await anthropic.messages.create({
       model: "claude-haiku-4-5",
       max_tokens: 4096,
@@ -123,16 +125,23 @@ Analyze the following resume against general industry standards. Evaluate:
 4. Missing critical keywords
 5. Overall professional presentation
 
+For each improvement suggestion, you MUST identify which section of the resume it belongs to:
+- "Experience" for work history items
+- "Education" for educational background
+- "Skills" for skills/competencies section
+- "Summary" for professional summary/objective
+- "Contact Info" for contact details
+- "General" for overall formatting or multi-section issues
+
 Resume text:
 ${resumeText}
 
-Perform the analysis and submit the findings using the defined tool structure.`
+Perform the analysis and submit the findings using the defined tool structure. Make sure to include the "section" field for each improvement.`
         }
       ],
     });
 
     // 5. Extract and Validate JSON
-    // In forced tool use, the content block type is 'tool_use'
     const toolUseBlock = msg.content.find((block) => block.type === "tool_use");
 
     if (!toolUseBlock || toolUseBlock.type !== "tool_use") {
