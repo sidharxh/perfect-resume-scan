@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PerfectResumeScan - Beat the ATS & Get Hired</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .blob {
+            position: absolute;
+            filter: blur(40px);
+            z-index: -1;
+            opacity: 0.4;
+            animation: float 10s infinite ease-in-out;
+        }
+        @keyframes float {
+            0% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0px, 0px) scale(1); }
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="font-sans text-slate-800 antialiased overflow-x-hidden bg-slate-50">
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <div class="w-8 h-8 bg-brand-600 rounded-lg flex items-center justify-center text-white">
+                        <i class="fa-solid fa-bullseye"></i>
+                    </div>
+                    <span class="font-bold text-xl tracking-tight text-slate-900">Perfect<span class="text-brand-600">Resume</span>Scan</span>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#how-it-works" class="text-slate-600 hover:text-brand-600 font-medium transition">How it Works</a>
+                    <a href="#features" class="text-slate-600 hover:text-brand-600 font-medium transition">Features</a>
+                    <a href="#pricing" class="text-slate-600 hover:text-brand-600 font-medium transition">Pricing</a>
+                    <!-- Removed Log In Button -->
+                    <button onclick="scrollToUpload()" class="bg-brand-600 hover:bg-brand-700 text-white px-5 py-2 rounded-full font-medium transition shadow-lg shadow-brand-500/30">
+                        Start Scan
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-slate-600 hover:text-slate-900 focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100 absolute w-full shadow-xl">
+            <div class="px-4 pt-2 pb-4 space-y-1 flex flex-col">
+                <a href="#how-it-works" class="block px-3 py-2 text-slate-600 hover:bg-slate-50 rounded-md">How it Works</a>
+                <a href="#features" class="block px-3 py-2 text-slate-600 hover:bg-slate-50 rounded-md">Features</a>
+                <a href="#pricing" class="block px-3 py-2 text-slate-600 hover:bg-slate-50 rounded-md">Pricing</a>
+                <div class="border-t border-slate-100 my-2"></div>
+                <!-- Removed Log In Button -->
+                <button onclick="scrollToUpload()" class="block w-full text-left px-3 py-2 text-brand-600 font-bold hover:bg-slate-50 rounded-md">Start Scan</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+        <!-- Background Blobs -->
+        <div class="blob bg-blue-300 w-96 h-96 rounded-full top-0 left-0 -translate-x-1/2 -translate-y-1/2"></div>
+        <div class="blob bg-purple-300 w-80 h-80 rounded-full bottom-0 right-0 translate-x-1/3 translate-y-1/3 animation-delay-2000"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <div class="inline-flex items-center gap-2 bg-brand-50 border border-brand-100 text-brand-700 px-3 py-1 rounded-full text-sm font-medium mb-6">
+                    <span class="flex h-2 w-2 relative">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-500"></span>
+                    </span>
+                    Over 10,000 resumes scanned this week
+                </div>
+                <h1 class="text-4xl md:text-6xl font-extrabold text-slate-900 tracking-tight mb-6 leading-tight">
+                    Is your resume <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-purple-600">ATS-Proof?</span>
+                </h1>
+                <p class="text-lg md:text-xl text-slate-600 mb-8 leading-relaxed">
+                    Stop getting rejected by bots. Get an instant score, keyword analysis, and actionable feedback to land more interviews.
+                </p>
+            </div>
+
+            <!-- Interactive Upload Component -->
+            <div class="max-w-2xl mx-auto bg-white rounded-2xl shadow-2xl border border-slate-200 p-1 relative overflow-hidden group transition-all duration-500" id="upload-area">
+                <!-- Colored Line Top -->
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-400 via-purple-500 to-brand-400 z-10"></div>
+                
+                <!-- Drop Zone -->
+                <div class="p-8 border-2 border-dashed border-slate-300 m-2 rounded-xl text-center hover:border-brand-500 hover:bg-brand-50 transition-all cursor-pointer" id="drop-zone">
+                    <div class="w-16 h-16 bg-blue-50 text-brand-600 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fa-solid fa-cloud-arrow-up text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-slate-900 mb-2">Upload your resume</h3>
+                    <p class="text-slate-500 mb-6">Drag & drop your PDF or DOCX here</p>
+                    <button class="bg-brand-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-brand-700 transition shadow-md hover:shadow-lg">
+                        Select File
+                    </button>
+                    <p class="text-xs text-slate-400 mt-4">We respect your privacy. Files are processed securely.</p>
+                </div>
+
+                <!-- Processing State (Hidden by default) -->
+                <div id="processing-state" class="hidden absolute inset-0 bg-white z-20 flex flex-col items-center justify-center p-8">
+                    <div class="w-full max-w-md space-y-4 text-center">
+                        <div class="w-16 h-16 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin mx-auto"></div>
+                        <h3 class="text-xl font-bold text-slate-800">Scanning your resume...</h3>
+                        <p class="text-slate-500">Analyzing keywords, formatting, and ATS compatibility.</p>
+                        <div class="w-full bg-slate-100 rounded-full h-2.5 mt-4 overflow-hidden">
+                            <div id="progress-bar" class="bg-brand-600 h-2.5 rounded-full" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Result State (Detailed Report) -->
+                <div id="result-state" class="hidden w-full bg-slate-50 rounded-xl overflow-hidden fade-in relative z-30">
+                    <!-- Header / Score -->
+                    <div class="bg-white p-8 border-b border-slate-200 text-center">
+                        <div class="inline-flex items-center justify-center w-32 h-32 rounded-full border-8 border-yellow-400 bg-yellow-50 mb-4 relative">
+                            <div class="text-center">
+                                <span class="text-4xl font-extrabold text-slate-800 block leading-none">72</span>
+                                <span class="text-xs text-slate-500 uppercase font-bold">Score</span>
+                            </div>
+                            <!-- Score indicator dot -->
+                             <div class="absolute top-0 right-0 bg-red-500 w-6 h-6 rounded-full border-2 border-white flex items-center justify-center" title="Critical Issues Found">
+                                <i class="fa-solid fa-exclamation text-white text-xs"></i>
+                             </div>
+                        </div>
+                        <h3 class="text-2xl font-bold text-slate-900">Needs Improvement</h3>
+                        <p class="text-slate-500 mt-2">Your resume might be filtered out by 40% of ATS bots.</p>
+                    </div>
+
+                    <!-- Critical Issues -->
+                    <div class="p-6 space-y-8 text-left">
+                        
+                        <!-- Section 1: Keywords -->
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                            <h4 class="text-sm font-bold text-slate-900 uppercase tracking-wide mb-4 flex items-center gap-2">
+                                <i class="fa-solid fa-key text-brand-500"></i> Missing Keywords
+                                <span class="bg-red-100 text-red-600 text-xs px-2 py-0.5 rounded-full ml-auto">Critical</span>
+                            </h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-sm font-medium border border-slate-200">Strategic Planning</span>
+                                <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-sm font-medium border border-slate-200">Data Analysis</span>
+                                <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-sm font-medium border border-slate-200">Python</span>
+                                <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-sm font-medium border border-slate-200">Stakeholder Mgmt</span>
+                            </div>
+                            <p class="text-xs text-slate-400 mt-3">Add these exact terms to your Skills or Experience section.</p>
+                        </div>
+
+                        <!-- Section 2: Copyable Improvements -->
+                        <div>
+                            <h4 class="text-sm font-bold text-slate-900 uppercase tracking-wide mb-4 flex items-center gap-2">
+                                <i class="fa-solid fa-wand-magic-sparkles text-brand-500"></i> Recommended Improvements
+                            </h4>
+                            
+                            <!-- Suggestion Item 1 -->
+                            <div class="bg-white border border-slate-200 rounded-lg p-5 shadow-sm mb-4 transition hover:border-brand-300">
+                                <div class="flex justify-between items-start mb-3">
+                                    <span class="text-xs font-bold text-red-600 bg-red-50 px-2 py-1 rounded uppercase tracking-wide">Weak Action Verb</span>
+                                </div>
+                                <div class="mb-3">
+                                    <p class="text-xs text-slate-400 uppercase mb-1">Original</p>
+                                    <div class="text-slate-500 text-sm line-through bg-slate-50 p-2 rounded">"Helped with project management tasks for the team."</div>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-brand-600 uppercase mb-1 font-bold">Better (Optimized)</p>
+                                    <div class="flex items-center justify-between gap-3 bg-green-50 p-3 rounded border border-green-100 group/copy">
+                                        <p class="text-green-900 text-sm font-medium flex-1" id="copy-text-1">"Spearheaded cross-functional project management initiatives, improving team efficiency by 20%."</p>
+                                        <button onclick="copyToClipboard('copy-text-1', this)" class="text-green-600 hover:text-green-700 bg-white hover:bg-green-100 border border-green-200 px-3 py-2 rounded-md transition flex items-center gap-2 text-xs font-bold whitespace-nowrap">
+                                            <i class="fa-regular fa-copy"></i> Copy
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Suggestion Item 2 -->
+                            <div class="bg-white border border-slate-200 rounded-lg p-5 shadow-sm transition hover:border-brand-300">
+                                <div class="flex justify-between items-start mb-3">
+                                    <span class="text-xs font-bold text-orange-600 bg-orange-50 px-2 py-1 rounded uppercase tracking-wide">Vague Achievement</span>
+                                </div>
+                                <div class="mb-3">
+                                    <p class="text-xs text-slate-400 uppercase mb-1">Original</p>
+                                    <div class="text-slate-500 text-sm line-through bg-slate-50 p-2 rounded">"Increased sales significantly in 2023."</div>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-brand-600 uppercase mb-1 font-bold">Better (Optimized)</p>
+                                    <div class="flex items-center justify-between gap-3 bg-green-50 p-3 rounded border border-green-100 group/copy">
+                                        <p class="text-green-900 text-sm font-medium flex-1" id="copy-text-2">"Achieved 15% year-over-year sales growth by implementing targeted client acquisition strategies."</p>
+                                        <button onclick="copyToClipboard('copy-text-2', this)" class="text-green-600 hover:text-green-700 bg-white hover:bg-green-100 border border-green-200 px-3 py-2 rounded-md transition flex items-center gap-2 text-xs font-bold whitespace-nowrap">
+                                            <i class="fa-regular fa-copy"></i> Copy
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Action Footer -->
+                    <div class="p-6 bg-slate-100 border-t border-slate-200 text-center space-y-3">
+                         <button class="bg-brand-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-brand-700 transition w-full shadow-lg shadow-brand-500/20">
+                            Download Full PDF Report
+                        </button>
+                        <button onclick="resetScan()" class="text-slate-500 hover:text-slate-700 text-sm font-medium underline decoration-slate-300 underline-offset-4">Scan Another Resume</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Social Proof -->
+            <div class="mt-16 pt-8 border-t border-slate-200">
+                <p class="text-center text-sm font-semibold text-slate-500 uppercase tracking-wider mb-6">Trusted by job seekers from</p>
+                <div class="flex flex-wrap justify-center gap-8 md:gap-16 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+                    <!-- Simple Text Logos for Demo -->
+                    <div class="flex items-center gap-2 font-bold text-xl text-slate-700"><i class="fab fa-google"></i> Google</div>
+                    <div class="flex items-center gap-2 font-bold text-xl text-slate-700"><i class="fab fa-amazon"></i> Amazon</div>
+                    <div class="flex items-center gap-2 font-bold text-xl text-slate-700"><i class="fab fa-microsoft"></i> Microsoft</div>
+                    <div class="flex items-center gap-2 font-bold text-xl text-slate-700"><i class="fab fa-spotify"></i> Spotify</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how-it-works" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">How PerfectResumeScan Works</h2>
+                <p class="text-lg text-slate-600 max-w-2xl mx-auto">Three simple steps to go from "Application Received" to "When can you interview?"</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-10">
+                <!-- Step 1 -->
+                <div class="relative p-8 rounded-2xl bg-slate-50 border border-slate-100 hover:shadow-lg transition duration-300">
+                    <div class="absolute -top-4 -left-4 w-10 h-10 bg-brand-600 text-white rounded-lg flex items-center justify-center font-bold text-lg shadow-lg">1</div>
+                    <div class="mb-6 text-brand-500">
+                        <i class="fa-solid fa-file-arrow-up text-4xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Upload Resume</h3>
+                    <p class="text-slate-600">Upload your existing resume and the job description you're targeting.</p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="relative p-8 rounded-2xl bg-slate-50 border border-slate-100 hover:shadow-lg transition duration-300">
+                    <div class="absolute -top-4 -left-4 w-10 h-10 bg-brand-600 text-white rounded-lg flex items-center justify-center font-bold text-lg shadow-lg">2</div>
+                    <div class="mb-6 text-brand-500">
+                        <i class="fa-solid fa-microchip text-4xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">AI Analysis</h3>
+                    <p class="text-slate-600">Our engine checks for ATS formatting errors, keyword gaps, and weak action verbs.</p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="relative p-8 rounded-2xl bg-slate-50 border border-slate-100 hover:shadow-lg transition duration-300">
+                    <div class="absolute -top-4 -left-4 w-10 h-10 bg-brand-600 text-white rounded-lg flex items-center justify-center font-bold text-lg shadow-lg">3</div>
+                    <div class="mb-6 text-brand-500">
+                        <i class="fa-solid fa-wand-magic-sparkles text-4xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Optimize & Export</h3>
+                    <p class="text-slate-600">Follow our suggestions to fix issues instantly and download your interview-ready resume.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Comparison -->
+    <section id="features" class="py-20 bg-slate-900 text-white relative overflow-hidden">
+        <!-- Decorative elements -->
+        <div class="absolute top-0 right-0 w-96 h-96 bg-brand-600 rounded-full filter blur-[100px] opacity-20"></div>
+        <div class="absolute bottom-0 left-0 w-96 h-96 bg-purple-600 rounded-full filter blur-[100px] opacity-20"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid md:grid-cols-2 gap-16 items-center">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6">Why 75% of resumes are never seen by a human</h2>
+                    <p class="text-slate-300 text-lg mb-8">Applicant Tracking Systems (ATS) filter out candidates before a recruiter even logs in. Simple formatting errors or missing keywords can send your resume straight to the digital trash bin.</p>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0 mt-1">
+                                <i class="fa-solid fa-check text-xs text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg">Keyword Matching</h4>
+                                <p class="text-slate-400 text-sm">We identify the exact skills and keywords the job description demands.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0 mt-1">
+                                <i class="fa-solid fa-check text-xs text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg">Formatting Fixes</h4>
+                                <p class="text-slate-400 text-sm">Detect tables, columns, and graphics that confuse ATS parsers.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0 mt-1">
+                                <i class="fa-solid fa-check text-xs text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg">Action Verb Enhancer</h4>
+                                <p class="text-slate-400 text-sm">Replace weak words like "helped" with power words like "spearheaded".</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Visual Comparison Card -->
+                <div class="bg-slate-800 rounded-2xl p-6 border border-slate-700 shadow-2xl">
+                    <div class="flex justify-between items-center mb-6 border-b border-slate-700 pb-4">
+                        <h3 class="font-bold">Scan Analysis Preview</h3>
+                        <span class="bg-red-500/20 text-red-400 px-3 py-1 rounded-full text-xs font-bold">Before Optimization</span>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="bg-slate-700/50 p-4 rounded-lg flex justify-between items-center">
+                            <span class="text-slate-300">Formatting Score</span>
+                            <div class="w-32 bg-slate-600 rounded-full h-2 mr-4 relative">
+                                <div class="bg-yellow-400 h-2 rounded-full w-[40%]"></div>
+                            </div>
+                            <span class="text-yellow-400 font-mono">Low</span>
+                        </div>
+                        
+                        <div class="bg-slate-700/50 p-4 rounded-lg">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-slate-300">Missing Keywords</span>
+                                <span class="text-red-400 text-sm">Critical</span>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-2 py-1 bg-red-500/20 text-red-300 text-xs rounded border border-red-500/30">Project Management</span>
+                                <span class="px-2 py-1 bg-red-500/20 text-red-300 text-xs rounded border border-red-500/30">Python</span>
+                                <span class="px-2 py-1 bg-red-500/20 text-red-300 text-xs rounded border border-red-500/30">Agile</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-700/50 p-4 rounded-lg flex justify-between items-center">
+                            <div>
+                                <span class="text-slate-300 block">Contact Info Parsing</span>
+                                <span class="text-xs text-slate-400">Phone number format invalid</span>
+                            </div>
+                            <i class="fa-solid fa-circle-exclamation text-red-400"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 text-center">
+                         <div class="inline-block animate-bounce mt-2">
+                            <i class="fa-solid fa-arrow-down text-brand-400"></i>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing" class="py-20 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Simple Pricing</h2>
+                <p class="text-lg text-slate-600">Pay only when you need a scan. No subscriptions.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <!-- Free Tier -->
+                <div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">Basic Scan</h3>
+                    <div class="text-4xl font-bold text-slate-900 mb-4">Free<span class="text-lg text-slate-500 font-normal"></span></div>
+                    <p class="text-slate-500 mb-6 text-sm">Check your ATS score instantly.</p>
+                    <button onclick="scrollToUpload()" class="w-full py-3 px-4 bg-slate-100 text-slate-700 font-semibold rounded-lg hover:bg-slate-200 transition mb-8">Scan Now</button>
+                    <ul class="space-y-3 text-sm text-slate-600">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Instant Resume Score</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Basic Error Check</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> 3 Keyword Tips</li>
+                    </ul>
+                </div>
+
+                <!-- Report Tier -->
+                <div class="bg-white p-8 rounded-2xl border-2 border-brand-600 shadow-xl relative transform md:-translate-y-4">
+                    <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-brand-600 text-white px-4 py-1 rounded-full text-sm font-bold shadow-md">Best Value</div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">Full Report</h3>
+                    <div class="text-4xl font-bold text-slate-900 mb-4">$9.95<span class="text-lg text-slate-500 font-normal"></span></div>
+                    <p class="text-slate-500 mb-6 text-sm">One-time detailed analysis.</p>
+                    <button class="w-full py-3 px-4 bg-brand-600 text-white font-semibold rounded-lg hover:bg-brand-700 transition mb-8 shadow-lg shadow-brand-500/30">Get Report</button>
+                    <ul class="space-y-3 text-sm text-slate-600">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-600"></i> Deep Keyword Analysis</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-600"></i> Detailed Optimization Plan</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-600"></i> Specific Formatting Fixes</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-600"></i> No Account Needed</li>
+                    </ul>
+                </div>
+
+                <!-- Bundle Tier -->
+                <div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">Career Pack</h3>
+                    <div class="text-4xl font-bold text-slate-900 mb-4">$29<span class="text-lg text-slate-500 font-normal"></span></div>
+                    <p class="text-slate-500 mb-6 text-sm">Complete application overhaul.</p>
+                    <button class="w-full py-3 px-4 bg-slate-100 text-slate-700 font-semibold rounded-lg hover:bg-slate-200 transition mb-8">Buy Bundle</button>
+                    <ul class="space-y-3 text-sm text-slate-600">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> 2 Full Report Credits</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Cover Letter Generator</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> LinkedIn Profile Audit</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 pt-12 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div class="col-span-1 md:col-span-1">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-6 h-6 bg-brand-600 rounded flex items-center justify-center text-white text-xs">
+                            <i class="fa-solid fa-bullseye"></i>
+                        </div>
+                        <span class="font-bold text-lg text-slate-900">PerfectResumeScan</span>
+                    </div>
+                    <p class="text-slate-500 text-sm">Optimizing careers, one keyword at a time.</p>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-slate-900 mb-4">Product</h4>
+                    <ul class="space-y-2 text-sm text-slate-600">
+                        <li><a href="#" class="hover:text-brand-600">Resume Scanner</a></li>
+                        <li><a href="#" class="hover:text-brand-600">Resume Templates</a></li>
+                        <li><a href="#" class="hover:text-brand-600">Cover Letter AI</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-slate-900 mb-4">Company</h4>
+                    <ul class="space-y-2 text-sm text-slate-600">
+                        <li><a href="#" class="hover:text-brand-600">About Us</a></li>
+                        <li><a href="#" class="hover:text-brand-600">Blog</a></li>
+                        <li><a href="#" class="hover:text-brand-600">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-slate-900 mb-4">Legal</h4>
+                    <ul class="space-y-2 text-sm text-slate-600">
+                        <li><a href="#" class="hover:text-brand-600">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-brand-600">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-slate-100 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-sm text-slate-400">© 2024 PerfectResumeScan.com. All rights reserved.</p>
+                <div class="flex gap-4 text-slate-400">
+                    <a href="#" class="hover:text-brand-600"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="hover:text-brand-600"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" class="hover:text-brand-600"><i class="fab fa-facebook"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // Drag and Drop Simulation & Copy Logic
+        const dropZone = document.getElementById('drop-zone');
+        const processingState = document.getElementById('processing-state');
+        const resultState = document.getElementById('result-state');
+        const progressBar = document.getElementById('progress-bar');
+
+        function simulateUpload() {
+            dropZone.classList.add('hidden');
+            processingState.classList.remove('hidden');
+            processingState.classList.add('flex');
+
+            let width = 0;
+            const interval = setInterval(() => {
+                if (width >= 100) {
+                    clearInterval(interval);
+                    // Show result
+                    setTimeout(() => {
+                        processingState.classList.add('hidden');
+                        processingState.classList.remove('flex');
+                        resultState.classList.remove('hidden');
+                        resultState.classList.add('block'); // Use block for static positioning
+                    }, 500);
+                } else {
+                    width++;
+                    progressBar.style.width = width + '%';
+                }
+            }, 30); // Speed of loading bar
+        }
+
+        function resetScan() {
+            resultState.classList.add('hidden');
+            resultState.classList.remove('block');
+            progressBar.style.width = '0%';
+            dropZone.classList.remove('hidden');
+            document.getElementById('upload-area').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function copyToClipboard(elementId, button) {
+            const text = document.getElementById(elementId).innerText.replace(/"/g, ""); // Remove quotes when copying
+            
+            // Create temporary input to copy
+            const tempInput = document.createElement('textarea');
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            // Visual feedback
+            const originalHTML = button.innerHTML;
+            button.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+            button.classList.add('text-green-700', 'bg-green-100', 'border-green-300');
+            
+            setTimeout(() => {
+                button.innerHTML = originalHTML;
+                button.classList.remove('text-green-700', 'bg-green-100', 'border-green-300');
+            }, 2000);
+        }
+
+        dropZone.addEventListener('click', simulateUpload);
+        
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('border-brand-500', 'bg-brand-50');
+        });
+
+        dropZone.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('border-brand-500', 'bg-brand-50');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('border-brand-500', 'bg-brand-50');
+            simulateUpload();
+        });
+
+        function scrollToUpload() {
+            document.getElementById('upload-area').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 10) {
+                navbar.classList.add('shadow-md');
+            } else {
+                navbar.classList.remove('shadow-md');
+            }
+        });
+    </script>
+</body>
+</html>
