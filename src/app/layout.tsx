@@ -3,10 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "PerfectResumeScan - ATS Resume Scanner & Optimizer",
-  description: "Get instant ATS score, keyword analysis, and actionable feedback to land more interviews.",
-  icons: {
-    icon: "/icon.svg", // This points to public/icon.svg
-  }
+  description: "Get instant ATS score, keyword analysis, and actionable feedback to land more interviews."
 };
 
 export default function RootLayout({
