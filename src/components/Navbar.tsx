@@ -27,7 +27,7 @@ export default function Navbar() {
               Sample Resume
             </a>
             <a
-              href="#upload"
+              href="#"
               className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full font-medium transition shadow-lg shadow-blue-500/30"
             >
               Start Scan

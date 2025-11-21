@@ -135,7 +135,7 @@ export default function SampleATSResume() {
             of changes to move closer to the optimized version above.
           </p>
           <a
-            href="#upload"
+            href="#"
             className="inline-flex items-center justify-center px-6 py-3 rounded-lg bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition shadow-lg shadow-blue-500/30"
           >
             Upload Resume &amp; Get Free Scan
