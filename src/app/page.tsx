@@ -3,9 +3,9 @@
 import { useRef } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
-import HowItWorks from '@/components/HowItWorks';
+import FAQ from '@/components/FAQ';
 import Features from '@/components/Features';
-import Pricing from '@/components/Pricing';
+import SampleATSResume from '@/components/SampleATSResume';
 import Footer from '@/components/Footer';
 
 export default function Home() {
@@ -19,9 +19,9 @@ export default function Home() {
     <>
       <Navbar scrollToUpload={scrollToUpload} />
       <Hero uploadRef={uploadRef} />
-      <HowItWorks />
+      <SampleATSResume scrollToUpload={scrollToUpload} />
+      <FAQ />
       <Features />
-      <Pricing scrollToUpload={scrollToUpload} />
       <Footer scrollToUpload={scrollToUpload} />
     </>
   );
