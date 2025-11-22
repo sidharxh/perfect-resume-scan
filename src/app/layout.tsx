@@ -1,6 +1,17 @@
 // src/app/layout.tsx
-import type { Metadata } from "next";
 import "./globals.css";
+import type { Metadata, Viewport } from "next";
+import Footer from '@/components/Footer';
+import Navbar from '@/components/Navbar';
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#0f172a" },
+  ],
+};
 
 export const metadata: Metadata = {
   title: {
@@ -21,12 +32,6 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://www.perfectresumescan.com",
   },
-
-  viewport: "width=device-width, initial-scale=1",
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#0f172a" },
-  ],
 
   openGraph: {
     title: "Free ATS Resume Checker — PerfectResumeScan",
@@ -55,15 +60,9 @@ export const metadata: Metadata = {
         alt: "PerfectResumeScan — Free ATS Resume Checker",
       },
     ],
-  },
-
-  icons: {
-    icon: "/favicon.svg",
-    shortcut: "/favicon.svg",
-    apple: "/favicon.svg",
-  },
-
+  }
 };
+
 
 export default function RootLayout({
   children,
@@ -73,7 +72,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="font-sans text-slate-800 antialiased overflow-x-hidden bg-slate-50 selection:bg-blue-200 selection:text-blue-900">
+        <Navbar/>
         {children}
+        <Footer/>
       </body>
     </html>
   );
