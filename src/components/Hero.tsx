@@ -52,7 +52,7 @@ export default function Hero() {
           <div className="flex flex-wrap justify-center gap-6 md:gap-10 mb-6">
             <div className="text-center">
               <p className="text-2xl md:text-3xl font-extrabold text-slate-900">
-                5,200+
+                13,000+
               </p>
               <p className="text-xs md:text-sm text-slate-500">
                 Resumes scanned
