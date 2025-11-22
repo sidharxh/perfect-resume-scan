@@ -238,7 +238,7 @@ export default function ResultCard({ result, resetScan }: ResultCardProps) {
         <div className="bg-white p-4 md:p-6 rounded-lg md:rounded-xl border border-slate-200 shadow-sm">
           <div className="flex items-start gap-3 md:gap-4">
             <div className="flex-shrink-0">
-              <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center shadow-md">
+              <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-blue-600 to-blue-300 rounded-lg flex items-center justify-center shadow-md">
                 <svg className="w-5 h-5 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
