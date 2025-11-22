@@ -1,9 +1,68 @@
+// src/app/layout.tsx
 import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "PerfectResumeScan - ATS Resume Scanner & Optimizer",
-  description: "Free, no signup. Get your ATS score and top 3 fixes in seconds | land more interviews."
+  title: {
+    default: "PerfectResumeScan — Free ATS Resume Checker & Optimizer (2025)",
+    template: "%s | PerfectResumeScan",
+  },
+  description:
+    "Free instant ATS resume scanner. Get your compatibility score, missing keywords, and AI-powered bullet fixes in seconds — no signup required.",
+  keywords:
+    "ATS resume checker, free ATS scanner, resume ATS test, ATS friendly resume, resume keyword scanner, beat ATS, ATS resume optimizer",
+  
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true },
+  },
+
+  alternates: {
+    canonical: "https://www.perfectresumescan.com",
+  },
+
+  viewport: "width=device-width, initial-scale=1",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#0f172a" },
+  ],
+
+  openGraph: {
+    title: "Free ATS Resume Checker — PerfectResumeScan",
+    description: "Check if your resume beats Applicant Tracking Systems in seconds. Instant score + fixes.",
+    url: "https://www.perfectresumescan.com",
+    siteName: "PerfectResumeScan",
+    images: [
+      {
+        url: "https://www.perfectresumescan.com/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "PerfectResumeScan — Free ATS Resume Checker",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "Free ATS Resume Checker — Instant Score & Fixes",
+    description: "Upload your resume → see if it passes ATS in seconds",
+    images: [
+      {
+        url: "https://www.perfectresumescan.com/og-image.jpg",
+        alt: "PerfectResumeScan — Free ATS Resume Checker",
+      },
+    ],
+  },
+
+  icons: {
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+    apple: "/favicon.svg",
+  },
+
 };
 
 export default function RootLayout({
