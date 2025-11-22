@@ -99,7 +99,7 @@ export default function ResultCard({ result, resetScan }: ResultCardProps) {
             <div className="bg-white p-2 md:p-4 rounded-lg border border-slate-200 shadow-sm">
               <div className="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2 mb-1">
                 <Users className="text-blue-600" size={14} />
-                <span className="text-lg md:text-2xl font-bold text-slate-900">100K+</span>
+                <span className="text-lg md:text-2xl font-bold text-slate-900">13K+</span>
               </div>
               <p className="text-xs text-slate-500 font-medium">Scanned</p>
             </div>
@@ -289,7 +289,7 @@ export default function ResultCard({ result, resetScan }: ResultCardProps) {
           Scan Another Resume
         </button>
         <p className="text-xs text-center text-slate-500">
-          Join 100,000+ job seekers improving their resumes
+          Join 13,000+ job seekers improving their resumes
         </p>
       </div>
     </div>
