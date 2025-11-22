@@ -35,7 +35,7 @@ export default function UploadArea({ id }: UploadAreaProps) {
             if (progressInterval) clearInterval(progressInterval);
             return 90;
           }
-          return prev + 4;
+          return prev + 5;
         });
       }, 250);
 

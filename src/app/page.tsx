@@ -1,15 +1,15 @@
-import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import FAQ from '@/components/FAQ';
 import Features from '@/components/Features';
 import SampleATSResume from '@/components/SampleATSResume';
-import Footer from '@/components/Footer';
+
 
 export default function Home() {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
     name: 'Perfect Resume Scan',
+    image: 'https://perfectresumescan.com/og-image.jpg',
     applicationCategory: 'BusinessApplication',
     operatingSystem: 'Web',
     url: 'https://perfectresumescan.com', 
@@ -31,7 +31,11 @@ export default function Home() {
     author: {
       '@type': 'Organization',
       name: 'Perfect Resume Scan',
-      url: 'https://perfectresumescan.com'
+      url: 'https://perfectresumescan.com',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://perfectresumescan.com/logo.svg'
+      }
     }
   }
 
@@ -41,13 +45,12 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-
-      <Navbar/>
-      <Hero/>
-      <SampleATSResume/>
-      <FAQ />
-      <Features />
-      <Footer/>
+      <main>
+        <Hero/>
+        <SampleATSResume/>
+        <FAQ />
+        <Features />
+      </main>
     </>
   );
 }
