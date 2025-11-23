@@ -3,6 +3,7 @@ import "./globals.css";
 import type { Metadata, Viewport } from "next";
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -76,6 +77,7 @@ export default function RootLayout({
         {children}
         <Footer/>
       </body>
+      <GoogleAnalytics gaId="G-SEBMHM7GEN" />
     </html>
   );
 }
