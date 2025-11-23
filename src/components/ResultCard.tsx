@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Key, Wand2, Copy, ChevronDown, ChevronUp, TrendingUp, CheckCircle2, XCircle, AlertCircle, BarChart3 } from 'lucide-react';
+import { Key, Wand2, Copy, ChevronDown, CheckCircle2, XCircle, AlertCircle, AlertTriangle, ArrowUpRight } from 'lucide-react';
 import { ScanResponse } from '@/types';
 
 interface ResultCardProps {
@@ -294,251 +294,158 @@ export default function ResultCard({ result, resetScan }: ResultCardProps) {
           </div>
         )}
 
-        {/* Performance Benchmark - Minimal Professional Design */}
-        <div className="bg-white rounded-lg border border-slate-200/60 overflow-hidden shadow-sm">
-          <div className="px-4 sm:px-6 py-4 bg-gradient-to-r from-slate-50/50 to-white border-b border-slate-200/60">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 bg-gradient-to-br from-slate-100 to-slate-50 rounded-lg flex items-center justify-center border border-slate-200/60">
-                <BarChart3 className="text-slate-600" size={16} />
-              </div>
-              <div>
-                <h4 className="text-sm font-semibold text-slate-800">Performance Benchmark</h4>
-                <p className="text-xs text-slate-500 mt-0.5">Score analysis against industry standards</p>
-              </div>
+        {/* Performance Benchmark - Diagnostic Gap Analysis */}
+        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden font-sans">
+
+          {/* Header: Diagnostic Context */}
+          <div className="px-6 py-4 border-b border-slate-100 bg-slate-50 flex items-center justify-between gap-4">
+            <div className="flex items-center gap-2">
+              <div className={`w-2 h-2 rounded-full ${result.score < 85 ? 'bg-amber-500 animate-pulse' : 'bg-emerald-500'}`}></div>
+              <h4 className="text-xs font-bold text-slate-500 uppercase tracking-widest">ATS Diagnostic Report</h4>
+            </div>
+            <div className="text-xs font-medium text-slate-400 hidden sm:block">
+              ID: {Math.random().toString(36).substr(2, 9).toUpperCase()}
             </div>
           </div>
 
-          <div className="p-6 sm:p-8">
-            {/* Score Display */}
-            <div className="max-w-3xl mx-auto mb-8">
-              <div className="flex items-baseline justify-between mb-6">
-                <div>
-                  <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Your Score</div>
-                  <div className={`text-5xl sm:text-6xl font-bold tabular-nums bg-gradient-to-br ${result.score >= 85
-                    ? 'from-emerald-600 to-teal-600'
-                    : result.score >= 70
-                      ? 'from-amber-600 to-orange-600'
-                      : 'from-slate-600 to-slate-500'
-                    } bg-clip-text text-transparent`}>
-                    {result.score}
-                  </div>
-                </div>
-                <div className="text-right">
-                  <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Target</div>
-                  <div className="text-3xl sm:text-4xl font-bold text-slate-400 tabular-nums">85</div>
-                </div>
-              </div>
+          <div className="p-6 md:p-8">
 
-              {/* Progress Scale: Clean Target vs Actual Design */}
-              <div className="relative">
-                {/* Main visualization container */}
-                <div className="space-y-4">
-
-                  {/* Score Comparison */}
-                  <div className="flex items-center gap-4">
-                    {/* Labels */}
-                    <div className="w-24 flex-shrink-0">
-                      <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Score</div>
-                    </div>
-
-                    {/* Bar Container */}
-                    <div className="flex-1 relative">
-                      {/* Target bar (background) - Full width to 100 */}
-                      <div className="h-12 bg-slate-100 rounded-lg border border-slate-200/60 relative overflow-hidden">
-                        {/* Zone shading */}
-                        <div className="absolute inset-0 flex">
-                          <div style={{ width: '70%' }} className="bg-slate-200/30"></div>
-                          <div style={{ width: '15%' }} className="bg-amber-100/40"></div>
-                          <div style={{ width: '15%' }} className="bg-emerald-100/40"></div>
-                        </div>
-
-                        {/* Target marker at 85 */}
-                        <div
-                          className="absolute top-0 bottom-0 w-0.5 bg-emerald-600 z-20"
-                          style={{ left: '85%' }}
-                        ></div>
-
-                        {/* Target label */}
-                        <div
-                          className="absolute -top-6 flex items-center gap-1"
-                          style={{ left: '85%', transform: 'translateX(-50%)' }}
-                        >
-                          <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-wide">Target</span>
-                        </div>
-
-                        {/* Your score bar (foreground) */}
-                        <div
-                          className={`absolute inset-y-0 left-0 m-1 rounded-md shadow-sm transition-all duration-1000 flex items-center justify-end px-3 ${result.score >= 85
-                            ? 'bg-gradient-to-r from-emerald-600 to-emerald-500'
-                            : result.score >= 70
-                              ? 'bg-gradient-to-r from-amber-600 to-amber-500'
-                              : 'bg-gradient-to-r from-slate-600 to-slate-500'
-                            }`}
-                          style={{ width: `${Math.min(result.score, 100)}%` }}
-                        >
-                          <span className="text-white text-sm font-bold tabular-nums">{result.score}</span>
-                        </div>
-                      </div>
-
-                      {/* Scale numbers below */}
-                      <div className="relative h-4 mt-1">
-                        <span className="absolute text-[10px] font-medium text-slate-400" style={{ left: '0%', transform: 'translateX(-50%)' }}>0</span>
-                        <span className="absolute text-[10px] font-medium text-slate-500" style={{ left: '70%', transform: 'translateX(-50%)' }}>70</span>
-                        <span className="absolute text-[10px] font-bold text-emerald-600" style={{ left: '85%', transform: 'translateX(-50%)' }}>85</span>
-                        <span className="absolute text-[10px] font-medium text-slate-400" style={{ left: '100%', transform: 'translateX(-50%)' }}>100</span>
-                      </div>
-                    </div>
-
-                    {/* Status badge */}
-                    <div className="w-20 flex-shrink-0 text-right">
-                      <span className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-semibold ${result.score >= 85
-                        ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                        : result.score >= 70
-                          ? 'bg-amber-50 text-amber-700 border border-amber-200'
-                          : 'bg-slate-100 text-slate-700 border border-slate-200'
-                        }`}>
-                        {result.score >= 85 ? (
-                          <>
-                            <CheckCircle2 size={12} />
-                            <span className="hidden sm:inline">Hit</span>
-                          </>
-                        ) : (
-                          <span>{85 - result.score}</span>
-                        )}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Performance zones legend */}
-                  <div className="flex items-center gap-4 text-xs">
-                    <div className="w-24 flex-shrink-0"></div>
-                    <div className="flex-1 flex items-center gap-4">
-                      <div className="flex items-center gap-1.5">
-                        <div className="w-3 h-3 rounded-sm bg-slate-200/60"></div>
-                        <span className="text-slate-500 font-medium">0-70: Below Standard</span>
-                      </div>
-                      <div className="flex items-center gap-1.5">
-                        <div className="w-3 h-3 rounded-sm bg-amber-100/60"></div>
-                        <span className="text-slate-600 font-medium">70-85: Good</span>
-                      </div>
-                      <div className="flex items-center gap-1.5">
-                        <div className="w-3 h-3 rounded-sm bg-emerald-100/60"></div>
-                        <span className="text-emerald-600 font-semibold">85+: Target</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Gap analysis */}
-                  {result.score < 85 ? (
-                    <div className="flex items-start gap-3 p-4 rounded-lg bg-blue-50/50 border border-blue-200/60">
-                      <div className="w-8 h-8 rounded-lg bg-white border border-blue-200 flex items-center justify-center flex-shrink-0">
-                        <TrendingUp className="text-blue-600" size={14} />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h5 className="text-sm font-semibold text-slate-800 mb-1">
-                          {85 - result.score} points to target
-                        </h5>
-                        <p className="text-xs text-slate-600 leading-relaxed">
-                          {result.score >= 70
-                            ? 'You\'re in the good range. Implement the suggestions below to reach excellence.'
-                            : 'Focus on the recommended improvements to significantly boost your ATS score.'}
-                        </p>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="flex items-start gap-3 p-4 rounded-lg bg-emerald-50/50 border border-emerald-200/60">
-                      <div className="w-8 h-8 rounded-lg bg-white border border-emerald-200 flex items-center justify-center flex-shrink-0">
-                        <CheckCircle2 className="text-emerald-600" size={14} />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h5 className="text-sm font-semibold text-emerald-900 mb-1">Target achieved</h5>
-                        <p className="text-xs text-emerald-700 leading-relaxed">
-                          Your resume meets industry benchmarks and is well-optimized for ATS systems.
-                        </p>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-
+            {/* Headline: The Reality Check */}
+            <div className="mb-8">
+              <h3 className="text-xl md:text-2xl font-bold text-slate-900 mb-2">
+                {result.score < 85 ? (
+                  <span>Your resume is operating at <span className="text-amber-600 border-b-2 border-amber-100">{result.score}% capacity</span></span>
+                ) : (
+                  <span>Your resume is fully optimized for performance</span>
+                )}
+              </h3>
+              <p className="text-slate-600 text-sm md:text-base max-w-2xl leading-relaxed">
+                {result.score < 85
+                  ? `Our audit detected ${Object.values(groupedImprovements).flat().length} critical improvement areas and ${result.missingKeywords?.length || 0} missing keywords that are likely causing ATS rejection.`
+                  : "You are in the top tier of candidates. Minor tweaks could push you to 100%."
+                }
+              </p>
             </div>
 
-            {/* Key Metrics - Modern Card Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-6 border-t border-slate-200/40 max-w-3xl mx-auto">
+            {/* The Gap Visualization: "What You Are Missing" */}
+            <div className="mb-10">
+              <div className="flex justify-between text-sm font-semibold mb-3">
+                <span className="text-slate-700">Current Impact</span>
+                <span className="text-slate-400">Unclaimed Potential</span>
+              </div>
 
-              {/* Interview Rate Impact - Clean Minimal Card */}
-              <div className="bg-white rounded-lg p-5 border border-slate-200/60 shadow-sm">
-                <div className="flex items-center gap-2 mb-4">
-                  <div className="w-7 h-7 rounded-lg bg-emerald-50 flex items-center justify-center border border-emerald-100">
-                    <TrendingUp className="text-emerald-600" size={14} />
-                  </div>
-                  <h5 className="text-sm font-semibold text-slate-700">Interview Callback Rate</h5>
+              <div className="h-12 sm:h-14 w-full bg-slate-100 rounded-lg border border-slate-200 relative flex overflow-hidden">
+
+                {/* Part A: Current Score (Solid) */}
+                <div
+                  style={{ width: `${result.score}%` }}
+                  className={`h-full flex items-center justify-end px-2 sm:px-4 transition-all duration-1000 ${result.score < 75 ? 'bg-slate-800' : 'bg-emerald-600'
+                    }`}
+                >
+                  <span className="text-white font-bold text-sm sm:text-lg whitespace-nowrap">{result.score}</span>
                 </div>
 
-                {/* Simple Before/After */}
-                <div className="space-y-2 mb-4">
-                  <div className="flex items-baseline justify-between">
-                    <span className="text-xs text-slate-500">Before optimization</span>
-                    <span className="text-lg font-bold text-slate-600 tabular-nums">4%</span>
-                  </div>
-                  <div className="flex items-baseline justify-between">
-                    <span className="text-xs text-slate-700 font-medium">After optimization</span>
-                    <span className="text-lg font-bold text-emerald-600 tabular-nums">52%</span>
+                {/* Part B: The GAP (Striped) - Visualizes the loss */}
+                <div className="flex-1 relative bg-[linear-gradient(45deg,transparent_25%,rgba(0,0,0,0.05)_25%,rgba(0,0,0,0.05)_50%,transparent_50%,transparent_75%,rgba(0,0,0,0.05)_75%,rgba(0,0,0,0.05)_100%)] bg-[length:10px_10px]">
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    {/* Desktop/Tablet Badge: Centered inside */}
+                    {(85 - result.score) > 0 && (
+                      <div className="hidden sm:flex bg-white/90 border border-slate-200 shadow-sm px-3 py-1 rounded-md text-xs font-bold text-amber-600 items-center gap-1 whitespace-nowrap z-10">
+                        <AlertTriangle size={12} />
+                        <span>MISSING {85 - result.score} POINTS</span>
+                      </div>
+                    )}
                   </div>
                 </div>
 
-                {/* Simple Divider */}
-                <div className="h-px bg-slate-200/60 mb-3"></div>
+                {/* Target Marker */}
+                <div className="absolute top-0 bottom-0 w-0.5 bg-emerald-500 z-10 hidden sm:block" style={{ left: '85%' }}></div>
+              </div>
 
-                {/* Single Insight */}
-                <div className="flex items-center gap-1.5">
-                  <svg className="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 10l7-7m0 0l7 7m-7-7v18" />
-                  </svg>
-                  <span className="text-xs font-semibold text-slate-700">+48 points</span>
-                  <span className="text-xs text-slate-500">improvement</span>
+              {/* Mobile-Only Badge: Displayed below bar to avoid overlap */}
+              {(85 - result.score) > 0 && (
+                <div className="flex sm:hidden items-center gap-1.5 mt-2 text-xs font-bold text-amber-600">
+                  <AlertTriangle size={12} />
+                  <span>MISSING {85 - result.score} POINTS FROM TARGET</span>
+                </div>
+              )}
+
+              {/* X-Axis Labels */}
+              <div className="flex justify-between mt-2 text-xs text-slate-400 font-mono">
+                <span>0</span>
+                <span className="text-emerald-600 font-bold">TARGET: 85+</span>
+              </div>
+            </div>
+
+            {/* Metrics Grid: Professional "Executive Dashboard" Style */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+
+              {/* 1. PAIN: Market Competitiveness (Red Accent) */}
+              <div className={`bg-white p-5 rounded-r-lg border-y border-r border-slate-200 border-l-4 shadow-[0_2px_8px_rgba(0,0,0,0.02)] flex flex-col justify-between min-h-[110px] ${result.score < 85 ? 'border-l-rose-500' : 'border-l-emerald-500'
+                }`}>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Competitiveness</span>
+                  {result.score < 85 && <ArrowUpRight className="text-rose-500 rotate-180" size={16} />}
+                </div>
+
+                <div>
+                  <div className="text-2xl font-bold text-slate-800 tabular-nums">
+                    {result.score < 70 ? 'Low' : result.score < 85 ? 'Average' : 'High'}
+                  </div>
+                  <div className="text-xs text-slate-500 mt-1 font-medium">
+                    {result.score < 85
+                      ? `Ranking in bottom ${100 - result.score}%`
+                      : 'Top tier application'}
+                  </div>
                 </div>
               </div>
 
 
-              {/* Community Trust - Single Metric Card */}
-              <div className="bg-gradient-to-br from-white to-slate-50/30 rounded-lg p-5 border border-slate-200/60 shadow-sm">
-                <div className="flex items-start justify-between mb-4">
-                  <div>
-                    <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1">
-                      Resumes Optimized
-                    </div>
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-2xl font-bold bg-gradient-to-br from-slate-700 to-slate-600 bg-clip-text text-transparent tabular-nums">
-                        13,000+
-                      </span>
-                    </div>
-                  </div>
-                  <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-100 to-blue-50 flex items-center justify-center border border-blue-200/50">
-                    <CheckCircle2 className="text-blue-600" size={16} />
-                  </div>
+              {/* 2. CAUSE: ATS Parse Status (Amber Accent) */}
+              <div className={`bg-white p-5 rounded-r-lg border-y border-r border-slate-200 border-l-4 shadow-[0_2px_8px_rgba(0,0,0,0.02)] flex flex-col justify-between min-h-[110px] ${(result.missingKeywords?.length || 0) > 0 ? 'border-l-amber-500' : 'border-l-blue-500'
+                }`}>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">ATS Parse Status</span>
+                  {(result.missingKeywords?.length || 0) > 0 && <AlertTriangle className="text-amber-500" size={16} />}
                 </div>
 
-                <p className="text-xs text-slate-600 leading-relaxed mb-3">
-                  Join thousands of professionals who have successfully optimized their resumes and landed more interviews.
-                </p>
-
-                {/* Trust indicators */}
-                <div className="flex items-center gap-4 pt-3 border-t border-slate-200/60">
-                  <div className="flex items-center gap-1.5">
-                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
-                    <span className="text-xs font-medium text-slate-600">AI-Powered</span>
+                <div>
+                  <div className="text-2xl font-bold text-slate-800 tabular-nums">
+                    {(result.missingKeywords?.length || 0) > 0 ? 'Blocking Issues' : 'System Ready'}
                   </div>
-                  <div className="flex items-center gap-1.5">
-                    <div className="w-1.5 h-1.5 rounded-full bg-blue-500"></div>
-                    <span className="text-xs font-medium text-slate-600">Industry Tested</span>
+                  <div className="text-xs text-slate-500 mt-1 font-medium">
+                    {(result.missingKeywords?.length || 0) > 0
+                      ? `${result.missingKeywords?.length} critical keywords missing`
+                      : 'All keywords detected'}
                   </div>
                 </div>
               </div>
+
+
+              {/* 3. SOLUTION: ROI Opportunity (Indigo Accent) */}
+              <div className="bg-white p-5 rounded-r-lg border-y border-r border-slate-200 border-l-4 border-l-indigo-600 shadow-[0_2px_8px_rgba(0,0,0,0.02)] flex flex-col justify-between min-h-[110px]">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Optimization Value</span>
+                  <CheckCircle2 className="text-indigo-600" size={16} />
+                </div>
+
+                <div>
+                  <div className="text-2xl font-bold text-indigo-700 tabular-nums">
+                    +{85 - result.score > 0 ? 85 - result.score : 0} Points
+                  </div>
+                  <div className="text-xs text-slate-500 mt-1 font-medium">
+                    Recoverable via {Object.values(groupedImprovements).flat().length} fixes
+                  </div>
+                </div>
+              </div>
+
             </div>
 
           </div>
         </div>
+
+
+
       </div>
 
       {/* Footer Actions */}
