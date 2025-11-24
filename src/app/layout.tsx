@@ -14,55 +14,54 @@ export const viewport: Viewport = {
   ],
 };
 
+const baseUrl = "https://www.perfectresumescan.com";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(baseUrl),
+
   title: {
-    default: "PerfectResumeScan — Free ATS Resume Checker & Optimizer (2025)",
-    template: "%s | PerfectResumeScan",
+    default: "PerfectResumeScan",
+    template: "%s | PerfectResumeScan", 
   },
-  description:
-    "Free instant ATS resume scanner. Get your compatibility score, missing keywords, and AI-powered bullet fixes in seconds — no signup required.",
-  keywords:
-    "ATS resume checker, free ATS scanner, resume ATS test, ATS friendly resume, resume keyword scanner, beat ATS, ATS resume optimizer",
-  
+
+  description: "AI-powered resume optimization and ATS compatibility tool.",
+
   robots: {
     index: true,
     follow: true,
-    googleBot: { index: true, follow: true },
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 
   alternates: {
-    canonical: "https://www.perfectresumescan.com",
+    canonical: "./",
   },
 
   openGraph: {
-    title: "Free ATS Resume Checker — PerfectResumeScan",
-    description: "Check if your resume beats Applicant Tracking Systems in seconds. Instant score + fixes.",
-    url: "https://www.perfectresumescan.com",
     siteName: "PerfectResumeScan",
-    images: [
-      {
-        url: "https://www.perfectresumescan.com/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "PerfectResumeScan — Free ATS Resume Checker",
-      },
-    ],
     locale: "en_US",
     type: "website",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "PerfectResumeScan",
+      },
+    ],
   },
 
   twitter: {
     card: "summary_large_image",
-    title: "Free ATS Resume Checker — Instant Score & Fixes",
-    description: "Upload your resume → see if it passes ATS in seconds",
-    images: [
-      {
-        url: "https://www.perfectresumescan.com/og-image.jpg",
-        alt: "PerfectResumeScan — Free ATS Resume Checker",
-      },
-    ],
-  }
+    images: ["/og-image.jpg"],
+  },
 };
+
 
 
 export default function RootLayout({
