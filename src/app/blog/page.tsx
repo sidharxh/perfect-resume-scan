@@ -1,19 +1,44 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { blogs } from './data'
 import { Metadata } from 'next'
 import { ArrowRight, Clock, TrendingUp } from 'lucide-react'
 
+const BLOG_URL = 'https://perfectresumescan.com/blog'
+const DEFAULT_IMAGE = '/blog-og-image.jpg'
+
 export const metadata: Metadata = {
   title: 'Resume Intelligence Blog | Perfect Resume Scan',
-  description: 'Data-backed strategies to beat ATS scanners and get hired.',
-  openGraph: { images: ['/og-image.jpg'] }
+  description: 'Data-backed strategies to beat ATS scanners and get hired. Expert insights on keyword optimization and modern interview strategies.',
+  openGraph: {
+    title: 'Resume Intelligence Blog | Perfect Resume Scan',
+    description: 'Data-backed strategies to beat ATS scanners and get hired.',
+    url: BLOG_URL,
+    siteName: 'Perfect Resume Scan',
+    images: [
+      {
+        url: DEFAULT_IMAGE,
+        width: 1200,
+        height: 630,
+        alt: 'Resume Intelligence Blog Cover',
+      },
+    ],
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Resume Intelligence Blog',
+    description: 'Data-backed strategies to beat ATS scanners and get hired.',
+    images: [DEFAULT_IMAGE],
+  },
+  alternates: {
+    canonical: BLOG_URL,
+  },
 }
-
-const DEFAULT_IMAGE = '/og-image.jpg'
 
 export default function BlogIndex() {
   // Sort by date
-  const allPosts = Object.values(blogs).sort((a, b) => 
+  const allPosts = Object.values(blogs).sort((a, b) =>
     new Date(b.date).getTime() - new Date(a.date).getTime()
   )
 
@@ -21,18 +46,50 @@ export default function BlogIndex() {
   const featuredPost = allPosts[0]
   const regularPosts = allPosts.slice(1)
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    headline: 'Resume Intelligence Blog',
+    description: 'Data-backed strategies to beat ATS scanners and get hired.',
+    url: BLOG_URL,
+    image: `https://perfectresumescan.com${DEFAULT_IMAGE}`,
+    publisher: {
+      '@type': 'Organization',
+      name: 'Perfect Resume Scan',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://perfectresumescan.com/logo.svg'
+      }
+    },
+    mainEntity: {
+      '@type': 'ItemList',
+      itemListElement: allPosts.map((post, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        url: `https://perfectresumescan.com/blog/${post.slug}`,
+        name: post.title,
+        description: post.description,
+      })),
+    },
+  }
+
   return (
-    <div className="min-h-screen bg-slate-50 pt-32 pb-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-      
+    <div className="min-h-screen bg-slate-50 pt-32 pb-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden font-sans">
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       {/* Decorative Background Blobs */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-gradient-to-b from-blue-50 to-transparent -z-10" />
       <div className="absolute top-20 right-0 w-96 h-96 bg-blue-100/50 rounded-full blur-3xl -z-10 animate-pulse" />
 
       <div className="max-w-7xl mx-auto">
-        
+
         {/* Header */}
         <div className="text-center mb-20 relative">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-100 text-blue-700 text-sm font-bold mb-6 animate-fade-in-up">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-100 text-blue-700 text-sm font-bold mb-6 shadow-sm border border-blue-200/50">
             <TrendingUp size={16} />
             <span>Resume Intelligence</span>
           </div>
@@ -48,15 +105,18 @@ export default function BlogIndex() {
         {featuredPost && (
           <div className="mb-20 group relative">
             <Link href={`/blog/${featuredPost.slug}`} className="block">
-              <div className="relative bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-200 hover:shadow-2xl transition-all duration-500 grid md:grid-cols-2 min-h-[400px]">
-                
-                {/* Image Side */}
-                <div className="relative h-64 md:h-full overflow-hidden">
+              <div className="relative bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-200 hover:shadow-2xl hover:shadow-blue-900/10 transition-all duration-500 grid md:grid-cols-2 min-h-[400px]">
+
+                {/* Image Side (Optimized with Next/Image) */}
+                <div className="relative h-64 md:h-full overflow-hidden bg-slate-100">
                   <div className="absolute inset-0 bg-slate-900/10 group-hover:bg-slate-900/0 transition-colors z-10" />
-                  <img 
-                    src={featuredPost.image || DEFAULT_IMAGE} 
+                  <Image
+                    src={featuredPost.image || DEFAULT_IMAGE}
                     alt={featuredPost.title}
-                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+                    fill
+                    priority // Load LCP image immediately
+                    className="object-cover transform group-hover:scale-105 transition-transform duration-700"
+                    sizes="(max-width: 768px) 100vw, 50vw"
                   />
                 </div>
 
@@ -70,23 +130,23 @@ export default function BlogIndex() {
                       <Clock size={14} /> 5 min read
                     </span>
                   </div>
-                  
+
                   <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4 leading-tight group-hover:text-indigo-600 transition-colors">
                     {featuredPost.title}
                   </h2>
-                  
-                  <p className="text-slate-600 text-lg mb-8 leading-relaxed">
+
+                  <p className="text-slate-600 text-lg mb-8 leading-relaxed line-clamp-3">
                     {featuredPost.description}
                   </p>
 
                   <div className="flex items-center gap-4">
-                     <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold border border-indigo-200">
-                        {featuredPost.author.charAt(0)}
-                     </div>
-                     <div className="flex flex-col">
-                        <span className="text-sm font-bold text-slate-900">{featuredPost.author}</span>
-                        <span className="text-xs text-slate-500">{featuredPost.date}</span>
-                     </div>
+                    <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold border border-indigo-200 shrink-0">
+                      {featuredPost.author.charAt(0)}
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-sm font-bold text-slate-900">{featuredPost.author}</span>
+                      <span className="text-xs text-slate-500">{featuredPost.date}</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -98,21 +158,22 @@ export default function BlogIndex() {
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
           {regularPosts.map((post, idx) => {
             const displayImage = post.image || DEFAULT_IMAGE
-            // Rotate colors for badges
             const colors = ['bg-blue-50 text-blue-700', 'bg-purple-50 text-purple-700', 'bg-emerald-50 text-emerald-700']
             const badgeColor = colors[idx % colors.length]
 
             return (
               <Link key={post.slug} href={`/blog/${post.slug}`} className="group flex flex-col h-full">
-                <div className="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full relative">
-                  
-                  {/* Image */}
-                  <div className="aspect-[16/10] overflow-hidden relative">
+                <div className="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-xl hover:shadow-blue-900/5 hover:-translate-y-1 transition-all duration-300 flex flex-col h-full relative">
+
+                  {/* Image (Optimized with Next/Image) */}
+                  <div className="aspect-[16/10] overflow-hidden relative bg-slate-100">
                     <div className="absolute inset-0 bg-slate-900/0 group-hover:bg-slate-900/5 transition-colors z-10" />
-                    <img 
-                      src={displayImage} 
+                    <Image
+                      src={displayImage}
                       alt={post.title}
-                      className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
+                      fill
+                      className="object-cover transform group-hover:scale-110 transition-transform duration-500"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
                   </div>
 
@@ -120,7 +181,7 @@ export default function BlogIndex() {
                   <div className="p-6 flex flex-col flex-1">
                     <div className="flex items-center justify-between mb-4">
                       <span className={`px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wide ${badgeColor}`}>
-                        {post.keywords[0] || 'Guide'}
+                        {post.keywords?.[0] || 'Guide'}
                       </span>
                       <span className="text-slate-400 text-xs font-medium">
                         {post.date}
@@ -131,12 +192,12 @@ export default function BlogIndex() {
                       {post.title}
                     </h3>
 
-                    <p className="text-slate-600 text-sm line-clamp-3 mb-6 flex-1">
+                    <p className="text-slate-600 text-sm line-clamp-3 mb-6 flex-1 leading-relaxed">
                       {post.description}
                     </p>
 
                     <div className="pt-4 border-t border-slate-100 flex items-center text-blue-600 font-semibold text-sm group/btn">
-                      Read Article 
+                      Read Article
                       <ArrowRight size={16} className="ml-2 transform group-hover/btn:translate-x-1 transition-transform" />
                     </div>
                   </div>

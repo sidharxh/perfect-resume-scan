@@ -1,5 +1,3 @@
-// src/app/blog/[slug]/page.tsx
-
 import { blogs } from '../data'
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
@@ -8,18 +6,21 @@ import Link from 'next/link'
 import BlogNavbar from '@/components/BlogNavbar'
 import LinkedInCard from '@/components/LinkedInCard'
 
-// 1. STATIC GENERATION
+const DEFAULT_OG_IMAGE = '/blog-og-image.jpg'
+
 export async function generateStaticParams() {
   return Object.keys(blogs).map((slug) => ({ slug }))
 }
 
-// 2. SEO METADATA
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
   const post = blogs[slug]
-  
+
   if (!post) return {}
-  
+
+  const ogImage = post.image || DEFAULT_OG_IMAGE
+  const canonicalUrl = `https://perfectresumescan.com/blog/${slug}`
+
   return {
     title: post.title,
     description: post.description,
@@ -27,13 +28,31 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       title: post.title,
       description: post.description,
       type: 'article',
+      url: canonicalUrl,
       authors: [post.author || 'Engineering Team'],
       publishedTime: post.date,
-    }
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.description,
+      images: [ogImage],
+    },
+    alternates: {
+      canonical: canonicalUrl,
+    },
   }
 }
 
-// Helper to estimate read time with fallback
+
 function getReadTime(content: string) {
   if (!content) return 5;
   const wordsPerMinute = 200;
@@ -41,7 +60,6 @@ function getReadTime(content: string) {
   return Math.ceil(words / wordsPerMinute);
 }
 
-// Helper to format date with fallback
 function formatDate(dateString?: string) {
   if (!dateString) return 'Recently Updated';
   return new Date(dateString).toLocaleDateString('en-US', {
@@ -51,7 +69,6 @@ function formatDate(dateString?: string) {
   });
 }
 
-// 3. THE SERVER COMPONENT
 export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
   const post = blogs[slug]
@@ -60,9 +77,31 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     notFound()
   }
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.description,
+    image: `https://perfectresumescan.com${post.image || DEFAULT_OG_IMAGE}`,
+    author: {
+      '@type': 'Person',
+      name: post.author || 'Sidharth',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: post.publisherName || 'Perfect Resume Scan',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://perfectresumescan.com/logo.svg',
+      },
+    },
+    datePublished: new Date(post.date).toISOString(),
+    dateModified: new Date(post.updatedAt || post.date).toISOString(),
+  };
+
   const cleanContent = post.content?.replace(/<[^>]*>?/gm, '') || ''
   const readTime = getReadTime(post.content)
-  
+
   // Fallback configuration for LinkedIn Post
   const liConfig = post.linkedinPost || {
     text: `💡 Insight: ${post.description} \n\nRead more: https://perfectresumescan.com/blog/${slug}`,
@@ -72,7 +111,12 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
   return (
     <div className="min-h-screen bg-white text-slate-900 font-sans selection:bg-indigo-100 selection:text-indigo-900">
-      
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       {/* INLINE STYLES FOR BLOG CONTENT */}
       <style>{`
         /* Base Typography */
@@ -202,10 +246,10 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
       </div>
 
       <main className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-24 grid grid-cols-1 lg:grid-cols-12 gap-12">
-        
+
         {/* ================= LEFT: CONTENT ================= */}
         <div className="lg:col-span-8 lg:col-start-2">
-          
+
           {/* Breadcrumb */}
           <nav className="flex items-center gap-2 text-sm text-slate-500 mb-8">
             <Link href="/blog" className="hover:text-indigo-600 transition-colors">Blog</Link>
@@ -216,111 +260,111 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
           {/* Header */}
           <header className="mb-12">
             <div className="flex flex-wrap gap-3 mb-6">
-                {(post.keywords || ['Engineering']).slice(0, 3).map(tag => (
-                    <span key={tag} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-50 text-indigo-700">
-                        {tag}
-                    </span>
-                ))}
+              {(post.keywords || ['Engineering']).slice(0, 3).map(tag => (
+                <span key={tag} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-50 text-indigo-700">
+                  {tag}
+                </span>
+              ))}
             </div>
-            
+
             <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-6 leading-tight tracking-tight">
               {post.title}
             </h1>
-            
+
             <p className="text-xl text-slate-600 leading-relaxed mb-8">
               {post.description}
             </p>
 
             {/* Author & Meta Row */}
             <div className="flex items-center gap-6 text-sm border-t border-b border-slate-100 py-4">
-                <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold">
-                        {(post.author || 'A').charAt(0)}
-                    </div>
-                    <div>
-                        <p className="font-bold text-slate-900">{post.author || 'Editor'}</p>
-                        <p className="text-slate-500">{formatDate(post.date)}</p>
-                    </div>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold">
+                  {(post.author || 'A').charAt(0)}
                 </div>
-                <div className="h-8 w-px bg-slate-200 hidden sm:block"></div>
-                <div className="flex items-center gap-2 text-slate-500 hidden sm:flex">
-                    <Clock className="w-4 h-4" />
-                    <span>{readTime} min read</span>
+                <div>
+                  <p className="font-bold text-slate-900">{post.author || 'Editor'}</p>
+                  <p className="text-slate-500">{formatDate(post.date)}</p>
                 </div>
+              </div>
+              <div className="h-8 w-px bg-slate-200 hidden sm:block"></div>
+              <div className="flex items-center gap-2 text-slate-500 hidden sm:flex">
+                <Clock className="w-4 h-4" />
+                <span>{readTime} min read</span>
+              </div>
             </div>
           </header>
 
           {/* Content Area */}
-          <article 
+          <article
             className="tech-blog-content"
-            dangerouslySetInnerHTML={{ __html: post.content || '<p>Content under review.</p>' }} 
+            dangerouslySetInnerHTML={{ __html: post.content || '<p>Content under review.</p>' }}
           />
 
           {/* Bottom CTA (Mobile + Desktop) */}
           <div className="mt-20 bg-slate-900 rounded-2xl p-8 md:p-12 text-white relative overflow-hidden shadow-2xl">
-             <div className="relative z-10">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 text-xs font-bold uppercase tracking-wider mb-6 border border-indigo-500/30">
-                     <Activity className="w-3 h-3" /> Recommended Tool
-                  </div>
-                  <h3 className="text-2xl md:text-3xl font-bold mb-4 tracking-tight">
-                    Is your resume engineered correctly?
-                  </h3>
-                  <p className="text-slate-300 text-lg leading-relaxed mb-8 max-w-xl">
-                    Stop guessing. Check your ATS compatibility score instantly with our engineering-grade scanner.
-                  </p>
-                  <Link 
-                    href="/" 
-                    className="inline-flex items-center justify-center bg-white text-slate-900 hover:bg-indigo-50 px-8 py-4 rounded-lg font-bold text-base transition-all hover:scale-105"
-                  >
-                    Run Free Scan →
-                  </Link>
-             </div>
+            <div className="relative z-10">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 text-xs font-bold uppercase tracking-wider mb-6 border border-indigo-500/30">
+                <Activity className="w-3 h-3" /> Recommended Tool
+              </div>
+              <h3 className="text-2xl md:text-3xl font-bold mb-4 tracking-tight">
+                Is your resume engineered correctly?
+              </h3>
+              <p className="text-slate-300 text-lg leading-relaxed mb-8 max-w-xl">
+                Stop guessing. Check your ATS compatibility score instantly with our engineering-grade scanner.
+              </p>
+              <Link
+                href="/"
+                className="inline-flex items-center justify-center bg-white text-slate-900 hover:bg-indigo-50 px-8 py-4 rounded-lg font-bold text-base transition-all hover:scale-105"
+              >
+                Run Free Scan →
+              </Link>
+            </div>
           </div>
         </div>
 
         {/* ================= RIGHT: STICKY SIDEBAR ================= */}
         <aside className="hidden lg:block lg:col-span-3 relative">
           <div className="sticky top-24 space-y-8">
-            
+
             {/* Sticky LinkedIn Card - ALWAYS VISIBLE */}
             <div>
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4 flex items-center gap-2">
-                    <Share2 className="w-3 h-3" /> Share Insight
-                </p>
-                <LinkedInCard 
-                    config={liConfig} 
-                    url={`https://perfectresumescan.com/blog/${slug}`} 
-                />
+              <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+                <Share2 className="w-3 h-3" /> Share Insight
+              </p>
+              <LinkedInCard
+                config={liConfig}
+                url={`https://perfectresumescan.com/blog/${slug}`}
+              />
             </div>
 
             {/* Quick Resume Check - Sidebar Version */}
             <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
-                <h4 className="font-bold text-slate-900 mb-2">ATS Score Check</h4>
-                <p className="text-sm text-slate-500 mb-4">
-                    See how your resume parses before you apply.
-                </p>
-                <Link 
-                  href="/" 
-                  className="block w-full text-center bg-slate-900 text-white py-2.5 rounded-lg text-sm font-bold hover:bg-slate-800 transition-colors"
-                >
-                  Check Now
-                </Link>
+              <h4 className="font-bold text-slate-900 mb-2">ATS Score Check</h4>
+              <p className="text-sm text-slate-500 mb-4">
+                See how your resume parses before you apply.
+              </p>
+              <Link
+                href="/"
+                className="block w-full text-center bg-slate-900 text-white py-2.5 rounded-lg text-sm font-bold hover:bg-slate-800 transition-colors"
+              >
+                Check Now
+              </Link>
             </div>
 
             {/* Topics */}
             {post.keywords && post.keywords.length > 0 && (
-                <div>
-                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-2">
-                        <Tag className="w-3 h-3" /> Related Topics
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                        {post.keywords.map((keyword) => (
-                        <span key={keyword} className="px-2.5 py-1 bg-white border border-slate-200 rounded-md text-xs font-medium text-slate-600 hover:border-indigo-300 hover:text-indigo-600 transition-colors cursor-pointer">
-                            {keyword}
-                        </span>
-                        ))}
-                    </div>
+              <div>
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+                  <Tag className="w-3 h-3" /> Related Topics
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {post.keywords.map((keyword) => (
+                    <span key={keyword} className="px-2.5 py-1 bg-white border border-slate-200 rounded-md text-xs font-medium text-slate-600 hover:border-indigo-300 hover:text-indigo-600 transition-colors cursor-pointer">
+                      {keyword}
+                    </span>
+                  ))}
                 </div>
+              </div>
             )}
 
           </div>

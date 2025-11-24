@@ -20,7 +20,6 @@ export interface SeoConfig {
     updatedAt?: string;    
     author: string;        
     publisherName: string; 
-    publisherLogo: string; 
     image: string;         
 }
 
@@ -117,7 +116,6 @@ export const blogs: Record<string, BlogPost> = {
         date: '2025-11-24',
         author: 'Sidharth',
         publisherName: 'Perfect Resume Scan',
-        publisherLogo: 'https://perfectresumescan.com/logo.svg',
         image: '/images/blog/invisible-bridge-cover.png',
     },
     
@@ -185,7 +183,6 @@ export const blogs: Record<string, BlogPost> = {
         date: '2025-11-25',
         author: 'Sidharth',
         publisherName: 'Perfect Resume Scan',
-        publisherLogo: 'https://perfectresumescan.com/logo.svg',
         image: '/images/blog/tech-stack-cover.png',
     },
 
@@ -258,7 +255,6 @@ export const blogs: Record<string, BlogPost> = {
         date: '2025-11-26',
         author: 'Sidharth',
         publisherName: 'Perfect Resume Scan',
-        publisherLogo: 'https://perfectresumescan.com/logo.svg',
         image: '/images/blog/resume-repackaging-cover.png',
     }
 };
