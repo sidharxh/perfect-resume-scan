@@ -2,7 +2,33 @@ import Hero from '@/components/Hero';
 import FAQ from '@/components/FAQ';
 import Features from '@/components/Features';
 import SampleATSResume from '@/components/SampleATSResume';
+import { Metadata } from 'next';
 
+export const metadata: Metadata = {
+  title: {
+    absolute: "PerfectResumeScan — Free ATS Resume Checker & Optimizer (2025)",
+  },
+  description:
+    "Free instant ATS resume scanner. Get your compatibility score, missing keywords, and AI-powered bullet fixes in seconds — no signup required.",
+  keywords: [
+    "ATS resume checker",
+    "free ATS scanner",
+    "resume ATS test",
+    "ATS friendly resume",
+    "resume keyword scanner",
+    "beat ATS",
+    "ATS resume optimizer",
+  ],
+  openGraph: {
+    title: "Free ATS Resume Checker — PerfectResumeScan",
+    description:
+      "Check if your resume beats Applicant Tracking Systems in seconds. Instant score + fixes.",
+  },
+  twitter: {
+    title: "Free ATS Resume Checker — Instant Score & Fixes",
+    description: "Upload your resume → see if it passes ATS in seconds",
+  },
+};
 
 export default function Home() {
   const jsonLd = {
@@ -26,8 +52,6 @@ export default function Home() {
       'PDF & DOCX Support',
       'Detailed Resume Optimization Plan'
     ],
-    softwareRequirements: 'Modern Web Browser (Chrome, Safari, Edge)',
-    screenshot: 'https://perfectresumescan.com/og-image.jpg',
     author: {
       '@type': 'Organization',
       name: 'Perfect Resume Scan',
