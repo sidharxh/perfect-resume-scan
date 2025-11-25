@@ -12,7 +12,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
     }
 
-    // 1. Extract text from PDF or DOCX
+    // 1. Extract text from PDF or DOCx
     let resumeText = "";
     const buffer = Buffer.from(await file.arrayBuffer());
     const fileName = (file as File).name.toLowerCase();
