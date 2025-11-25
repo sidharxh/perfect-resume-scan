@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/opengraph-image.jpg",
+        url: "/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "PerfectResumeScan - AI-powered resume optimization",
@@ -60,7 +60,7 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-    images: ["/opengraph-image.jpg"],
+    images: ["/og-image.jpg"],
   },
 
   icons: {

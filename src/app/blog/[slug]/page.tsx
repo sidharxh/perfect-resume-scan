@@ -6,7 +6,6 @@ import Link from 'next/link'
 import BlogNavbar from '@/components/BlogNavbar'
 import LinkedInCard from '@/components/LinkedInCard'
 
-// Using the site-wide default we established in public/ folder
 const DEFAULT_OG_IMAGE = '/blog-og-image.jpg'
 
 export async function generateStaticParams() {
@@ -19,9 +18,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   if (!post) return {}
 
-  // Construct absolute URL for the image to ensure it works on all platforms
   const ogImage = post.image 
-    ? `https://perfectresumescan.com${post.image}` 
+    ? `https://perfectresumescan.com${post.image}`
     : `https://perfectresumescan.com${DEFAULT_OG_IMAGE}`
     
   const canonicalUrl = `https://perfectresumescan.com/blog/${slug}`
@@ -40,7 +38,6 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       siteName: 'PerfectResumeScan',
       authors: [post.author || 'Engineering Team'],
       publishedTime: post.date,
-      // Explicitly override images - no inheritance
       images: [
         {
           url: ogImage,
@@ -115,7 +112,6 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
   const cleanContent = post.content?.replace(/<[^>]*>?/gm, '') || ''
   const readTime = getReadTime(post.content)
 
-  // Fallback configuration for LinkedIn Post
   const liConfig = post.linkedinPost || {
     text: `💡 Insight: ${post.description} \n\nRead more: ${pageUrl}`,
     visualQuote: post.description || post.title,

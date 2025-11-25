@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { blogs } from './data' // Make sure this path is correct for your project
+import { blogs } from './data'
 import { Metadata } from 'next'
 import { ArrowRight, Clock, TrendingUp } from 'lucide-react'
 
