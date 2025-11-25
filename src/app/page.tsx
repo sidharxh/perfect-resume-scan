@@ -23,10 +23,21 @@ export const metadata: Metadata = {
     title: "Free ATS Resume Checker — PerfectResumeScan",
     description:
       "Check if your resume beats Applicant Tracking Systems in seconds. Instant score + fixes.",
+    images: [
+      {
+        url: "/opengraph-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "PerfectResumeScan - Free ATS Resume Checker",
+      },
+    ],
+    type: "website",
   },
   twitter: {
+    card: "summary_large_image",
     title: "Free ATS Resume Checker - Instant Score & Fixes",
     description: "Upload your resume → see if it passes ATS in seconds",
+    images: ["/opengraph-image.jpg"],
   },
 };
 
@@ -35,7 +46,7 @@ export default function Home() {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
     name: 'Perfect Resume Scan',
-    image: 'https://perfectresumescan.com/og-image.jpg',
+    image: 'https://perfectresumescan.com/opengraph-image.jpg',
     applicationCategory: 'BusinessApplication',
     operatingSystem: 'Web',
     url: 'https://perfectresumescan.com', 
@@ -58,7 +69,7 @@ export default function Home() {
       url: 'https://perfectresumescan.com',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://perfectresumescan.com/logo.svg'
+        url: 'https://perfectresumescan.com/icon.svg'
       }
     }
   }

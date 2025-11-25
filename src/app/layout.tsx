@@ -1,9 +1,9 @@
-// src/app/layout.tsx
 import "./globals.css";
 import type { Metadata, Viewport } from "next";
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 import { GoogleAnalytics } from '@next/third-parties/google'
+
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -14,7 +14,9 @@ export const viewport: Viewport = {
   ],
 };
 
+
 const baseUrl = "https://www.perfectresumescan.com";
+
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
@@ -48,20 +50,28 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/og-image.jpg",
+        url: "/opengraph-image.jpg",
         width: 1200,
         height: 630,
-        alt: "PerfectResumeScan",
+        alt: "PerfectResumeScan - AI-powered resume optimization",
       },
     ],
   },
 
   twitter: {
     card: "summary_large_image",
-    images: ["/og-image.jpg"],
+    images: ["/opengraph-image.jpg"],
+  },
+
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/apple-icon.png",
   },
 };
-
 
 
 export default function RootLayout({
@@ -75,8 +85,8 @@ export default function RootLayout({
         <Navbar/>
         {children}
         <Footer/>
+        <GoogleAnalytics gaId="G-SEBMHM7GEN" />
       </body>
-      <GoogleAnalytics gaId="G-SEBMHM7GEN" />
     </html>
   );
 }

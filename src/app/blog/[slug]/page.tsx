@@ -1,11 +1,12 @@
 import { blogs } from '../data'
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { Activity, Calendar, Clock, ChevronRight, Share2, User, Tag } from 'lucide-react'
+import { Activity, Clock, ChevronRight, Share2, Tag } from 'lucide-react'
 import Link from 'next/link'
 import BlogNavbar from '@/components/BlogNavbar'
 import LinkedInCard from '@/components/LinkedInCard'
 
+// Using the site-wide default we established in public/ folder
 const DEFAULT_OG_IMAGE = '/blog-og-image.jpg'
 
 export async function generateStaticParams() {
@@ -18,12 +19,19 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   if (!post) return {}
 
-  const ogImage = post.image || DEFAULT_OG_IMAGE
+  // Construct absolute URL for the image to ensure it works on all platforms
+  const ogImage = post.image 
+    ? `https://perfectresumescan.com${post.image}` 
+    : `https://perfectresumescan.com${DEFAULT_OG_IMAGE}`
+    
   const canonicalUrl = `https://perfectresumescan.com/blog/${slug}`
 
   return {
     title: post.title,
     description: post.description,
+    alternates: {
+      canonical: canonicalUrl,
+    },
     openGraph: {
       title: post.title,
       description: post.description,
@@ -32,6 +40,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       siteName: 'PerfectResumeScan',
       authors: [post.author || 'Engineering Team'],
       publishedTime: post.date,
+      // Explicitly override images - no inheritance
       images: [
         {
           url: ogImage,
@@ -47,12 +56,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       description: post.description,
       images: [ogImage],
     },
-    alternates: {
-      canonical: canonicalUrl,
-    },
   }
 }
-
 
 function getReadTime(content: string) {
   if (!content) return 5;
@@ -78,22 +83,29 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     notFound()
   }
 
+  const pageUrl = `https://perfectresumescan.com/blog/${slug}`
+  const imageUrl = `https://perfectresumescan.com${post.image || DEFAULT_OG_IMAGE}`
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': pageUrl
+    },
     headline: post.title,
     description: post.description,
-    image: `https://perfectresumescan.com${post.image || DEFAULT_OG_IMAGE}`,
+    image: [imageUrl],
     author: {
       '@type': 'Person',
       name: post.author || 'Sidharth',
     },
     publisher: {
       '@type': 'Organization',
-      name: post.publisherName || 'Perfect Resume Scan',
+      name: 'Perfect Resume Scan',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://perfectresumescan.com/logo.svg',
+        url: 'https://perfectresumescan.com/icon.svg',
       },
     },
     datePublished: new Date(post.date).toISOString(),
@@ -105,7 +117,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
   // Fallback configuration for LinkedIn Post
   const liConfig = post.linkedinPost || {
-    text: `💡 Insight: ${post.description} \n\nRead more: https://perfectresumescan.com/blog/${slug}`,
+    text: `💡 Insight: ${post.description} \n\nRead more: ${pageUrl}`,
     visualQuote: post.description || post.title,
     badgeLabel: "Insight"
   }
@@ -118,55 +130,44 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      {/* INLINE STYLES FOR BLOG CONTENT */}
       <style>{`
         /* Base Typography */
         .tech-blog-content {
-          color: #334155; /* slate-700 */
+          color: #334155;
           font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
           line-height: 1.75;
-          font-size: 1.125rem; /* 18px */
+          font-size: 1.125rem;
         }
-        
-        /* Headings */
         .tech-blog-content h2 {
-          color: #0f172a; /* slate-900 */
+          color: #0f172a;
           font-weight: 800;
-          font-size: 2rem; /* 32px */
+          font-size: 2rem;
           margin-top: 3rem;
           margin-bottom: 1.25rem;
           line-height: 1.25;
           letter-spacing: -0.025em;
         }
-        
         .tech-blog-content h3 {
-          color: #1e293b; /* slate-800 */
+          color: #1e293b;
           font-weight: 700;
-          font-size: 1.5rem; /* 24px */
+          font-size: 1.5rem;
           margin-top: 2.5rem;
           margin-bottom: 1rem;
         }
-        
-        /* Text Elements */
         .tech-blog-content p { margin-bottom: 1.5rem; }
-        
         .tech-blog-content ul, .tech-blog-content ol {
           margin-bottom: 1.5rem;
           padding-left: 1.5rem;
         }
-        
         .tech-blog-content ul { list-style-type: disc; }
         .tech-blog-content ol { list-style-type: decimal; }
-        
         .tech-blog-content li {
           margin-bottom: 0.5rem;
           padding-left: 0.5rem;
         }
-        
-        /* Code & Tech Elements */
         .tech-blog-content code {
-          background-color: #f1f5f9; /* slate-100 */
-          color: #0f172a; /* slate-900 */
+          background-color: #f1f5f9;
+          color: #0f172a;
           font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
           font-size: 0.85em;
           font-weight: 600;
@@ -174,10 +175,9 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
           border-radius: 0.25rem;
           border: 1px solid #e2e8f0;
         }
-        
         .tech-blog-content pre {
-          background-color: #0f172a; /* slate-900 */
-          color: #e2e8f0; /* slate-200 */
+          background-color: #0f172a;
+          color: #e2e8f0;
           padding: 1.5rem;
           border-radius: 0.75rem;
           overflow-x: auto;
@@ -186,7 +186,6 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
           line-height: 1.7;
           border: 1px solid #1e293b;
         }
-        
         .tech-blog-content pre code {
           background-color: transparent;
           color: inherit;
@@ -194,17 +193,14 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
           border: none;
           font-weight: 400;
         }
-        
-        /* Components */
         .tech-blog-content blockquote {
-          border-left: 4px solid #6366f1; /* indigo-500 */
+          border-left: 4px solid #6366f1;
           background-color: #f8fafc;
           padding: 1.5rem;
           margin: 2rem 0;
           font-style: italic;
           color: #475569;
         }
-        
         .tech-blog-content table {
           width: 100%;
           border-collapse: collapse;
@@ -214,7 +210,6 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
           border-radius: 0.5rem;
           overflow: hidden;
         }
-        
         .tech-blog-content th {
           background-color: #f8fafc;
           text-align: left;
@@ -223,14 +218,11 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
           font-weight: 600;
           color: #0f172a;
         }
-        
         .tech-blog-content td {
           padding: 0.75rem 1rem;
           border-bottom: 1px solid #e2e8f0;
           vertical-align: top;
         }
-        
-        /* Utility Classes from Content */
         .tech-blog-content .bg-slate-900 { background-color: #0f172a !important; color: #f8fafc !important; }
         .tech-blog-content .bg-slate-100 { background-color: #f1f5f9 !important; border-left: 4px solid #0f172a; }
         .tech-blog-content .text-green-400 { color: #4ade80 !important; }
@@ -241,7 +233,6 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
       <BlogNavbar title={post.title} content={cleanContent} />
 
-      {/* PROGRESS BAR */}
       <div className="h-1 w-full bg-slate-100 fixed top-0 left-0 z-50">
         <div className="h-full bg-indigo-600 w-0" id="scroll-progress"></div>
       </div>
@@ -251,14 +242,12 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         {/* ================= LEFT: CONTENT ================= */}
         <div className="lg:col-span-8 lg:col-start-2">
 
-          {/* Breadcrumb */}
           <nav className="flex items-center gap-2 text-sm text-slate-500 mb-8">
             <Link href="/blog" className="hover:text-indigo-600 transition-colors">Blog</Link>
             <ChevronRight className="w-4 h-4" />
             <span className="font-medium text-slate-900">Engineering</span>
           </nav>
 
-          {/* Header */}
           <header className="mb-12">
             <div className="flex flex-wrap gap-3 mb-6">
               {(post.keywords || ['Engineering']).slice(0, 3).map(tag => (
@@ -276,7 +265,6 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
               {post.description}
             </p>
 
-            {/* Author & Meta Row */}
             <div className="flex items-center gap-6 text-sm border-t border-b border-slate-100 py-4">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold">
@@ -295,13 +283,11 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
             </div>
           </header>
 
-          {/* Content Area */}
           <article
             className="tech-blog-content"
             dangerouslySetInnerHTML={{ __html: post.content || '<p>Content under review.</p>' }}
           />
 
-          {/* Bottom CTA (Mobile + Desktop) */}
           <div className="mt-20 bg-slate-900 rounded-2xl p-8 md:p-12 text-white relative overflow-hidden shadow-2xl">
             <div className="relative z-10">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 text-xs font-bold uppercase tracking-wider mb-6 border border-indigo-500/30">
@@ -327,18 +313,16 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         <aside className="hidden lg:block lg:col-span-3 relative">
           <div className="sticky top-24 space-y-8">
 
-            {/* Sticky LinkedIn Card - ALWAYS VISIBLE */}
             <div>
               <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4 flex items-center gap-2">
                 <Share2 className="w-3 h-3" /> Share Insight
               </p>
               <LinkedInCard
                 config={liConfig}
-                url={`https://perfectresumescan.com/blog/${slug}`}
+                url={pageUrl}
               />
             </div>
 
-            {/* Quick Resume Check - Sidebar Version */}
             <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
               <h4 className="font-bold text-slate-900 mb-2">ATS Score Check</h4>
               <p className="text-sm text-slate-500 mb-4">
@@ -352,7 +336,6 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
               </Link>
             </div>
 
-            {/* Topics */}
             {post.keywords && post.keywords.length > 0 && (
               <div>
                 <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-2">
