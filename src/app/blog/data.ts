@@ -761,7 +761,7 @@ if __name__ == "__main__":
 
             <!-- Right: Action -->
             <div class="mt-5 md:mt-0 flex flex-col items-center shrink-0">
-                <a href="http://localhost:3000/" class="relative inline-flex items-center justify-center px-6 py-3 text-sm font-bold text-white transition-all duration-200 bg-slate-900 font-mono rounded-md hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-900 w-full md:w-auto shadow-lg hover:shadow-xl hover:-translate-y-0.5">
+                <a href="/" class="relative inline-flex items-center justify-center px-6 py-3 text-sm font-bold text-white transition-all duration-200 bg-slate-900 font-mono rounded-md hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-900 w-full md:w-auto shadow-lg hover:shadow-xl hover:-translate-y-0.5">
                     <span>> Check My Resume Score_</span>
                 </a>
                 
@@ -1023,7 +1023,7 @@ if __name__ == "__main__":
                     </div>
 
                     <div class="mt-5 md:mt-0 flex flex-col items-center shrink-0">
-                        <a href="http://localhost:3000/" class="relative inline-flex items-center justify-center px-6 py-3 text-sm font-bold text-white transition-all duration-200 bg-slate-900 font-mono rounded-md hover:bg-slate-800 w-full md:w-auto shadow-lg hover:shadow-xl hover:-translate-y-0.5">
+                        <a href="/" class="relative inline-flex items-center justify-center px-6 py-3 text-sm font-bold text-white transition-all duration-200 bg-slate-900 font-mono rounded-md hover:bg-slate-800 w-full md:w-auto shadow-lg hover:shadow-xl hover:-translate-y-0.5">
                             <span>> Check My Resume Score_</span>
                         </a>
                         <div class="flex items-center gap-2 mt-3 opacity-70">
@@ -1165,7 +1165,7 @@ if __name__ == "__main__":
                         </p>
                     </div>
                     <div class="mt-5 md:mt-0 flex flex-col items-center shrink-0">
-                        <a href="http://localhost:3000/" class="relative inline-flex items-center justify-center px-6 py-3 text-sm font-bold text-white transition-all duration-200 bg-slate-900 font-mono rounded-md hover:bg-slate-800 w-full md:w-auto shadow-lg hover:shadow-xl hover:-translate-y-0.5">
+                        <a href="/" class="relative inline-flex items-center justify-center px-6 py-3 text-sm font-bold text-white transition-all duration-200 bg-slate-900 font-mono rounded-md hover:bg-slate-800 w-full md:w-auto shadow-lg hover:shadow-xl hover:-translate-y-0.5">
                             <span>> Check My Resume Score_</span>
                         </a>
                         <div class="flex items-center gap-2 mt-3 opacity-70">
