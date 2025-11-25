@@ -4,6 +4,8 @@ import mammoth from "mammoth";
 import Anthropic from "@anthropic-ai/sdk";
 
 export async function POST(request: Request) {
+  const startTime = Date.now();
+
   try {
     const form = await request.formData();
     const file = form.get("file") as Blob | null;
@@ -12,10 +14,10 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
     }
 
-    // 1. Extract text from PDF or DOCX
     let resumeText = "";
     const buffer = Buffer.from(await file.arrayBuffer());
     const fileName = (file as File).name.toLowerCase();
+    const fileType = fileName.endsWith('.pdf') ? 'pdf' : 'docx';
 
     if (fileName.endsWith('.pdf')) {
       const pdfData = await pdfParse(buffer);
@@ -37,7 +39,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // 2. Initialize Anthropic (Claude)
     const apiKey = process.env.ANTHROPIC_API_KEY;
     if (!apiKey) {
       return NextResponse.json(
@@ -50,7 +51,6 @@ export async function POST(request: Request) {
       apiKey: apiKey,
     });
 
-    // 3. Define Schema with section field
     const resumeSchema = {
       type: "object",
       properties: {
@@ -100,7 +100,6 @@ export async function POST(request: Request) {
       required: ["score", "scoreLabel", "summary", "missingKeywords", "improvements"],
     } as const;
 
-    // 4. Generate content with Tool Use (Structured Output)
     const msg = await anthropic.messages.create({
       model: "claude-haiku-4-5",
       max_tokens: 4096,
@@ -141,7 +140,6 @@ Perform the analysis and submit the findings using the defined tool structure. M
       ],
     });
 
-    // 5. Extract and Validate JSON
     const toolUseBlock = msg.content.find((block) => block.type === "tool_use");
 
     if (!toolUseBlock || toolUseBlock.type !== "tool_use") {
@@ -149,17 +147,37 @@ Perform the analysis and submit the findings using the defined tool structure. M
     }
 
     const jsonOutput = toolUseBlock.input;
+    const processingTime = ((Date.now() - startTime) / 1000).toFixed(2);
 
-    return NextResponse.json({ ok: true, output: jsonOutput });
+    return NextResponse.json({
+      ok: true,
+      output: jsonOutput,
+      analytics: {
+        status: 'success',
+        file_type: fileType,
+        processing_time: parseFloat(processingTime),
+        ats_score: (jsonOutput as any).score || 0,
+        tokens: {
+          input: msg.usage.input_tokens,
+          output: msg.usage.output_tokens,
+          total: msg.usage.input_tokens + msg.usage.output_tokens
+        }
+      }
+    });
 
   } catch (err: any) {
     console.error("Scan error:", err);
-    return NextResponse.json(
-      { 
-        ok: false,
-        error: err?.message || "An error occurred while analyzing your resume." 
-      }, 
-      { status: 500 }
-    );
+    const processingTime = ((Date.now() - startTime) / 1000).toFixed(2);
+
+    return NextResponse.json({
+      ok: false,
+      error: err?.message || "An error occurred while analyzing your resume.",
+      analytics: {
+        status: 'error',
+        file_type: 'unknown',
+        processing_time: parseFloat(processingTime),
+        error_message: err?.message || 'Unknown error'
+      }
+    }, { status: 500 });
   }
 }
