@@ -8,7 +8,7 @@ const BLOG_URL = 'https://perfectresumescan.com/blog'
 const DEFAULT_IMAGE = '/blog-og-image.jpg'
 
 export const metadata: Metadata = {
-  title: 'Resume Intelligence Blog | Perfect Resume Scan',
+  title: 'Resume Intelligence Blog',
   description: 'Data-backed strategies to beat ATS scanners and get hired. Expert insights on keyword optimization and modern interview strategies.',
   openGraph: {
     title: 'Resume Intelligence Blog | Perfect Resume Scan',

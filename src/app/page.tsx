@@ -25,7 +25,7 @@ export const metadata: Metadata = {
       "Check if your resume beats Applicant Tracking Systems in seconds. Instant score + fixes.",
   },
   twitter: {
-    title: "Free ATS Resume Checker — Instant Score & Fixes",
+    title: "Free ATS Resume Checker - Instant Score & Fixes",
     description: "Upload your resume → see if it passes ATS in seconds",
   },
 };

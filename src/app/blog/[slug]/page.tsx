@@ -29,6 +29,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       description: post.description,
       type: 'article',
       url: canonicalUrl,
+      siteName: 'PerfectResumeScan',
       authors: [post.author || 'Engineering Team'],
       publishedTime: post.date,
       images: [
