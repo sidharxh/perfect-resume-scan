@@ -1184,4 +1184,498 @@ if __name__ == "__main__":
         publisherName: 'Perfect Resume Scan',
         image: '/images/blog/leetcode-ai-interview-guide.png',
     },
+    'top-15-ai-engineer-interview-questions-2025': {
+        slug: 'top-15-ai-engineer-interview-questions-2025',
+        title: 'Top 15 AI Engineering Interview Questions (2025): LLMs, RAG & System Design',
+        description: 'Prepare for Senior AI Engineer roles with these 15 battle-tested questions covering LLM Architecture, RAG Systems, Fine-Tuning, and Production Engineering. Includes detailed answers and system design patterns.',
+        keywords: [
+            'AI Engineer Interview Questions 2025',
+            'RAG Architecture Interview',
+            'LLM System Design',
+            'Generative AI Interview Prep',
+            'Fine-Tuning vs RAG',
+            'Production AI Engineering'
+        ],
+
+        linkedinPost: {
+            text: "The AI Engineering interview has shifted. In 2025, it's no longer about training MNIST models.\n\nIt's about architectural decisions: RAG vs. Fine-Tuning. Vector DB scaling. Quantization strategies.\n\nI've compiled the top 15 technical questions being asked right now for backend-heavy AI roles, covering:\n\n1. **Foundations:** Self-Attention & Tokenization mechanics.\n2. **RAG Systems:** Hybrid Search, Chunking strategies, and Evals.\n3. **Production:** Caching, Latency optimization, and preventing Hallucinations.\n\nMaster these to pass the technical screen. 👇 #AIEngineering #GenerativeAI #SystemDesign #TechInterviews",
+            visualQuote: "Don't just explain the Transformer. Explain how to deploy it efficiently.",
+            badgeLabel: "2025 Interview Guide 🚀"
+        },
+
+        content: `
+        <h2>The New Standard for AI Interviews</h2>
+        <p>Based on the current landscape of AI engineering (2024-2025), the bar has been raised. Companies are looking for engineers who understand <strong>Generative AI</strong>, <strong>RAG pipelines</strong>, and <strong>Production LLM deployment</strong>.</p>
+
+        <p>These 15 questions cover Foundational Architecture, RAG Systems, Fine-Tuning, and Production Engineering, tailored for candidates with a backend and cloud focus.</p>
+
+        <!-- 3D Architecture Visual: RAG Pipeline -->
+        <div class="architecture-diagram my-12 p-8 bg-slate-50 rounded-xl border border-slate-200 shadow-inner">
+            <div class="text-center font-bold text-slate-700 mb-6 uppercase tracking-widest text-xs">The "Must-Know" RAG Architecture</div>
+            
+            <!-- 1. Ingestion -->
+            <div class="flex justify-center mb-8">
+                <div class="bg-indigo-600 text-white px-8 py-4 rounded-lg shadow-lg relative z-10 text-center font-bold w-64 transform transition hover:scale-105">
+                    Ingestion Pipeline
+                    <div class="text-xs font-normal opacity-90 mt-1">Load → Chunk → Embed</div>
+                    <div class="absolute left-1/2 -bottom-8 w-0.5 h-8 bg-slate-300 -translate-x-1/2"></div>
+                    <div class="absolute left-1/2 -bottom-8 text-slate-300 text-xl -translate-x-1/2 translate-y-4">▼</div>
+                </div>
+            </div>
+
+            <!-- 2. Vector Store -->
+            <div class="flex justify-center mb-8">
+                <div class="bg-slate-800 text-white px-6 py-3 rounded-lg shadow-md relative z-10 text-center w-48 border-2 border-slate-700">
+                    <div class="text-xs text-slate-400 uppercase tracking-wider mb-1 font-mono">Vector DB</div>
+                    <div class="font-bold">Pinecone / Milvus</div>
+                    <div class="absolute left-1/2 -bottom-8 w-0.5 h-8 bg-slate-300 -translate-x-1/2"></div>
+                </div>
+            </div>
+
+            <!-- 3. Retrieval & Gen -->
+            <div class="flex justify-center mb-8">
+                <div class="bg-emerald-600 text-white px-6 py-3 rounded-lg shadow-md relative z-10 text-center w-64 border-2 border-emerald-700">
+                    <div class="text-xs text-emerald-200 uppercase tracking-wider mb-1 font-mono">Retrieval & Generation</div>
+                    <div class="font-bold">Hybrid Search + LLM</div>
+                </div>
+            </div>
+        </div>
+
+        <h2>I. LLM Architecture & Foundations</h2>
+
+        <div class="space-y-8 my-8">
+            <!-- Q1 -->
+            <div class="bg-white border-l-4 border-blue-500 p-6 shadow-sm rounded-r-lg">
+                <h3 class="text-xl font-bold text-slate-900 mb-3">1. Explain the Self-Attention mechanism. What are Query, Key, and Value vectors?</h3>
+                <div class="prose prose-slate text-sm text-slate-600">
+                    <p><strong>Answer:</strong> Self-attention enables Transformers to weigh the importance of different words in a sequence relative to each other, capturing long-range dependencies.</p>
+                    <ul class="list-disc pl-5 mt-2 space-y-1">
+                        <li><strong>Concept:</strong> For every token, the model calculates "attention" scores for every other token.</li>
+                        <li><strong>Q, K, V Vectors:</strong>
+                            <ul class="list-circle pl-5 mt-1">
+                                <li><strong>Query (Q):</strong> The current token looking for information (like a search query).</li>
+                                <li><strong>Key (K):</strong> The content of other tokens (like database keys).</li>
+                                <li><strong>Value (V):</strong> The actual information content.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Process:</strong> Dot product of Q and K determines relevance scores (normalized via Softmax). These weights multiply V to produce the final representation.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Q2 -->
+            <div class="bg-white border-l-4 border-blue-500 p-6 shadow-sm rounded-r-lg">
+                <h3 class="text-xl font-bold text-slate-900 mb-3">2. What is Tokenization, and how does it impact performance/cost?</h3>
+                <div class="prose prose-slate text-sm text-slate-600">
+                    <p><strong>Answer:</strong> Converting raw text into numerical tokens (sub-word units via BPE/Byte-Pair Encoding).</p>
+                    <ul class="list-disc pl-5 mt-2 space-y-1">
+                        <li><strong>Performance:</strong> Poor tokenization fails on rare words/code. Efficient tokenizers compress text better, fitting more into the context window.</li>
+                        <li><strong>Cost:</strong> APIs charge per million tokens. Inefficient splitting = higher costs and latency.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Q3 -->
+            <div class="bg-white border-l-4 border-blue-500 p-6 shadow-sm rounded-r-lg">
+                <h3 class="text-xl font-bold text-slate-900 mb-3">3. What are "Hallucinations" and how do you mitigate them?</h3>
+                <div class="prose prose-slate text-sm text-slate-600">
+                    <p><strong>Answer:</strong> When LLMs confidently generate factually incorrect info (probabilistic prediction errors).</p>
+                    <p class="font-bold mt-2">Mitigation Strategies:</p>
+                    <ul class="list-disc pl-5 mt-1 space-y-1">
+                        <li><strong>RAG:</strong> Ground responses in verified external data.</li>
+                        <li><strong>Prompt Engineering:</strong> Instructions like "Answer only using provided context."</li>
+                        <li><strong>Temperature:</strong> Lowering (e.g., 0.0) favors deterministic outputs.</li>
+                        <li><strong>Chain-of-Thought (CoT):</strong> Step-by-step reasoning reduces logic errors.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <h2>II. Retrieval-Augmented Generation (RAG)</h2>
+
+        <div class="space-y-8 my-8">
+            <!-- Q4 -->
+            <div class="bg-white border-l-4 border-emerald-500 p-6 shadow-sm rounded-r-lg">
+                <h3 class="text-xl font-bold text-slate-900 mb-3">4. Explain the end-to-end RAG architecture.</h3>
+                <div class="prose prose-slate text-sm text-slate-600">
+                    <p><strong>Answer:</strong> Two main pipelines:</p>
+                    <ol class="list-decimal pl-5 mt-2 space-y-1">
+                        <li><strong>Ingestion:</strong> Load Docs → Chunk (split text) → Embed (convert to vectors) → Store (Vector DB like Pinecone).</li>
+                        <li><strong>Retrieval & Generation:</strong> User Query → Embed Query → Semantic Search (Cosine Similarity) → Augment Prompt with Context → LLM Generation.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- Q5 -->
+            <div class="bg-white border-l-4 border-emerald-500 p-6 shadow-sm rounded-r-lg">
+                <h3 class="text-xl font-bold text-slate-900 mb-3">5. Dense vs. Sparse Retrieval? When to use Hybrid Search?</h3>
+                <div class="prose prose-slate text-sm text-slate-600">
+                    <ul class="list-disc pl-5 mt-2 space-y-1">
+                        <li><strong>Sparse (BM25):</strong> Matches exact keywords. Fast, explainable, but misses synonyms.</li>
+                        <li><strong>Dense (Vector):</strong> Matches semantic meaning ("canine" matches "dog"). Requires embeddings.</li>
+                        <li><strong>Hybrid Search:</strong> Combines both. Necessary because Dense misses specific IDs (like Product SKUs) that Keyword search catches. Often uses Re-ranking (Cross-Encoder) to merge results.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Q6 -->
+            <div class="bg-white border-l-4 border-emerald-500 p-6 shadow-sm rounded-r-lg">
+                <h3 class="text-xl font-bold text-slate-900 mb-3">6. Chunking Strategies & Retrieval Quality</h3>
+                <div class="prose prose-slate text-sm text-slate-600">
+                    <ul class="list-disc pl-5 mt-2 space-y-1">
+                        <li><strong>Fixed-Size:</strong> Simple split every N tokens. Can break sentences.</li>
+                        <li><strong>Recursive:</strong> Splits by paragraphs first, then sentences. Standard in LangChain.</li>
+                        <li><strong>Semantic:</strong> Splits based on meaning changes. Computational expensive.</li>
+                        <li><strong>Trade-off:</strong> Small chunks = precise retrieval, low context. Large chunks = high context, more noise.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Q7 -->
+            <div class="bg-white border-l-4 border-emerald-500 p-6 shadow-sm rounded-r-lg">
+                <h3 class="text-xl font-bold text-slate-900 mb-3">7. How do you evaluate a RAG system?</h3>
+                <div class="prose prose-slate text-sm text-slate-600">
+                    <p><strong>Answer:</strong> Use frameworks like <strong>RAGAS</strong> or <strong>TruLens</strong>.</p>
+                    <ul class="list-disc pl-5 mt-2 space-y-1">
+                        <li><strong>Retrieval Metrics:</strong> Hit Rate (Recall), MRR (Rank).</li>
+                        <li><strong>Generation Metrics:</strong> Faithfulness (no hallucinations), Answer Relevance (addressed query?).</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contextual Soft Sell -->
+        <div class="bg-blue-50 p-4 border-l-4 border-blue-500 my-8">
+            <p class="text-blue-800 text-sm font-medium">
+                <strong>Resume Check:</strong> Does your resume highlight "RAG Evaluation" or "Hybrid Search"? If not, you might be filtered out. 
+                <a href="/" class="underline hover:text-blue-600">Scan your resume for AI keywords now.</a>
+            </p>
+        </div>
+
+        <h2>III. Fine-Tuning & Optimization</h2>
+
+        <div class="space-y-8 my-8">
+            <!-- Q8 -->
+            <div class="bg-white border-l-4 border-purple-500 p-6 shadow-sm rounded-r-lg">
+                <h3 class="text-xl font-bold text-slate-900 mb-3">8. RAG vs. Fine-Tuning?</h3>
+                <div class="prose prose-slate text-sm text-slate-600">
+                    <ul class="list-disc pl-5 mt-2 space-y-1">
+                        <li><strong>Use RAG:</strong> For frequent data changes (news), factual grounding, citations.</li>
+                        <li><strong>Use Fine-Tuning:</strong> For changing behavior/style (e.g., speak like a pirate), output formatting (JSON), or deep domain language patterns.</li>
+                        <li><strong>Hybrid:</strong> Fine-tune a small model to be a better RAG reasoner.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Q9 -->
+            <div class="bg-white border-l-4 border-purple-500 p-6 shadow-sm rounded-r-lg">
+                <h3 class="text-xl font-bold text-slate-900 mb-3">9. What is PEFT and LoRA?</h3>
+                <div class="prose prose-slate text-sm text-slate-600">
+                    <p><strong>Answer:</strong> Parameter-Efficient Fine-Tuning.</p>
+                    <ul class="list-disc pl-5 mt-2 space-y-1">
+                        <li><strong>LoRA (Low-Rank Adaptation):</strong> Injects small rank decomposition matrices (A, B) into layers. Only trains these adapter weights, freezing the base model.</li>
+                        <li><strong>Benefit:</strong> Reduces trainable params by 99%, enabling training 70B models on consumer GPUs.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Q10 -->
+            <div class="bg-white border-l-4 border-purple-500 p-6 shadow-sm rounded-r-lg">
+                <h3 class="text-xl font-bold text-slate-900 mb-3">10. What is Quantization (QLoRA)?</h3>
+                <div class="prose prose-slate text-sm text-slate-600">
+                    <p><strong>Answer:</strong> Reducing weight precision (16-bit → 4-bit).</p>
+                    <ul class="list-disc pl-5 mt-2 space-y-1">
+                        <li><strong>Impact:</strong> 4-bit models use 4x less VRAM.</li>
+                        <li><strong>QLoRA:</strong> Freezes base model in 4-bit while training LoRA adapters in 16-bit.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <h2>IV. System Design & Production</h2>
+
+        <div class="space-y-8 my-8">
+            <!-- Q11 -->
+            <div class="bg-white border-l-4 border-amber-500 p-6 shadow-sm rounded-r-lg">
+                <h3 class="text-xl font-bold text-slate-900 mb-3">11. Handling Context Limits & "Lost in the Middle"?</h3>
+                <div class="prose prose-slate text-sm text-slate-600">
+                    <ul class="list-disc pl-5 mt-2 space-y-1">
+                        <li><strong>Context Limits:</strong> Use Map-Reduce (summarize docs) or Refine strategies.</li>
+                        <li><strong>Lost in the Middle:</strong> LLMs ignore middle context. Fix: Re-rank relevant docs to the start/end of the prompt.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Q12 -->
+            <div class="bg-white border-l-4 border-amber-500 p-6 shadow-sm rounded-r-lg">
+                <h3 class="text-xl font-bold text-slate-900 mb-3">12. How to optimize GenAI latency?</h3>
+                <div class="prose prose-slate text-sm text-slate-600">
+                    <ul class="list-disc pl-5 mt-2 space-y-1">
+                        <li><strong>Semantic Caching (GPTCache):</strong> Return cached answers for similar queries.</li>
+                        <li><strong>Streaming:</strong> Token-by-token response for perceived speed.</li>
+                        <li><strong>Smaller Models:</strong> Route simple queries to Llama-8B/GPT-4o-mini.</li>
+                        <li><strong>Parallel Retrieval:</strong> Query vector DB and APIs concurrently.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Q13 -->
+            <div class="bg-white border-l-4 border-amber-500 p-6 shadow-sm rounded-r-lg">
+                <h3 class="text-xl font-bold text-slate-900 mb-3">13. LLM vs. Agent?</h3>
+                <div class="prose prose-slate text-sm text-slate-600">
+                    <p><strong>LLM:</strong> Passive engine. Input → Output.</p>
+                    <p><strong>Agent:</strong> LLM + Tools + Loop. Observes task → Decides tool (Search, Calculator) → Executes → Repeats (e.g., ReAct pattern).</p>
+                </div>
+            </div>
+
+            <!-- Q14 -->
+            <div class="bg-white border-l-4 border-amber-500 p-6 shadow-sm rounded-r-lg">
+                <h3 class="text-xl font-bold text-slate-900 mb-3">14. What is RLHF?</h3>
+                <div class="prose prose-slate text-sm text-slate-600">
+                    <p><strong>Answer:</strong> Reinforcement Learning from Human Feedback. Turns raw predictor into helpful Chatbot.</p>
+                    <ul class="list-disc pl-5 mt-2 space-y-1">
+                        <li><strong>SFT:</strong> Supervised Fine-Tuning on Q&A.</li>
+                        <li><strong>Reward Model:</strong> Predicts human preference.</li>
+                        <li><strong>PPO:</strong> Optimizes LLM to maximize reward score.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Q15 -->
+            <div class="bg-white border-l-4 border-amber-500 p-6 shadow-sm rounded-r-lg">
+                <h3 class="text-xl font-bold text-slate-900 mb-3">15. Explain Chain-of-Thought (CoT).</h3>
+                <div class="prose prose-slate text-sm text-slate-600">
+                    <p><strong>Answer:</strong> Prompting model to generate intermediate reasoning steps ("Let's think step by step").</p>
+                    <p><strong>Mechanism:</strong> Generating reasoning tokens "buys compute time" to resolve logic dependencies before the final answer.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- MANDATORY FINAL CTA WIDGET -->
+        <div class="my-12 font-sans mx-auto max-w-3xl">
+            <div class="border border-slate-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 bg-white group">
+                <!-- Fake Window Header -->
+                <div class="bg-slate-100 border-b border-slate-200 px-4 py-2 flex items-center justify-between">
+                    <div class="flex items-center gap-1.5">
+                        <div class="w-3 h-3 rounded-full bg-slate-300 group-hover:bg-red-400 transition-colors"></div>
+                        <div class="w-3 h-3 rounded-full bg-slate-300 group-hover:bg-amber-400 transition-colors"></div>
+                        <div class="w-3 h-3 rounded-full bg-slate-300 group-hover:bg-emerald-400 transition-colors"></div>
+                    </div>
+                    <div class="font-mono text-xs text-slate-400">Resume_ATS_Scanner.exe</div>
+                    <div class="w-10"></div>
+                </div>
+                <div class="p-6 md:flex md:items-center md:justify-between gap-8">
+                    <div class="flex-1">
+                        <h4 class="text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+                            Are You Qualified for these Roles?
+                        </h4>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            Knowing the answers is step one. Step two is proving you have the experience. Check if your resume contains the <span class="font-semibold text-indigo-600 bg-indigo-50 px-1 py-0.5 rounded border border-indigo-100">Production AI Keywords</span> that hiring managers filter for.
+                        </p>
+                    </div>
+                    <div class="mt-5 md:mt-0 flex flex-col items-center shrink-0">
+                        <a href="/" class="relative inline-flex items-center justify-center px-6 py-3 text-sm font-bold text-white transition-all duration-200 bg-slate-900 font-mono rounded-md hover:bg-slate-800 w-full md:w-auto shadow-lg hover:shadow-xl hover:-translate-y-0.5">
+                            <span>> Check My Resume Score_</span>
+                        </a>
+                        <div class="flex items-center gap-2 mt-3 opacity-70">
+                            <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">
+                                No credit card required • Instant
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `,
+
+        date: '2025-11-26',
+        author: 'Sidharth',
+        publisherName: 'Perfect Resume Scan',
+        image: '/images/blog/ai-interview-questions-2025.png',
+    },
+    'research-paper-ai-proof-labor-market-2025': {
+        slug: 'research-paper-ai-proof-labor-market-2025',
+        title: 'The "AI-Proof" Labor Market Equilibrium (2025 Analysis)',
+        description: 'A deep synthesis of 2025 research from NBER, MIT CSAIL, and the IMF. We analyze Moravec’s Paradox, Polanyi’s Paradox, and why "Blue Collar" jobs are now safer than "White Collar" routine cognitive tasks.',
+        keywords: [
+            'Moravec Paradox',
+            'Polanyi Paradox',
+            'AI Labor Displacement 2025',
+            'Future of Work Research',
+            'IMF AI Report',
+            'Automation Safe Zones'
+        ],
+
+        linkedinPost: {
+            text: "The old advice was \"Learn to Code.\" The new data suggests \"Learn to Fix a Sink.\"\n\nWe synthesized 2025 research from MIT, NBER, and the IMF on AI labor displacement.\n\nThe verdict? The \"Safety Hierarchy\" has inverted.\n\n1. **The Physical Barrier:** Why robots still can't fold laundry (Moravec's Paradox).\n2. **The Tacit Barrier:** Why we trust humans with liability, even if AI is smarter (Polanyi's Paradox).\n3. **The Danger Zone:** It's not the Plumbers who are in trouble. It's the Junior Developers.\n\nHere is the full breakdown of the \"Safe Zones\" in the new AI economy. 👇 #FutureOfWork #Economics #AIResearch #LaborMarket",
+            visualQuote: "It is computationally cheaper to replace a Lawyer than a Plumber.",
+            badgeLabel: "Research Analysis 📊"
+        },
+
+        content: `
+        <h2>The "Safety Inversion" Thesis</h2>
+        <p>For decades, the assumption was that automation targets "blue-collar" labor first. The Generative AI wave (2023–2025) has statistically inverted this.</p>
+        
+        <p>Research from the <strong>IMF</strong> and <strong>MIT CSAIL</strong> confirms that AI specifically targets <em>cognitive, routine tasks</em>. Resistance to AI is no longer about intelligence; it's about <strong>physicality</strong> and <strong>liability</strong>.</p>
+
+        <!-- 3D SAFETY HIERARCHY VISUAL -->
+        <div class="safety-hierarchy my-12 p-8 bg-slate-50 rounded-xl border border-slate-200 shadow-inner">
+            <div class="text-center font-bold text-slate-700 mb-6 uppercase tracking-widest text-xs">The 2025 AI Labor Exposure Spectrum</div>
+            
+            <!-- 1. The Safe Zone (Physical) -->
+            <div class="flex justify-center mb-6">
+                <div class="bg-emerald-600 text-white px-8 py-4 rounded-lg shadow-lg relative z-10 text-center font-bold w-72 transform transition hover:scale-105">
+                    Safe Zone: "The Hands-On"
+                    <div class="text-xs font-normal opacity-90 mt-1">Electricians, Surgeons, Caretakers</div>
+                    <div class="text-[10px] mt-2 bg-emerald-800/50 inline-block px-2 py-1 rounded">Protected by Moravec's Paradox</div>
+                </div>
+            </div>
+
+            <!-- 2. The Danger Zone (Routine Cognitive) -->
+            <div class="flex justify-center mb-6">
+                <div class="bg-red-500 text-white px-8 py-4 rounded-lg shadow-lg relative z-10 text-center font-bold w-72 border-2 border-red-600 transform transition hover:scale-105">
+                    Danger Zone: "The Routine"
+                    <div class="text-xs font-normal opacity-90 mt-1">Data Entry, Jr. Coders, Copywriters</div>
+                    <div class="text-[10px] mt-2 bg-red-700/50 inline-block px-2 py-1 rounded">High AI Substitution</div>
+                </div>
+            </div>
+
+            <!-- 3. The Safe Zone (Tacit/Liability) -->
+            <div class="flex justify-center">
+                <div class="bg-blue-600 text-white px-8 py-4 rounded-lg shadow-lg relative z-10 text-center font-bold w-72 transform transition hover:scale-105">
+                    Safe Zone: "The High-Stakes"
+                    <div class="text-xs font-normal opacity-90 mt-1">Judges, Crisis Managers, Therapists</div>
+                    <div class="text-[10px] mt-2 bg-blue-800/50 inline-block px-2 py-1 rounded">Protected by Liability/Empathy</div>
+                </div>
+            </div>
+        </div>
+
+        <h2>1. The Theoretical Barriers (Why AI Can't Do Everything)</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
+            <!-- Moravec -->
+            <div class="bg-white border-l-4 border-emerald-500 p-6 shadow-sm rounded-r-lg">
+                <h3 class="text-lg font-bold text-slate-900 mb-2">A. Moravec’s Paradox (The Physical Wall)</h3>
+                <p class="text-sm text-slate-600 mb-3"><em>"High-level reasoning requires little computation, but low-level sensorimotor skills require enormous resources."</em></p>
+                <p class="text-sm text-slate-700">
+                    <strong>Implication:</strong> It is cheaper to build an AI that passes the Bar Exam than one that can repair a toilet.
+                    <br><br>
+                    <strong>Evidence:</strong> <a href="https://news.mit.edu/2025/using-generative-ai-diversify-virtual-training-grounds-robots-1008" class="text-blue-600 hover:underline">MIT CSAIL (2025)</a> found that the "reality gap" still prevents robots from navigating unstructured spaces like construction sites.
+                </p>
+            </div>
+
+            <!-- Polanyi -->
+            <div class="bg-white border-l-4 border-blue-500 p-6 shadow-sm rounded-r-lg">
+                <h3 class="text-lg font-bold text-slate-900 mb-2">B. Polanyi’s Paradox (The Tacit Wall)</h3>
+                <p class="text-sm text-slate-600 mb-3"><em>"We know more than we can tell."</em></p>
+                <p class="text-sm text-slate-700">
+                    <strong>Implication:</strong> AI learns from <em>codified</em> text. It fails at tasks requiring <em>tacit</em> knowledge (e.g., reading a client's nervous tick).
+                    <br><br>
+                    <strong>Evidence:</strong> NBER research confirms AI creates a "premium" for jobs requiring judgment and "common sense" that cannot be statistically inferred.
+                </p>
+            </div>
+        </div>
+
+        <h2>2. Sector Analysis: The 3 Safe Zones</h2>
+
+        <div class="space-y-8 my-8">
+            <!-- Zone 1 -->
+            <div class="bg-slate-50 p-6 rounded-lg border border-slate-200">
+                <h3 class="text-xl font-bold text-slate-900 mb-2">I. The "Hands-On" Economy (Plumbers, Welders)</h3>
+                <div class="flex gap-2 mb-4">
+                    <span class="bg-emerald-100 text-emerald-800 text-xs px-2 py-1 rounded font-bold">Risk: Lowest</span>
+                    <span class="bg-slate-200 text-slate-700 text-xs px-2 py-1 rounded font-bold">Driver: Unstructured Environments</span>
+                </div>
+                <p class="text-sm text-slate-700 leading-relaxed">
+                    According to the IMF’s 2025 report, "Cleaners and Helpers" have near-zero exposure because their tasks are 90%+ psychomotor. An electrician wiring a custom home faces unique spatial constraints that standardized robots simply cannot navigate cost-effectively.
+                </p>
+            </div>
+
+            <!-- Zone 2 -->
+            <div class="bg-slate-50 p-6 rounded-lg border border-slate-200">
+                <h3 class="text-xl font-bold text-slate-900 mb-2">II. The "High-Stakes" Human (Judges, Surgeons)</h3>
+                <div class="flex gap-2 mb-4">
+                    <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded font-bold">Risk: Low</span>
+                    <span class="bg-slate-200 text-slate-700 text-xs px-2 py-1 rounded font-bold">Driver: Liability & Ethics</span>
+                </div>
+                <p class="text-sm text-slate-700 leading-relaxed">
+                    <strong>The "Liability Shield":</strong> AI is probabilistic (it guesses). Society requires a human to bear legal liability for high-stakes decisions.
+                    <br>
+                    <strong>Data:</strong> A <a href="https://arxiv.org/html/2412.04924v1" class="text-blue-600 hover:underline">2024 study</a> found that while "Data Scientist" tasks faced high startup competition, "Magistrate Judges" faced almost none. The barrier isn't feasibility; it's accountability.
+                </p>
+            </div>
+
+            <!-- Zone 3 -->
+            <div class="bg-slate-50 p-6 rounded-lg border border-slate-200">
+                <h3 class="text-xl font-bold text-slate-900 mb-2">III. The "Tacit" Professional (Therapists, Leaders)</h3>
+                <div class="flex gap-2 mb-4">
+                    <span class="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded font-bold">Risk: Low</span>
+                    <span class="bg-slate-200 text-slate-700 text-xs px-2 py-1 rounded font-bold">Driver: Empathy & Synthesis</span>
+                </div>
+                <p class="text-sm text-slate-700 leading-relaxed">
+                    <strong>The Complementarity Effect:</strong> NBER’s <em>Generative AI at Work</em> found AI increased productivity but <strong>did not replace</strong> the need for human empathy in complex cases. Humans retain a massive advantage in tasks requiring "nuanced judgment" or interpreting ambiguous social cues (The "Jagged Frontier").
+                </p>
+            </div>
+        </div>
+
+        <!-- Contextual Soft Sell -->
+        <div class="bg-red-50 p-4 border-l-4 border-red-500 my-8">
+            <p class="text-red-800 text-sm font-medium">
+                <strong>Are you in the "Squeezed Middle"?</strong>
+                Routine cognitive roles (Junior Devs, Analysts) face the highest risk. 
+                <a href="/" class="underline hover:text-red-900">Check your resume's "Automation Risk Score" based on your current skills.</a>
+            </p>
+        </div>
+
+        <h2>3. The "Junior" Cliff (What is NOT Safe)</h2>
+        <p>Research challenges the "High Tech = Safe" assumption. The IMF notes that 40% of global employment is exposed, with <strong>high-income cognitive jobs</strong> being <em>more</em> at risk than low-income physical jobs.</p>
+        
+        <ul class="list-disc ml-6 space-y-2 text-slate-700 my-4">
+            <li><strong>The Junior Trap:</strong> NBER data indicates AI compresses the skill gap. "Junior" roles (paralegals, junior devs) whose value was "grunt work" are being automated.</li>
+            <li><strong>The Synthesizer Premium:</strong> Value has shifted from "generating" code/text to "synthesizing" and "verifying" AI outputs.</li>
+        </ul>
+
+        <!-- MANDATORY FINAL CTA WIDGET -->
+        <div class="my-12 font-sans mx-auto max-w-3xl">
+            <div class="border border-slate-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 bg-white group">
+                <!-- Fake Window Header -->
+                <div class="bg-slate-100 border-b border-slate-200 px-4 py-2 flex items-center justify-between">
+                    <div class="flex items-center gap-1.5">
+                        <div class="w-3 h-3 rounded-full bg-slate-300 group-hover:bg-red-400 transition-colors"></div>
+                        <div class="w-3 h-3 rounded-full bg-slate-300 group-hover:bg-amber-400 transition-colors"></div>
+                        <div class="w-3 h-3 rounded-full bg-slate-300 group-hover:bg-emerald-400 transition-colors"></div>
+                    </div>
+                    <div class="font-mono text-xs text-slate-400">Resume_Risk_Scanner.exe</div>
+                    <div class="w-10"></div>
+                </div>
+                <div class="p-6 md:flex md:items-center md:justify-between gap-8">
+                    <div class="flex-1">
+                        <h4 class="text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+                            Is Your Career Path "AI-Proof"?
+                        </h4>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            We analyzed thousands of job descriptions against the 2025 Automation Index. See if your current skill stack places you in the <span class="font-semibold text-red-600 bg-red-50 px-1 py-0.5 rounded border border-red-100">Danger Zone</span> or the Safe Zone.
+                        </p>
+                    </div>
+                    <div class="mt-5 md:mt-0 flex flex-col items-center shrink-0">
+                        <a href="http://localhost:3000/" class="relative inline-flex items-center justify-center px-6 py-3 text-sm font-bold text-white transition-all duration-200 bg-slate-900 font-mono rounded-md hover:bg-slate-800 w-full md:w-auto shadow-lg hover:shadow-xl hover:-translate-y-0.5">
+                            <span>> Calculate My Risk Score_</span>
+                        </a>
+                        <div class="flex items-center gap-2 mt-3 opacity-70">
+                            <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">
+                                No credit card required • Instant
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `,
+
+        date: '2025-11-26',
+        author: 'Sidharth',
+        publisherName: 'Perfect Resume Scan',
+        image: '/images/blog/ai-proof-labor-market-research-2025.png',
+    },
+
 };
