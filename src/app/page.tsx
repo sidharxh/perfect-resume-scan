@@ -6,10 +6,10 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: {
-    absolute: "PerfectResumeScan — Free ATS Resume Checker & Optimizer (2025)",
+    absolute: "PerfectResumeScan | Free ATS Resume Checker & Optimizer (2025)",
   },
   description:
-    "Free instant ATS resume scanner. Get your compatibility score, missing keywords, and AI-powered bullet fixes in seconds — no signup required.",
+    "Free instant ATS resume scanner. Get your compatibility score, missing keywords, and AI-powered bullet fixes in seconds - no signup required.",
   keywords: [
     "ATS resume checker",
     "free ATS scanner",
