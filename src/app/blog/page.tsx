@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { blogs } from './data'
+import { blogs } from './data' // Make sure this path is correct for your project
 import { Metadata } from 'next'
 import { ArrowRight, Clock, TrendingUp } from 'lucide-react'
 
@@ -8,31 +8,31 @@ const BLOG_URL = 'https://perfectresumescan.com/blog'
 const DEFAULT_IMAGE = '/blog-og-image.jpg'
 
 export const metadata: Metadata = {
-  title: 'Resume Intelligence Blog | Perfect Resume Scan',
-  description: 'Data-backed strategies to beat ATS scanners and get hired. Expert insights on keyword optimization and modern interview strategies.',
+  title: 'Resume Intelligence Blog | Expert ATS & Interview Strategies',
+  description: 'Data-backed strategies to beat ATS scanners and get hired. Expert insights on keyword optimization, resume formatting, and modern interview strategies.',
+  alternates: {
+    canonical: BLOG_URL,
+  },
   openGraph: {
-    title: 'Resume Intelligence Blog | Perfect Resume Scan',
+    title: 'Resume Intelligence Blog | PerfectResumeScan',
     description: 'Data-backed strategies to beat ATS scanners and get hired.',
     url: BLOG_URL,
-    siteName: 'Perfect Resume Scan',
+    siteName: 'PerfectResumeScan',
     images: [
       {
         url: DEFAULT_IMAGE,
         width: 1200,
         height: 630,
-        alt: 'Resume Intelligence Blog Cover',
+        alt: 'Resume Intelligence Blog - PerfectResumeScan',
       },
     ],
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Resume Intelligence Blog',
+    title: 'Resume Intelligence Blog | PerfectResumeScan',
     description: 'Data-backed strategies to beat ATS scanners and get hired.',
     images: [DEFAULT_IMAGE],
-  },
-  alternates: {
-    canonical: BLOG_URL,
   },
 }
 
@@ -46,21 +46,25 @@ export default function BlogIndex() {
   const featuredPost = allPosts[0]
   const regularPosts = allPosts.slice(1)
 
+  // Improved JSON-LD for a Blog Collection Page
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
-    headline: 'Resume Intelligence Blog',
+    name: 'Resume Intelligence Blog',
+    headline: 'Crack the Hiring Code: ATS & Resume Strategies',
     description: 'Data-backed strategies to beat ATS scanners and get hired.',
     url: BLOG_URL,
     image: `https://perfectresumescan.com${DEFAULT_IMAGE}`,
     publisher: {
       '@type': 'Organization',
       name: 'Perfect Resume Scan',
+      url: 'https://perfectresumescan.com',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://perfectresumescan.com/logo.svg'
+        url: 'https://perfectresumescan.com/icon.svg'
       }
     },
+    // Tells Google this page contains a list of blog posts
     mainEntity: {
       '@type': 'ItemList',
       itemListElement: allPosts.map((post, index) => ({
@@ -69,13 +73,17 @@ export default function BlogIndex() {
         url: `https://perfectresumescan.com/blog/${post.slug}`,
         name: post.title,
         description: post.description,
+        image: post.image 
+          ? `https://perfectresumescan.com${post.image}` 
+          : `https://perfectresumescan.com${DEFAULT_IMAGE}`
       })),
     },
   }
 
   return (
     <div className="min-h-screen bg-slate-50 pt-32 pb-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden font-sans">
-
+      
+      {/* JSON-LD Script Injection */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -107,14 +115,14 @@ export default function BlogIndex() {
             <Link href={`/blog/${featuredPost.slug}`} className="block">
               <div className="relative bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-200 hover:shadow-2xl hover:shadow-blue-900/10 transition-all duration-500 grid md:grid-cols-2 min-h-[400px]">
 
-                {/* Image Side (Optimized with Next/Image) */}
+                {/* Image Side */}
                 <div className="relative h-64 md:h-full overflow-hidden bg-slate-100">
                   <div className="absolute inset-0 bg-slate-900/10 group-hover:bg-slate-900/0 transition-colors z-10" />
                   <Image
                     src={featuredPost.image || DEFAULT_IMAGE}
                     alt={featuredPost.title}
                     fill
-                    priority // Load LCP image immediately
+                    priority 
                     className="object-cover transform group-hover:scale-105 transition-transform duration-700"
                     sizes="(max-width: 768px) 100vw, 50vw"
                   />
@@ -165,7 +173,7 @@ export default function BlogIndex() {
               <Link key={post.slug} href={`/blog/${post.slug}`} className="group flex flex-col h-full">
                 <div className="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-xl hover:shadow-blue-900/5 hover:-translate-y-1 transition-all duration-300 flex flex-col h-full relative">
 
-                  {/* Image (Optimized with Next/Image) */}
+                  {/* Image */}
                   <div className="aspect-[16/10] overflow-hidden relative bg-slate-100">
                     <div className="absolute inset-0 bg-slate-900/0 group-hover:bg-slate-900/5 transition-colors z-10" />
                     <Image
