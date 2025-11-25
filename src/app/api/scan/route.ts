@@ -2,23 +2,8 @@ import { NextResponse } from "next/server";
 import pdfParse from "pdf-parse";
 import mammoth from "mammoth";
 import Anthropic from "@anthropic-ai/sdk";
-import { sendGAEvent } from '@next/third-parties/google'
-
-interface ResumeAnalysis {
-  score: number;
-  scoreLabel: string;
-  summary: string;
-  missingKeywords: string[];
-  improvements: Array<{
-    type: string;
-    section: string;
-    original: string;
-    optimized: string;
-  }>;
-}
 
 export async function POST(request: Request) {
-  const startTime = Date.now();
   try {
     const form = await request.formData();
     const file = form.get("file") as Blob | null;
@@ -27,7 +12,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
     }
 
-    // 1. Extract text from PDF or DOCx
+    // 1. Extract text from PDF or DOCX
     let resumeText = "";
     const buffer = Buffer.from(await file.arrayBuffer());
     const fileName = (file as File).name.toLowerCase();
@@ -69,17 +54,17 @@ export async function POST(request: Request) {
     const resumeSchema = {
       type: "object",
       properties: {
-        score: {
-          type: "number",
-          description: "ATS score from 0 to 100"
+        score: { 
+          type: "number", 
+          description: "ATS score from 0 to 100" 
         },
-        scoreLabel: {
-          type: "string",
-          description: "e.g., 'Needs Improvement', 'Good', 'Excellent'"
+        scoreLabel: { 
+          type: "string", 
+          description: "e.g., 'Needs Improvement', 'Good', 'Excellent'" 
         },
-        summary: {
-          type: "string",
-          description: "A 1-sentence summary of the resume status"
+        summary: { 
+          type: "string", 
+          description: "A 1-sentence summary of the resume status" 
         },
         missingKeywords: {
           type: "array",
@@ -91,21 +76,21 @@ export async function POST(request: Request) {
           items: {
             type: "object",
             properties: {
-              type: {
-                type: "string",
-                description: "e.g. 'Weak Action Verb', 'Formatting', 'Vague Achievement'"
+              type: { 
+                type: "string", 
+                description: "e.g. 'Weak Action Verb', 'Formatting', 'Vague Achievement'" 
               },
               section: {
                 type: "string",
                 description: "The resume section where this issue was found, e.g. 'Experience', 'Education', 'Skills', 'Summary', 'Contact Info'"
               },
-              original: {
-                type: "string",
-                description: "The original text from the resume"
+              original: { 
+                type: "string", 
+                description: "The original text from the resume" 
               },
-              optimized: {
-                type: "string",
-                description: "The optimized version"
+              optimized: { 
+                type: "string", 
+                description: "The optimized version" 
               }
             },
             required: ["type", "section", "original", "optimized"]
@@ -163,43 +148,17 @@ Perform the analysis and submit the findings using the defined tool structure. M
       throw new Error("Claude did not return a structured response.");
     }
 
-    const jsonOutput = toolUseBlock.input as ResumeAnalysis;
-
-    // Calculate processing time
-    const processingTime = ((Date.now() - startTime) / 1000).toFixed(2);
-
-    // Get first 100 words of resume
-    const first100Words = resumeText
-      .split(/\s+/)
-      .slice(0, 100)
-      .join(' ');
-
-    // Log simple analytics
-    sendGAEvent('event', 'ats_score_checker', {
-      resume_preview: first100Words,
-      processing_time_sec: parseFloat(processingTime),
-      ats_score: jsonOutput.score || 0,
-      status: 'success'
-    });
-
+    const jsonOutput = toolUseBlock.input;
 
     return NextResponse.json({ ok: true, output: jsonOutput });
 
   } catch (err: any) {
     console.error("Scan error:", err);
-    const processingTime = ((Date.now() - startTime) / 1000).toFixed(2);
-
-    sendGAEvent('event', 'ats_score_checker', {
-      status: 'error',
-      processing_time_sec: parseFloat(processingTime),
-      error_message: err?.message?.substring(0, 100) || 'unknown'
-    });
-
     return NextResponse.json(
-      {
+      { 
         ok: false,
-        error: err?.message || "An error occurred while analyzing your resume."
-      },
+        error: err?.message || "An error occurred while analyzing your resume." 
+      }, 
       { status: 500 }
     );
   }
