@@ -1,4 +1,6 @@
+import Link from 'next/link';
 import { Target, Twitter, Linkedin, Facebook } from 'lucide-react';
+
 
 export default function Footer() {
   return (
@@ -20,43 +22,51 @@ export default function Footer() {
             </p>
           </div>
 
+
           {/* Navigation Column */}
           <div>
             <h4 className="font-bold text-slate-900 mb-4">Navigation</h4>
             <ul className="space-y-2 text-sm text-slate-600">
               <li>
-                <a href="#faq" className="hover:text-blue-600">
+                <Link href="/blog" className="hover:text-blue-600">
+                  Blog
+                </Link>
+              </li>
+              <li>
+                <Link href="#faq" className="hover:text-blue-600">
                   FAQ
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#features" className="hover:text-blue-600">
+                <Link href="#features" className="hover:text-blue-600">
                   Features
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#sample-resume" className="hover:text-blue-600">
+                <Link href="#sample-resume" className="hover:text-blue-600">
                   Sample Resume
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
+
 
           {/* Product/Action Column */}
           <div>
             <h4 className="font-bold text-slate-900 mb-4">Product</h4>
             <ul className="space-y-2 text-sm text-slate-600">
               <li>
-                <a
+                <Link
                   href="#"
                   className="hover:text-blue-600 text-left transition-colors"
                 >
                   Resume Scanner
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
         </div>
+
 
         <div className="border-t border-slate-100 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-slate-400">
