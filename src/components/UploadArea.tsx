@@ -1,22 +1,28 @@
 'use client';
 
 import React, { useState } from 'react';
-import ResultCard from './ResultCard';
+// Remove ResultCard import - UploadArea no longer renders it!
 import { ScanResponse } from '@/types';
 import { UploadCloud, FileText, CheckCircle } from 'lucide-react';
 import { sendGAEvent } from '@next/third-parties/google';
 
 interface UploadAreaProps {
   id: string;
+  // Add the callback prop so we can tell Hero when we're done
+  onScanComplete?: (result: ScanResponse) => void;
 }
 
 // Helper to sanitize strings for GA4 (Alphanumeric + _ - .)
 const sanitize = (str: string) => (str || 'unknown').replace(/[^a-zA-Z0-9._-]/g, '_').substring(0, 50);
 
-export default function UploadArea({ id }: UploadAreaProps) {
+export default function UploadArea({ id, onScanComplete }: UploadAreaProps) {
+  // "result" status is technically no longer needed for rendering ResultCard locally, 
+  // but we keep "processing" state for the progress bar UI.
   const [status, setStatus] = useState<'idle' | 'processing' | 'result'>('idle');
   const [progress, setProgress] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  // We don't strictly need local scanResult state anymore since we pass it up, 
+  // but keeping it doesn't hurt if you want to debug.
   const [scanResult, setScanResult] = useState<ScanResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -90,11 +96,22 @@ export default function UploadArea({ id }: UploadAreaProps) {
         });
       }
 
+      // --- CRITICAL CHANGE START ---
+      
+      // 1. Save to localStorage with your requested key
+      localStorage.setItem("scanResult", JSON.stringify(data.output));      
+      // 2. Notify Parent (Hero) via callback
+      if (onScanComplete) { onScanComplete(data); }
 
-      setScanResult(data);
-      setTimeout(() => {
-        setStatus('result');
-      }, 500);
+      // 3. Reset local state (Hero will now unmount this component and show ResultCard)
+      // We don't setScanResult or setStatus('result') here anymore because 
+      // this component is about to disappear.
+      setStatus('idle');
+      setProgress(0);
+      setIsDragging(false);
+
+      // --- CRITICAL CHANGE END ---
+
     } catch (err: any) {
       if (progressInterval) clearInterval(progressInterval);
       console.error('Scan error:', err);
@@ -141,14 +158,8 @@ export default function UploadArea({ id }: UploadAreaProps) {
     e.target.value = '';
   };
 
-  const resetScan = () => {
-    setStatus('idle');
-    setScanResult(null);
-    setError(null);
-    setProgress(0);
-    setIsDragging(false);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  // Removed "resetScan" function entirely because UploadArea doesn't handle resets anymore.
+  // Reset logic is now in Hero/ResultCard.
 
   return (
     <div className="w-full max-w-3xl mx-auto" id={id}>
@@ -254,7 +265,6 @@ export default function UploadArea({ id }: UploadAreaProps) {
           {/* Processing Content */}
           <div className="px-4 sm:px-6 md:px-8 py-6 sm:py-8 bg-slate-50">
             <div className="max-w-5xl mx-auto space-y-6">
-
               {/* Progress Bar */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-xs sm:text-sm mb-1">
@@ -273,9 +283,7 @@ export default function UploadArea({ id }: UploadAreaProps) {
               <div className="grid grid-cols-2 gap-3 sm:gap-4">
 
                 {/* Stage 1 - Upload */}
-                <div className={`relative overflow-hidden rounded-xl border-2 transition-all duration-500 ${progress > 15 ? 'border-blue-300 shadow-md' : 'border-slate-200'
-                  }`}>
-                  {/* Fluid Fill Effect */}
+                <div className={`relative overflow-hidden rounded-xl border-2 transition-all duration-500 ${progress > 15 ? 'border-blue-300 shadow-md' : 'border-slate-200'}`}>
                   <div
                     className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-blue-500 to-blue-400 transition-all duration-700 ease-out"
                     style={{
@@ -283,11 +291,8 @@ export default function UploadArea({ id }: UploadAreaProps) {
                       opacity: progress > 15 ? 0.15 : 0
                     }}
                   ></div>
-
-                  {/* Content */}
                   <div className="relative p-3 sm:p-4 flex flex-col items-center text-center gap-2 sm:gap-3">
-                    <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center transition-all duration-500 ${progress > 15 ? 'bg-blue-600 shadow-lg' : 'bg-slate-300'
-                      }`}>
+                    <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center transition-all duration-500 ${progress > 15 ? 'bg-blue-600 shadow-lg' : 'bg-slate-300'}`}>
                       {progress > 30 ? (
                         <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
@@ -299,20 +304,14 @@ export default function UploadArea({ id }: UploadAreaProps) {
                       )}
                     </div>
                     <div>
-                      <h4 className={`text-xs sm:text-sm font-bold mb-1 transition-colors ${progress > 15 ? 'text-blue-900' : 'text-slate-500'
-                        }`}>
-                        Upload
-                      </h4>
-                      <p className="text-[10px] sm:text-xs text-slate-600 leading-snug">
-                        Receiving & validating file
-                      </p>
+                      <h4 className={`text-xs sm:text-sm font-bold mb-1 transition-colors ${progress > 15 ? 'text-blue-900' : 'text-slate-500'}`}>Upload</h4>
+                      <p className="text-[10px] sm:text-xs text-slate-600 leading-snug">Receiving & validating file</p>
                     </div>
                   </div>
                 </div>
 
                 {/* Stage 2 - Parse */}
-                <div className={`relative overflow-hidden rounded-xl border-2 transition-all duration-500 ${progress > 30 ? 'border-blue-300 shadow-md' : 'border-slate-200'
-                  }`}>
+                <div className={`relative overflow-hidden rounded-xl border-2 transition-all duration-500 ${progress > 30 ? 'border-blue-300 shadow-md' : 'border-slate-200'}`}>
                   <div
                     className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-blue-500 to-blue-400 transition-all duration-700 ease-out"
                     style={{
@@ -320,10 +319,8 @@ export default function UploadArea({ id }: UploadAreaProps) {
                       opacity: progress > 30 ? 0.15 : 0
                     }}
                   ></div>
-
                   <div className="relative p-3 sm:p-4 flex flex-col items-center text-center gap-2 sm:gap-3">
-                    <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center transition-all duration-500 ${progress > 30 ? 'bg-blue-600 shadow-lg' : 'bg-slate-300'
-                      }`}>
+                    <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center transition-all duration-500 ${progress > 30 ? 'bg-blue-600 shadow-lg' : 'bg-slate-300'}`}>
                       {progress > 45 ? (
                         <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
@@ -335,20 +332,14 @@ export default function UploadArea({ id }: UploadAreaProps) {
                       )}
                     </div>
                     <div>
-                      <h4 className={`text-xs sm:text-sm font-bold mb-1 transition-colors ${progress > 30 ? 'text-blue-900' : 'text-slate-500'
-                        }`}>
-                        Parse
-                      </h4>
-                      <p className="text-[10px] sm:text-xs text-slate-600 leading-snug">
-                        Analyzing structure
-                      </p>
+                      <h4 className={`text-xs sm:text-sm font-bold mb-1 transition-colors ${progress > 30 ? 'text-blue-900' : 'text-slate-500'}`}>Parse</h4>
+                      <p className="text-[10px] sm:text-xs text-slate-600 leading-snug">Analyzing structure</p>
                     </div>
                   </div>
                 </div>
 
                 {/* Stage 3 - Extract */}
-                <div className={`relative overflow-hidden rounded-xl border-2 transition-all duration-500 ${progress > 45 ? 'border-blue-300 shadow-md' : 'border-slate-200'
-                  }`}>
+                <div className={`relative overflow-hidden rounded-xl border-2 transition-all duration-500 ${progress > 45 ? 'border-blue-300 shadow-md' : 'border-slate-200'}`}>
                   <div
                     className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-blue-500 to-blue-400 transition-all duration-700 ease-out"
                     style={{
@@ -356,10 +347,8 @@ export default function UploadArea({ id }: UploadAreaProps) {
                       opacity: progress > 45 ? 0.15 : 0
                     }}
                   ></div>
-
                   <div className="relative p-3 sm:p-4 flex flex-col items-center text-center gap-2 sm:gap-3">
-                    <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center transition-all duration-500 ${progress > 45 ? 'bg-blue-600 shadow-lg' : 'bg-slate-300'
-                      }`}>
+                    <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center transition-all duration-500 ${progress > 45 ? 'bg-blue-600 shadow-lg' : 'bg-slate-300'}`}>
                       {progress > 60 ? (
                         <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
@@ -371,21 +360,14 @@ export default function UploadArea({ id }: UploadAreaProps) {
                       )}
                     </div>
                     <div>
-                      <h4 className={`text-xs sm:text-sm font-bold mb-1 transition-colors ${progress > 45 ? 'text-blue-900' : 'text-slate-500'
-                        }`}>
-                        Extract
-                      </h4>
-                      <p className="text-[10px] sm:text-xs text-slate-600 leading-snug">
-                        Extracting content data
-                      </p>
+                      <h4 className={`text-xs sm:text-sm font-bold mb-1 transition-colors ${progress > 45 ? 'text-blue-900' : 'text-slate-500'}`}>Extract</h4>
+                      <p className="text-[10px] sm:text-xs text-slate-600 leading-snug">Extracting content data</p>
                     </div>
                   </div>
                 </div>
 
-
                 {/* Stage 4 - Analyze */}
-                <div className={`relative overflow-hidden rounded-xl border-2 transition-all duration-500 ${progress > 60 ? 'border-blue-300 shadow-md' : 'border-slate-200'
-                  }`}>
+                <div className={`relative overflow-hidden rounded-xl border-2 transition-all duration-500 ${progress > 60 ? 'border-blue-300 shadow-md' : 'border-slate-200'}`}>
                   <div
                     className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-blue-500 to-blue-400 transition-all duration-700 ease-out"
                     style={{
@@ -393,10 +375,8 @@ export default function UploadArea({ id }: UploadAreaProps) {
                       opacity: progress > 60 ? 0.15 : 0
                     }}
                   ></div>
-
                   <div className="relative p-3 sm:p-4 flex flex-col items-center text-center gap-2 sm:gap-3">
-                    <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center transition-all duration-500 ${progress > 60 ? 'bg-blue-600 shadow-lg' : 'bg-slate-300'
-                      }`}>
+                    <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center transition-all duration-500 ${progress > 60 ? 'bg-blue-600 shadow-lg' : 'bg-slate-300'}`}>
                       {progress > 75 ? (
                         <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
@@ -408,21 +388,14 @@ export default function UploadArea({ id }: UploadAreaProps) {
                       )}
                     </div>
                     <div>
-                      <h4 className={`text-xs sm:text-sm font-bold mb-1 transition-colors ${progress > 60 ? 'text-blue-900' : 'text-slate-500'
-                        }`}>
-                        AI Analysis
-                      </h4>
-                      <p className="text-[10px] sm:text-xs text-slate-600 leading-snug">
-                        Running AI evaluation
-                      </p>
+                      <h4 className={`text-xs sm:text-sm font-bold mb-1 transition-colors ${progress > 60 ? 'text-blue-900' : 'text-slate-500'}`}>AI Analysis</h4>
+                      <p className="text-[10px] sm:text-xs text-slate-600 leading-snug">Running AI evaluation</p>
                     </div>
                   </div>
                 </div>
 
-
                 {/* Stage 5 - Score */}
-                <div className={`relative overflow-hidden rounded-xl border-2 transition-all duration-500 ${progress > 75 ? 'border-blue-300 shadow-md' : 'border-slate-200'
-                  }`}>
+                <div className={`relative overflow-hidden rounded-xl border-2 transition-all duration-500 ${progress > 75 ? 'border-blue-300 shadow-md' : 'border-slate-200'}`}>
                   <div
                     className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-blue-500 to-blue-400 transition-all duration-700 ease-out"
                     style={{
@@ -430,10 +403,8 @@ export default function UploadArea({ id }: UploadAreaProps) {
                       opacity: progress > 75 ? 0.15 : 0
                     }}
                   ></div>
-
                   <div className="relative p-3 sm:p-4 flex flex-col items-center text-center gap-2 sm:gap-3">
-                    <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center transition-all duration-500 ${progress > 75 ? 'bg-blue-600 shadow-lg' : 'bg-slate-300'
-                      }`}>
+                    <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center transition-all duration-500 ${progress > 75 ? 'bg-blue-600 shadow-lg' : 'bg-slate-300'}`}>
                       {progress > 90 ? (
                         <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
@@ -445,21 +416,14 @@ export default function UploadArea({ id }: UploadAreaProps) {
                       )}
                     </div>
                     <div>
-                      <h4 className={`text-xs sm:text-sm font-bold mb-1 transition-colors ${progress > 75 ? 'text-blue-900' : 'text-slate-500'
-                        }`}>
-                        ATS Score
-                      </h4>
-                      <p className="text-[10px] sm:text-xs text-slate-600 leading-snug">
-                        Calculating compatibility
-                      </p>
+                      <h4 className={`text-xs sm:text-sm font-bold mb-1 transition-colors ${progress > 75 ? 'text-blue-900' : 'text-slate-500'}`}>ATS Score</h4>
+                      <p className="text-[10px] sm:text-xs text-slate-600 leading-snug">Calculating compatibility</p>
                     </div>
                   </div>
                 </div>
 
-
                 {/* Stage 6 - Complete */}
-                <div className={`relative overflow-hidden rounded-xl border-2 transition-all duration-500 ${progress > 90 ? 'border-blue-300 shadow-md' : 'border-slate-200'
-                  }`}>
+                <div className={`relative overflow-hidden rounded-xl border-2 transition-all duration-500 ${progress > 90 ? 'border-blue-300 shadow-md' : 'border-slate-200'}`}>
                   <div
                     className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-blue-500 to-blue-400 transition-all duration-700 ease-out"
                     style={{
@@ -467,29 +431,20 @@ export default function UploadArea({ id }: UploadAreaProps) {
                       opacity: progress > 90 ? 0.15 : 0
                     }}
                   ></div>
-
                   <div className="relative p-3 sm:p-4 flex flex-col items-center text-center gap-2 sm:gap-3">
-                    <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center transition-all duration-500 ${progress > 90 ? 'bg-blue-600 shadow-lg' : 'bg-slate-300'
-                      }`}>
+                    <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center transition-all duration-500 ${progress > 90 ? 'bg-blue-600 shadow-lg' : 'bg-slate-300'}`}>
                       <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                     </div>
                     <div>
-                      <h4 className={`text-xs sm:text-sm font-bold mb-1 transition-colors ${progress > 90 ? 'text-blue-900' : 'text-slate-500'
-                        }`}>
-                        Finalize
-                      </h4>
-                      <p className="text-[10px] sm:text-xs text-slate-600 leading-snug">
-                        Generating full report
-                      </p>
+                      <h4 className={`text-xs sm:text-sm font-bold mb-1 transition-colors ${progress > 90 ? 'text-blue-900' : 'text-slate-500'}`}>Finalize</h4>
+                      <p className="text-[10px] sm:text-xs text-slate-600 leading-snug">Generating full report</p>
                     </div>
                   </div>
                 </div>
 
-
               </div>
-
 
               {/* Security Notice */}
               <div className="flex items-center justify-center gap-2 pt-2">
@@ -501,14 +456,9 @@ export default function UploadArea({ id }: UploadAreaProps) {
                 </p>
               </div>
 
-
             </div>
           </div>
         </div>
-      )}
-
-      {status === 'result' && scanResult?.output && (
-        <ResultCard result={scanResult.output} resetScan={resetScan} />
       )}
     </div>
   );

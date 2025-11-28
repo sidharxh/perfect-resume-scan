@@ -1,4 +1,11 @@
-export interface ScanResult {
+export interface Improvement {
+  type: string;
+  section: string;
+  original: string;
+  optimized: string;
+}
+
+export interface ResumeAnalysis {
   score: number;
   scoreLabel: string;
   summary: string;
@@ -6,15 +13,21 @@ export interface ScanResult {
   improvements: Improvement[];
 }
 
-export interface Improvement {
-  type: string;
-  section: string;  // e.g., "Experience", "Education", "Skills", "Summary"
-  original: string;
-  optimized: string;
-}
-
 export interface ScanResponse {
   ok: boolean;
-  output?: ScanResult;
+  output: ResumeAnalysis;
+  analytics?: {
+    status: string;
+    file_type: string;
+    processing_time: number;
+    tokens?: {
+      input: number;
+      output: number;
+      total: number;
+    };
+    missing_keywords_count?: number;
+    improvements_count?: number;
+    improvement_types?: string;
+  };
   error?: string;
 }

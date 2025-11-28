@@ -1,6 +1,48 @@
+'use client';
+
+import { useEffect, useState, useCallback } from 'react';
 import UploadArea from './UploadArea';
+import ResultCard from './ResultCard'; // Ensure this path is correct
+import { ScanResponse } from '@/types'; // Ensure this path matches your project structure
 
 export default function Hero() {
+  const [scanResult, setScanResult] = useState<ScanResponse | null>(null);
+
+  // 1. On Mount: Check for existing result in localStorage
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('scanResult');
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        setScanResult(parsed);
+      }
+    } catch (err) {
+      console.error('Failed to load scan result:', err);
+      // If parse fails, clear it to prevent stuck state
+      localStorage.removeItem('scanResult');
+    }
+  }, []);
+
+  // 2. Callback: Called when UploadArea successfully finishes a scan
+  const handleScanComplete = useCallback((result: ScanResponse) => {
+    // Save to state (triggers UI update immediately)
+    setScanResult(result);
+    // localStorage is already set inside UploadArea, but setting it here again is safe/redundant
+    // or we can rely entirely on UploadArea setting it. 
+    // Ideally, keeping state in sync here is good practice.
+    localStorage.setItem('scanResult', JSON.stringify(result));
+    
+    // Scroll to top to show the result clearly
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
+  // 3. Callback: Called when user clicks "Scan Another Resume" in ResultCard
+  const handleReset = useCallback(() => {
+    setScanResult(null);
+    localStorage.removeItem('scanResult');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
   return (
     <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-gradient-to-b from-slate-50 via-slate-50 to-slate-100">
       {/* Soft radial gradient blobs */}
@@ -39,9 +81,21 @@ export default function Hero() {
           </p>
         </div>
 
-        {/* Give UploadArea an id so links can scroll here */}
+        {/* CONDITIONAL RENDERING: UploadArea OR ResultCard */}
         <div id="upload">
-          <UploadArea id="upload-area"/>
+          {scanResult ? (
+            // Show ResultCard if we have data
+            <ResultCard 
+              scanResult={scanResult} 
+              onReset={handleReset} 
+            />
+          ) : (
+            // Show UploadArea if no data
+            <UploadArea 
+              id="upload-area" 
+              onScanComplete={handleScanComplete}
+            />
+          )}
         </div>
 
         {/* Social proof (unchanged) */}

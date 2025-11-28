@@ -5,11 +5,17 @@ import { Key, Wand2, Copy, ChevronDown, CheckCircle2, XCircle, AlertCircle, Aler
 import { ScanResponse } from '@/types';
 
 interface ResultCardProps {
-  result: ScanResponse['output'];
-  resetScan: () => void;
+  // Map 'scanResult' from parent to 'result' used internally, or just use 'result' directly if passed that way.
+  // Based on Hero.tsx passing "scanResult={scanResult}", we'll accept that prop name for consistency,
+  // or you can alias it here. I will use 'scanResult' to match Hero.
+  scanResult: ScanResponse; 
+  onReset: () => void;
 }
 
-export default function ResultCard({ result, resetScan }: ResultCardProps) {
+export default function ResultCard({ scanResult, onReset }: ResultCardProps) {
+  // Extract the actual output data
+  const result = scanResult.output;
+
   if (!result) return null;
 
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
@@ -400,7 +406,6 @@ export default function ResultCard({ result, resetScan }: ResultCardProps) {
                 </div>
               </div>
 
-
               {/* 2. CAUSE: ATS Parse Status (Amber Accent) */}
               <div className={`bg-white p-5 rounded-r-lg border-y border-r border-slate-200 border-l-4 shadow-[0_2px_8px_rgba(0,0,0,0.02)] flex flex-col justify-between min-h-[110px] ${(result.missingKeywords?.length || 0) > 0 ? 'border-l-amber-500' : 'border-l-blue-500'
                 }`}>
@@ -420,7 +425,6 @@ export default function ResultCard({ result, resetScan }: ResultCardProps) {
                   </div>
                 </div>
               </div>
-
 
               {/* 3. SOLUTION: ROI Opportunity (Indigo Accent) */}
               <div className="bg-white p-5 rounded-r-lg border-y border-r border-slate-200 border-l-4 border-l-indigo-600 shadow-[0_2px_8px_rgba(0,0,0,0.02)] flex flex-col justify-between min-h-[110px]">
@@ -444,15 +448,13 @@ export default function ResultCard({ result, resetScan }: ResultCardProps) {
           </div>
         </div>
 
-
-
       </div>
 
       {/* Footer Actions */}
       <div className="px-4 sm:px-6 lg:px-8 py-5 bg-white border-t border-slate-200/60">
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
           <button
-            onClick={resetScan}
+            onClick={onReset}
             className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-semibold transition-all text-sm shadow-sm hover:shadow"
           >
             Scan Another Resume
