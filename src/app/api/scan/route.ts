@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import pdfParse from "pdf-parse";
 import mammoth from "mammoth";
 import Anthropic from "@anthropic-ai/sdk";
+import { createAdminClient } from "@/utils/supabase/server";
 
 export async function POST(request: Request) {
   const startTime = Date.now();
@@ -51,7 +52,7 @@ export async function POST(request: Request) {
       apiKey: apiKey,
     });
 
-    const resumeSchema = {
+    const resumeSchema : Anthropic.Tool.InputSchema = {
       type: "object",
       properties: {
         score: { 
@@ -98,7 +99,7 @@ export async function POST(request: Request) {
         }
       },
       required: ["score", "scoreLabel", "summary", "missingKeywords", "improvements"],
-    } as const;
+    };
 
     const msg = await anthropic.messages.create({
       model: "claude-haiku-4-5",

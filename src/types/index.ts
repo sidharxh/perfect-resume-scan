@@ -31,3 +31,40 @@ export interface ScanResponse {
   };
   error?: string;
 }
+
+export interface SocialLink {
+  platform: string; // e.g. "LinkedIn", "GitHub"
+  url: string;
+}
+
+export interface Job {
+  title: string;
+  company: string;
+  period: string; // e.g. "2020 - Present"
+  description: string; // 2-3 bullet points converted to paragraph
+}
+
+export interface Project {
+  title: string;
+  description: string;
+  techStack: string[]; // e.g. ["React", "AWS"]
+  link?: string; // Optional demo link
+}
+
+export interface PortfolioData {
+  personalInfo: {
+    fullName: string;
+    title: string; // e.g. "Full Stack Engineer"
+    bio: string;
+    location: string;
+    email: string;
+    socialLinks: SocialLink[];
+  };
+  experience: Job[];
+  projects: Project[];
+  skills: string[];
+  meta?: {
+    originalResumeUrl?: string; // <--- The new field for the download button
+    createdAt?: string;
+  };
+}
