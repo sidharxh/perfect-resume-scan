@@ -1,6 +1,6 @@
 // components/Footer.jsx
 import Link from 'next/link';
-import { Target, Twitter, Linkedin, Mail } from 'lucide-react';
+import { Target, Twitter, Linkedin, Mail, BookOpen } from 'lucide-react';
 
 export default function Footer() {
   return (
@@ -9,18 +9,36 @@ export default function Footer() {
         
         <div className="flex flex-col md:flex-row items-center justify-between gap-8 mb-12">
           {/* Brand Column */}
-          <div className="text-center md:text-left">
-            <Link href="/" className="inline-flex items-center gap-3 group mb-4">
-              <div className="relative flex items-center justify-center w-8 h-8">
-                <div className="absolute inset-0 bg-purple-500 blur-md opacity-20 group-hover:opacity-50 transition-opacity" />
-                <div className="relative z-10 w-full h-full bg-[#1a1a1a] border border-white/10 rounded-sm flex items-center justify-center text-white group-hover:text-purple-400 transition-colors">
-                  <Target size={16} />
+          <div className="text-center md:text-left flex flex-col items-center md:items-start">
+            
+            {/* Logo + Blog Pill */}
+            <div className="flex items-center gap-3 group mb-4">
+              <Link href="/" className="flex items-center gap-3">
+                <div className="relative flex items-center justify-center w-8 h-8 shrink-0">
+                  <div className="absolute inset-0 bg-purple-500 blur-md opacity-20 group-hover:opacity-50 transition-opacity" />
+                  <div className="relative z-10 w-full h-full bg-[#1a1a1a] border border-white/10 rounded-sm flex items-center justify-center text-white group-hover:text-purple-400 transition-colors">
+                    <Target size={16} />
+                  </div>
                 </div>
-              </div>
-              <span className="font-mono font-bold text-lg tracking-widest text-white uppercase">
-                Perfect<span className="text-purple-400">Resume</span>Scan
-              </span>
-            </Link>
+                
+                <span className="font-mono font-bold text-lg tracking-widest text-white uppercase">
+                  Perfect<span className="text-purple-400">Resume</span>Scan
+                </span>
+              </Link>
+
+              {/* Vertical Divider */}
+              <span className="hidden sm:inline-block text-gray-600">|</span>
+
+              {/* BLOG pill */}
+              <Link
+                href="/blog"
+                className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-white/10 text-[10px] font-mono uppercase tracking-widest text-gray-300 hover:text-white hover:border-purple-500/50 bg-white/5 hover:bg-purple-500/10 transition-colors"
+              >
+                <BookOpen size={12} className="text-purple-400" />
+                <span>BLOG</span>
+              </Link>
+            </div>
+
             <p className="text-gray-500 font-mono text-sm max-w-xs mx-auto md:mx-0">
               // Compiling static resumes into dynamic portfolios. System operational.
             </p>
