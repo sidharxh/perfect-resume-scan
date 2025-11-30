@@ -1,92 +1,43 @@
-'use client' // Required for useState
+'use client'
 
-import { useState } from 'react';
-import { Target, Menu, X } from 'lucide-react'; // Import Menu and X icons
+import { Target, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
-
   return (
-    <nav className="fixed w-full z-50 bg-white/80 backdrop-blur-md shadow-md border-b border-slate-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+    <nav className="fixed w-full z-50 top-0 start-0 border-b border-white/10 bg-[#121212]/80 backdrop-blur-md">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="flex items-center h-16 sm:h-20 gap-3 sm:gap-6">
           
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 cursor-pointer">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white">
-              <Target size={20} />
+          {/* Logo - Neon Glow Style (Matches Footer) */}
+          <Link
+            href="/"
+            className="flex items-center gap-2 sm:gap-3 group min-w-0 flex-1"
+          >
+            <div className="relative flex items-center justify-center w-8 h-8 shrink-0">
+              <div className="absolute inset-0 bg-purple-500 blur-md opacity-20 group-hover:opacity-50 transition-opacity" />
+              <div className="relative z-10 w-full h-full bg-[#1a1a1a] border border-white/10 rounded-sm flex items-center justify-center text-white group-hover:text-purple-400 transition-colors">
+                <Target size={16} />
+              </div>
             </div>
-            <span className="font-bold text-xl tracking-tight text-slate-900">
-              Perfect<span className="text-blue-600">Resume</span>Scan
+            <span className="font-mono font-bold text-sm sm:text-lg tracking-widest text-white uppercase truncate">
+              Perfect<span className="text-purple-400">Resume</span>Scan
             </span>
           </Link>
 
-          {/* Desktop Menu (Hidden on Mobile) */}
-          <div className="hidden md:flex items-center space-x-8">
-            <Link href="/blog" className="text-slate-600 hover:text-blue-600 font-medium transition">Blog</Link>
-            <a href="/#faq" className="text-slate-600 hover:text-blue-600 font-medium transition">FAQ</a>
-            <a href="/#features" className="text-slate-600 hover:text-blue-600 font-medium transition">Features</a>
-            <a href="/#sample-resume" className="text-slate-600 hover:text-blue-600 font-medium transition">Sample Resume</a>
-            <a href="/" className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full font-medium transition shadow-lg shadow-blue-500/30">Start Scan</a>
+          {/* Right Side Button - never shrinks */}
+          <div className="shrink-0">
+            <Link 
+              href="/" 
+              className="inline-flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-2.5 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold text-xs sm:text-sm transition-all shadow-lg shadow-purple-500/20 hover:scale-105 active:scale-95 whitespace-nowrap"
+            >
+              <span>BUILD_WEBSITE</span>
+              <ArrowRight size={16} />
+            </Link>
           </div>
 
-          {/* Mobile Menu Button (Visible ONLY on Mobile) */}
-          <div className="md:hidden flex items-center">
-            <button 
-              onClick={() => setIsOpen(!isOpen)}
-              className="text-slate-600 hover:text-blue-600 p-2"
-            >
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-          </div>
         </div>
       </div>
-
-      {/* Mobile Menu Dropdown */}
-      {isOpen && (
-        <div className="md:hidden bg-white border-t border-slate-100 absolute w-full">
-          <div className="px-4 pt-2 pb-6 space-y-2 shadow-xl">
-            <Link 
-              href="/blog" 
-              className="block px-3 py-3 text-slate-600 hover:bg-blue-50 hover:text-blue-600 rounded-md font-medium"
-              onClick={() => setIsOpen(false)}
-            >
-              Blog
-            </Link>
-            <a 
-              href="/#faq" 
-              className="block px-3 py-3 text-slate-600 hover:bg-blue-50 hover:text-blue-600 rounded-md font-medium"
-              onClick={() => setIsOpen(false)}
-            >
-              FAQ
-            </a>
-            <a 
-              href="/#features" 
-              className="block px-3 py-3 text-slate-600 hover:bg-blue-50 hover:text-blue-600 rounded-md font-medium"
-              onClick={() => setIsOpen(false)}
-            >
-              Features
-            </a>
-            <a 
-              href="/#sample-resume" 
-              className="block px-3 py-3 text-slate-600 hover:bg-blue-50 hover:text-blue-600 rounded-md font-medium"
-              onClick={() => setIsOpen(false)}
-            >
-              Sample Resume
-            </a>
-            <div className="pt-4">
-              <a
-                href="/"
-                className="block w-full text-center bg-blue-600 text-white px-5 py-3 rounded-lg font-bold hover:bg-blue-700 transition"
-                onClick={() => setIsOpen(false)}
-              >
-                Start Scan
-              </a>
-            </div>
-          </div>
-        </div>
-      )}
     </nav>
   );
 }
