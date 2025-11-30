@@ -1,6 +1,6 @@
 'use client'
 
-import { Target, ArrowRight } from 'lucide-react';
+import { Target, ArrowRight, BookOpen } from 'lucide-react';
 import Link from 'next/link';
 
 export default function Navbar() {
@@ -25,14 +25,28 @@ export default function Navbar() {
             </span>
           </Link>
 
-          {/* Right Side Button - never shrinks */}
-          <div className="shrink-0">
+          {/* Actions Container */}
+          <div className="flex items-center gap-3 sm:gap-6 shrink-0">
+            
+            {/* Blog Link - Responsive */}
+            <Link 
+              href="/blog" 
+              className="text-gray-400 hover:text-white font-mono text-xs sm:text-sm font-bold uppercase tracking-wider flex items-center gap-2 transition-colors"
+            >
+              <BookOpen size={16} className="text-purple-400" />
+              <span className="hidden sm:inline">BLOG</span>
+            </Link>
+
+            {/* Vertical Divider (Mobile/Desktop) */}
+            <div className="h-6 w-px bg-white/10"></div>
+
+            {/* Build Button */}
             <Link 
               href="/" 
               className="inline-flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-2.5 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold text-xs sm:text-sm transition-all shadow-lg shadow-purple-500/20 hover:scale-105 active:scale-95 whitespace-nowrap"
             >
               <span>BUILD_WEBSITE</span>
-              <ArrowRight size={16} />
+              <ArrowRight size={16} className="hidden sm:block" />
             </Link>
           </div>
 
