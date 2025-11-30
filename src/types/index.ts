@@ -68,3 +68,8 @@ export interface PortfolioData {
     createdAt?: string;
   };
 }
+
+export type PortfolioRecord = PortfolioData & {
+  slug: string;
+  status?: 'draft' | 'published' | 'deleted';
+};
