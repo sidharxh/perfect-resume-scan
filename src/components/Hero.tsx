@@ -1,105 +1,165 @@
+'use client';
+
+import { useEffect, useState, useCallback } from 'react';
 import UploadArea from './UploadArea';
+import ResultCard from './ResultCard'; 
+
+
+// Define local type matching your API response
+interface PortfolioResult {
+  ok: boolean;
+  slug: string;
+  status: 'draft' | 'published' | 'deleted';
+  personalInfo: {
+    fullName: string;
+    title: string;
+    bio: string;
+    location: string;
+    email: string;
+    socialLinks: any[];
+  };
+  experience: any[];
+  projects: any[];
+  skills: string[];
+}
+
 
 export default function Hero() {
+  const [portfolioResult, setPortfolioResult] = useState<PortfolioResult | null>(null);
+  const [isClient, setIsClient] = useState(false);
+
+
+  // 1. On Mount: Check for existing result in localStorage
+  useEffect(() => {
+    setIsClient(true);
+    try {
+      const raw = localStorage.getItem('portfolioData'); 
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        // Only restore if it has a valid slug and hasn't been deleted
+        if (parsed && parsed.slug && parsed.status !== 'deleted') {
+           setPortfolioResult(parsed);
+        } else {
+           localStorage.removeItem('portfolioData');
+        }
+      }
+    } catch (err) {
+      console.error('Failed to load portfolio result:', err);
+      localStorage.removeItem('portfolioData');
+    }
+  }, []);
+
+
+  // 2. Callback: Called when UploadArea successfully finishes
+  const handleScanComplete = useCallback((result: any) => {
+    setPortfolioResult(result);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
+
+  // 3. Callback: Reset
+  const handleReset = useCallback(() => {
+    setPortfolioResult(null);
+    localStorage.removeItem('portfolioData'); 
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
+
+  // Prevent hydration mismatch by not rendering sensitive storage content on server
+  if (!isClient) return (
+     <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-[#121212] min-h-screen">
+       {/* Loading skeleton or just blank */}
+     </section>
+  );
+
+
   return (
-    <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-gradient-to-b from-slate-50 via-slate-50 to-slate-100">
-      {/* Soft radial gradient blobs */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-40 -left-32 w-96 h-96 rounded-full bg-blue-200/60 blur-3xl" />
-        <div className="absolute -bottom-40 -right-32 w-96 h-96 rounded-full bg-purple-200/60 blur-3xl" />
-      </div>
-
-      {/* Subtle grid / pattern */}
-      <div className="pointer-events-none absolute inset-0 opacity-[0.07]">
-        <div className="h-full w-full bg-[linear-gradient(to_right,_rgba(148,163,184,0.5)_1px,_transparent_1px),linear-gradient(to_bottom,_rgba(148,163,184,0.35)_1px,_transparent_1px)] bg-[size:38px_38px]" />
-      </div>
-
-      {/* Light vignette */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-white via-white/70 to-transparent" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-slate-100 via-slate-100/70 to-transparent" />
+    <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-[#121212] min-h-[800px]">
+      
+      {/* --- NEW BACKGROUND --- */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[120px] pointer-events-none"></div>
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none"></div>
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
+      {/* --- END NEW BACKGROUND --- */}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="text-center max-w-3xl mx-auto mb-12">
-          <div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium mb-6 shadow-sm">
-            <span className="flex h-2 w-2 relative">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
-            </span>
-            Over 500+ resumes scanned this week
+        
+        {/* Only show headline if we are NOT viewing a result */}
+        {!portfolioResult && (
+          <div className="text-center max-w-3xl mx-auto mb-16 animate-fade-in-up">
+            
+            {/* Badge - Minimalist Dark Theme */}
+            <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 text-gray-300 px-3 py-1 rounded-full text-xs font-mono uppercase tracking-widest mb-8 backdrop-blur-sm">
+              <span className="flex h-1.5 w-1.5 relative">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-purple-500" />
+              </span>
+              V2.0 System Ready
+            </div>
+            
+            {/* Main Heading - Monospace & Clean */}
+            <h1 className="text-4xl md:text-5xl font-mono text-white mb-6 leading-tight">
+              Turn Your Resume Into <br className="hidden md:block" />
+              <span 
+                className="text-transparent bg-clip-text font-bold"
+                style={{
+                   backgroundImage: 'linear-gradient(90deg, #FFA585 0%, #B185FF 100%)'
+                }}
+              >
+                 A Personal Website
+              </span>
+            </h1>
+
+
+            {/* Subtitle - Muted Gray Monospace */}
+            <p className="text-sm md:text-base font-mono text-gray-400 mb-10 leading-relaxed max-w-2xl mx-auto">
+              // Upload your PDF resume below. <br />
+              // We compile a professional portfolio site in seconds. No code required.
+            </p>
           </div>
-          <h1 className="text-4xl md:text-6xl font-extrabold text-slate-900 tracking-tight mb-6 leading-tight">
-            Is your resume{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-              ATS-Proof?
-            </span>
-          </h1>
-          <p className="text-lg md:text-xl text-slate-600 mb-8 leading-relaxed">
-            Stop getting rejected by bots. Get an instant score, keyword analysis, and actionable
-            feedback to land more interviews.
-          </p>
+        )}
+
+
+        {/* CONDITIONAL RENDERING - Container kept neutral for children */}
+        <div id="upload" className="transition-all duration-500">
+          {portfolioResult ? (
+            <ResultCard 
+              scanResult={portfolioResult as any} 
+              onReset={handleReset} 
+            />
+          ) : (
+            <UploadArea 
+              id="upload-area" 
+              onScanComplete={handleScanComplete}
+            />
+          )}
         </div>
 
-        {/* Give UploadArea an id so links can scroll here */}
-        <div id="upload">
-          <UploadArea id="upload-area"/>
-        </div>
 
-        {/* Social proof (unchanged) */}
-        <div className="mt-16 pt-8 border-t border-slate-200/80">
-          <p className="text-center text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4">
-            Results other job seekers are seeing
-          </p>
-          <div className="flex flex-wrap justify-center gap-6 md:gap-10 mb-6">
-            <div className="text-center">
-              <p className="text-2xl md:text-3xl font-extrabold text-slate-900">
-                13,000+
-              </p>
-              <p className="text-xs md:text-sm text-slate-500">
-                Resumes scanned
-              </p>
-            </div>
-
-            <div className="h-10 w-px bg-slate-200 hidden md:block" />
-
-            <div className="text-center">
-              <p className="text-2xl md:text-3xl font-extrabold text-slate-900">
-                24%
-              </p>
-              <p className="text-xs md:text-sm text-slate-500">
-                Avg. score improvement
-              </p>
-            </div>
-
-            <div className="h-10 w-px bg-slate-200 hidden md:block" />
-
-            <div className="text-center">
-              <p className="text-2xl md:text-3xl font-extrabold text-slate-900">
-                40+
-              </p>
-              <p className="text-xs md:text-sm text-slate-500">
-                Countries using PerfectResumeScan
-              </p>
+        {/* Social Proof - Minimalist Stats */}
+        {!portfolioResult && (
+          <div className="mt-24 pt-8 border-t border-white/10">
+            <p className="text-center text-xs font-mono text-gray-500 uppercase tracking-widest mb-8">
+              System Metrics
+            </p>
+            <div className="flex flex-wrap justify-center gap-12 md:gap-24">
+              <div className="text-center">
+                <p className="text-2xl md:text-3xl font-mono font-bold text-white">150+</p>
+                <p className="text-[10px] md:text-xs font-mono text-gray-500 mt-1">GENERATED_SITES</p>
+              </div>
+              <div className="text-center">
+                <p className="text-2xl md:text-3xl font-mono font-bold text-white">&lt; 30s</p>
+                <p className="text-[10px] md:text-xs font-mono text-gray-500 mt-1">EXECUTION_TIME</p>
+              </div>
+              <div className="text-center">
+                <p className="text-2xl md:text-3xl font-mono font-bold text-white">99%</p>
+                <p className="text-[10px] md:text-xs font-mono text-gray-500 mt-1">Parsing_Accuracy</p>
+              </div>
             </div>
           </div>
+        )}
 
-          <p className="text-center text-[11px] md:text-xs font-semibold text-slate-500 uppercase tracking-[0.2em] mb-4">
-            Used by candidates interviewing at
-          </p>
-          <div className="flex flex-wrap justify-center gap-6 md:gap-10">
-            <span className="flex items-center font-bold text-lg md:text-xl text-slate-700">
-              <span className="text-blue-500">G</span>oogle
-            </span>
-            <span className="flex items-center font-bold text-lg md:text-xl text-slate-700">
-              <span className="text-orange-500">A</span>mazon
-            </span>
-            <span className="flex items-center font-bold text-lg md:text-xl text-slate-700">
-              <span className="text-cyan-500">M</span>icrosoft
-            </span>
-            <span className="flex items-center font-bold text-lg md:text-xl text-slate-700">
-              <span className="text-green-500">S</span>potify
-            </span>
-          </div>
-        </div>
+
       </div>
     </section>
   );
