@@ -1,42 +1,42 @@
 import Hero from '@/components/Hero';
 import FAQ from '@/components/FAQ';
 import Features from '@/components/Features';
-import SampleATSResume from '@/components/SampleATSResume';
+import SampleWebsiteDemo from '@/components/SampleWebsiteDemo';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: {
-    absolute: "PerfectResumeScan | Free ATS Resume Checker & Optimizer (2025)",
+    absolute: "PerfectResumeScan | Turn Your Resume Into a Website Instantly (2025)",
   },
   description:
-    "Free instant ATS resume scanner. Get your compatibility score, missing keywords, and AI-powered bullet fixes in seconds - no signup required.",
+    "Convert your static resume into a stunning personal portfolio website in seconds. Get a shareable link, QR code, and professional hosting instantly.",
   keywords: [
-    "ATS resume checker",
-    "free ATS scanner",
-    "resume ATS test",
-    "ATS friendly resume",
-    "resume keyword scanner",
-    "beat ATS",
-    "ATS resume optimizer",
+    "resume to website",
+    "portfolio builder",
+    "personal website generator",
+    "resume hosting",
+    "digital resume",
+    "resume qr code",
+    "online resume builder",
   ],
   openGraph: {
-    title: "Free ATS Resume Checker | PerfectResumeScan",
+    title: "Turn Your Resume Into a Website Instantly | PerfectResumeScan",
     description:
-      "Check if your resume beats Applicant Tracking Systems in seconds. Instant score + fixes.",
+      "Upload your PDF resume and get a hosted, professional portfolio website in seconds. Stand out to recruiters with a digital presence.",
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "PerfectResumeScan | Free ATS Resume Checker",
+        alt: "PerfectResumeScan | Resume to Website Converter",
       },
     ],
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Free ATS Resume Checker | Instant Score & Fixes",
-    description: "Upload your resume → see if it passes ATS in seconds",
+    title: "Turn Your Resume Into a Website Instantly",
+    description: "Upload your resume → Get a personal website in seconds",
     images: ["/og-image.jpg"],
   },
 };
@@ -50,18 +50,18 @@ export default function Home() {
     applicationCategory: 'BusinessApplication',
     operatingSystem: 'Web',
     url: 'https://perfectresumescan.com', 
-    description: 'AI-powered ATS resume scanner and optimizer. Get an instant ATS score, keyword analysis, and actionable feedback to land more interviews.',
+    description: 'AI-powered tool that converts static resumes into personal portfolio websites. Features include instant hosting, downloadable QR code cards, and PDF viewers.',
     offers: {
       '@type': 'Offer',
       price: '0',
       priceCurrency: 'USD',
     },
     featureList: [
-      'Instant ATS Score',
-      'Keyword Gap Analysis',
-      'Action Verb Enhancer',
-      'PDF & DOCX Support',
-      'Detailed Resume Optimization Plan'
+      'Instant Resume-to-Website Conversion',
+      'Personal Portfolio Hosting',
+      'Downloadable QR Code Card',
+      'PDF Resume Viewer',
+      'Shareable Portfolio Link'
     ],
     author: {
       '@type': 'Organization',
@@ -82,7 +82,7 @@ export default function Home() {
       />
       <main>
         <Hero/>
-        <SampleATSResume/>
+        <SampleWebsiteDemo/>
         <FAQ />
         <Features />
       </main>

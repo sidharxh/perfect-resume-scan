@@ -1,6 +1,6 @@
 import { FileText, Globe, Github, Linkedin, Twitter, ArrowRight, X } from 'lucide-react';
 
-export default function SampleATSResume() {
+export default function SampleWebsiteDemo() {
   return (
     <section id="sample-resume" className="py-24 bg-[#121212] border-t border-white/5 relative overflow-hidden">
       
