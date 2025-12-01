@@ -13,9 +13,14 @@ export default function LinkedInCard({ config, url }: { config: CardConfig, url:
   const [copiedShare, setCopiedShare] = useState(false)
 
   const handleShare = () => {
-    const shareText = config.text
+    // --- CHANGE HERE: Append the URL to the text ---
+    // We use \n\n to create a line break between the main text and the link
+    const shareText = `${config.text}\n\nRead full article here: ${url}`
+    
     navigator.clipboard.writeText(shareText)
     setCopiedShare(true)
+    
+    // The encoded text will now include your link
     window.open(`https://www.linkedin.com/feed/?shareActive=true&text=${encodeURIComponent(shareText)}`, '_blank')
     setTimeout(() => setCopiedShare(false), 3000)
   }
@@ -46,7 +51,7 @@ export default function LinkedInCard({ config, url }: { config: CardConfig, url:
             </div>
           </div>
 
-          {/* Quote Box - Terminal Style */}
+          {/* Quote Box */}
           <div className="bg-black/40 rounded-lg p-4 mb-5 border border-white/5 relative group-hover:border-white/10 transition-colors">
             <div className="absolute top-3 right-3 opacity-50">
                <Sparkles className="text-[#0077b5] w-3 h-3" />
@@ -60,7 +65,7 @@ export default function LinkedInCard({ config, url }: { config: CardConfig, url:
             </p>
           </div>
 
-          {/* Compact Button */}
+          {/* Button */}
           <button 
             onClick={handleShare}
             className={`w-full font-mono font-bold py-3 rounded-lg transition-all flex items-center justify-center gap-2 text-xs uppercase tracking-wider border
